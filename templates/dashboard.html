@@ -1,0 +1,2158 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+        <!-- =========================
+             PAGE HEADER
+        ========================== -->
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h4 class="mb-0 fw-normal">
+                Dashboard
+            </h4>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <button type="button"
+                        class="btn btn-outline-light shadow-sm">
+                    <i class="ti ti-refresh me-1"></i>
+                    Refresh
+                </button>
+
+                <button type="button"
+                        class="btn btn-outline-light shadow-sm">
+                    <i class="ti ti-pencil me-1"></i>
+                    Edit
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-toolbar mb-4">
+
+    <!-- DATE FILTER -->
+    <div class="custom-dropdown">
+
+        <button type="button"
+                class="dashboard-filter-btn"
+                id="dateDropdownBtn">
+
+            <span>
+                <i class="ti ti-calendar"></i>
+                <span id="selectedDate">Last 30 Days</span>
+            </span>
+
+            <i class="ti ti-chevron-down"></i>
+
+        </button>
+
+
+        <div class="custom-dropdown-menu date-dropdown"
+             id="dateDropdownMenu">
+
+            <div class="dropdown-item"
+                 data-value="Last 7 Days">
+                Last 7 Days
+            </div>
+
+            <div class="dropdown-item active"
+                 data-value="Last 30 Days">
+                Last 30 Days
+            </div>
+
+            <div class="dropdown-item"
+                 data-value="Last 60 Days">
+                Last 60 Days
+            </div>
+
+            <div class="dropdown-item"
+                 data-value="Last 90 Days">
+                Last 90 Days
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <div class="dropdown-item"
+                 data-value="Custom Range">
+                Custom Range
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SALES USER FILTER -->
+    <div class="custom-dropdown">
+
+        <button type="button"
+                class="dashboard-filter-btn"
+                id="salesUserDropdownBtn">
+
+            <span id="selectedSalesUser">
+                Sales User
+            </span>
+
+            <i class="ti ti-chevron-down"></i>
+
+        </button>
+
+
+        <div class="custom-dropdown-menu sales-user-dropdown"
+             id="salesUserDropdownMenu">
+
+
+            <!-- SEARCH -->
+
+            <div class="dropdown-search">
+
+                <i class="ti ti-search"></i>
+
+                <input type="text"
+                       id="salesUserSearch"
+                       placeholder="Search">
+
+                <i class="ti ti-x"
+                   id="clearSearch"></i>
+
+            </div>
+
+
+
+
+
+            <div class="sales-user-list">
+
+
+                {% for user in users %}
+                <div class="sales-user-item" data-user="{{ user.full_name|escapejs }}" data-user-id="{{ user.id }}">
+                    <span class="user-letter">{{ user.full_name|first|upper }}</span>
+                    <span>{{ user.full_name }}</span>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+
+            <!-- CLEAR -->
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- =========================
+             STATISTICS CARDS
+        ========================== -->
+
+        <div class="row g-3 mb-3">
+
+            <!-- Total Leads -->
+            <div class="col-xl col-lg-4 col-md-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Total leads
+                    </p>
+
+                    <h2 class="stat-value">
+                        {{ total_leads|default:"0" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- Avg Close Lead -->
+            <div class="col-xl col-lg-4 col-md-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Avg. time to close a lead
+                    </p>
+
+                    <h2 class="stat-value">
+                        {{ avg_lead_close_days|default:"—" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- Ongoing Deals -->
+            <div class="col-xl col-lg-4 col-md-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Ongoing deals
+                    </p>
+
+                    <h2 class="stat-value">
+                        {{ ongoing_deals|default:"0" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- Won Deals -->
+            <div class="col-xl col-lg-4 col-md-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Won deals
+                    </p>
+
+                    <h2 class="stat-value">
+                        {{ won_deals|default:"0" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- Avg Won Deal -->
+            <div class="col-xl col-lg-4 col-md-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Avg. won deal annual revenue
+                    </p>
+
+                    <h2 class="stat-value">
+                        ${{ avg_won_deal_value|floatformat:2|default:"0" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             SECOND STAT ROW
+        ========================== -->
+
+        <div class="row g-3 mb-3">
+
+            <!-- Avg Deal Value -->
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Avg. annual revenue
+                    </p>
+
+                    <h2 class="stat-value">
+                        ${{ avg_deal_value|floatformat:2|default:"0" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- Avg Close Deal -->
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+
+                <div class="dashboard-stat-card">
+
+                    <p class="stat-label">
+                        Avg. time to close a deal
+                    </p>
+
+                    <h2 class="stat-value">
+                        {{ avg_deal_close_days|default:"—" }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CHART ROW 1
+        ========================== -->
+
+        <div class="row g-3 mb-3">
+
+            <!-- Sales Trend -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+                        <h5>Sales trend</h5>
+
+                        <p>
+                            Daily performance of leads, deals, and wins
+                        </p>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="salesTrendChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Forecasted Revenue -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+                        <h5>Forecasted revenue</h5>
+
+                        <p>
+                            Projected vs actual revenue based on deal probability
+                        </p>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="forecastRevenueChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CHART ROW 2
+        ========================== -->
+
+        <div class="row g-3 mb-3">
+
+            <!-- Funnel Conversion -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Funnel conversion</h5>
+
+                        <p>
+                            Lead to deal conversion pipeline
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="funnelChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Deals By Stage -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Deals by stage</h5>
+
+                        <p>
+                            Current pipeline distribution
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="dealsStageChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CHART ROW 3
+        ========================== -->
+
+        <div class="row g-3 mb-3">
+
+            <!-- Leads By Source -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Leads by source</h5>
+
+                        <p>
+                            Lead generation channel analysis
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="leadsSourceChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Deals By Source -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Deals by source</h5>
+
+                        <p>
+                            Deal generation channel analysis
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="dealsSourceChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             CHART ROW 4
+        ========================== -->
+
+        <div class="row g-3 mb-3">
+
+            <!-- Deals By Territory -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Deals by territory</h5>
+
+                        <p>
+                            Geographic distribution of deals and revenue
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="territoryChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Deals By Salesperson -->
+            <div class="col-lg-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Deals by salesperson</h5>
+
+                        <p>
+                            Number of deals and total value per salesperson
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="salespersonChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             LOST DEAL REASONS
+        ========================== -->
+
+        <div class="row g-3 pb-4">
+
+            <div class="col-12">
+
+                <div class="dashboard-card lost-card">
+
+                    <div class="dashboard-card-header">
+
+                        <h5>Lost deals</h5>
+
+                        <p>
+                            Current lost deal count
+                        </p>
+
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="lostReasonsChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =========================
+     CSS
+========================= -->
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page-wrapper {
+    min-height: 100vh;
+    background: #f8f9fb !important;
+}
+
+.content {
+    padding: 20px;
+    background: #f8f9fb !important;
+}
+
+
+/* PAGE HEADER */
+
+.page-wrapper h4 {
+    color: #344054;
+}
+
+
+/* BUTTONS */
+
+.btn-outline-light {
+    color: #475467 !important;
+    border-color: #d0d5dd !important;
+    background: #ffffff !important;
+}
+
+.btn-outline-light:hover {
+    color: #344054 !important;
+    background: #f2f4f7 !important;
+    border-color: #98a2b3 !important;
+}
+
+
+/* =========================================
+   DASHBOARD TOOLBAR
+========================================= */
+
+.dashboard-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+/* =========================================
+   CUSTOM DROPDOWN
+========================================= */
+
+.custom-dropdown {
+    position: relative;
+}
+
+
+/* FILTER BUTTON */
+
+.dashboard-filter-btn {
+    height: 36px;
+    min-width: 150px;
+
+    padding: 0 12px;
+
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    cursor: pointer;
+}
+
+.dashboard-filter-btn:hover {
+    border-color: #98a2b3;
+    background: #f9fafb;
+}
+
+.dashboard-filter-btn span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dashboard-filter-btn i {
+    font-size: 16px;
+}
+
+.dashboard-filter-btn > i:last-child {
+    font-size: 14px;
+    color: #667085;
+}
+
+
+/* =========================================
+   DROPDOWN MENU
+========================================= */
+
+.custom-dropdown-menu {
+    display: none;
+
+    position: absolute;
+
+    top: calc(100% + 5px);
+    left: 0;
+
+    min-width: 145px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 12px;
+
+    padding: 6px 0;
+
+    z-index: 9999;
+
+    box-shadow: 0 10px 30px rgba(16,24,40,0.12);
+}
+
+.custom-dropdown-menu.show {
+    display: block;
+}
+
+
+/* DATE DROPDOWN */
+
+.date-dropdown {
+    width: 145px;
+}
+
+
+/* DROPDOWN ITEM */
+
+.dropdown-item {
+    padding: 10px 12px;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f2f4f7;
+    color: #101828;
+}
+
+.dropdown-item.active {
+    color: #101828;
+    font-weight: 500;
+}
+
+
+/* DIVIDER */
+
+.dropdown-divider {
+    height: 1px;
+
+    background: #eaecf0;
+
+    margin: 5px 0;
+}
+
+
+/* =========================================
+   SALES USER DROPDOWN
+========================================= */
+
+.sales-user-dropdown {
+    width: 200px;
+    padding-top: 5px;
+}
+
+
+/* SEARCH */
+
+.dropdown-search {
+    margin: 0 5px 6px;
+
+    height: 34px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 8px;
+
+    gap: 6px;
+}
+
+.dropdown-search > i:first-child {
+    color: #667085;
+    font-size: 15px;
+}
+
+.dropdown-search input {
+    flex: 1;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #344054;
+
+    font-size: 14px;
+
+    width: 100%;
+}
+
+.dropdown-search input::placeholder {
+    color: #98a2b3;
+}
+
+#clearSearch {
+    color: #667085;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* SALES USER LIST */
+
+.sales-user-list {
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.sales-user-item {
+    height: 34px;
+
+    padding: 0 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #344054;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.sales-user-item:hover {
+    background: #f2f4f7;
+}
+
+.user-letter {
+    width: 14px;
+
+    color: #98a2b3;
+
+    font-size: 13px;
+}
+
+
+/* CLEAR */
+
+.clear-selection {
+    height: 38px;
+
+    padding: 0 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.clear-selection:hover {
+    background: #f2f4f7;
+}
+
+.clear-selection i {
+    font-size: 16px;
+    color: #667085;
+}
+
+
+/* =========================================
+   STATISTICS CARDS
+========================================= */
+
+.dashboard-stat-card {
+    min-height: 110px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 10px;
+
+    padding: 20px 22px;
+
+    background: #ffffff !important;
+
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+}
+
+.stat-label {
+    margin: 0 0 6px;
+
+    font-size: 14px;
+
+    color: #667085 !important;
+}
+
+.stat-value {
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+    color: #344054 !important;
+}
+
+
+/* =========================================
+   DASHBOARD CARD
+========================================= */
+
+.dashboard-card {
+    min-height: 360px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 10px;
+
+    padding: 18px;
+
+    background: #ffffff !important;
+
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+}
+
+.dashboard-card-header h5 {
+    font-size: 16px;
+
+    margin-bottom: 4px;
+
+    font-weight: 600;
+
+    color: #344054 !important;
+}
+
+.dashboard-card-header p {
+    font-size: 14px;
+
+    color: #667085 !important;
+
+    margin-bottom: 18px;
+}
+
+
+/* CHART */
+
+.chart-container {
+    position: relative;
+
+    width: 100%;
+
+    height: 270px;
+}
+
+.lost-card {
+    min-height: 330px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .dashboard-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .dashboard-stat-card {
+        min-height: 100px;
+    }
+
+    .dashboard-card {
+        min-height: 330px;
+    }
+
+    .chart-container {
+        height: 240px;
+    }
+}
+
+</style>
+
+<!-- =========================
+     CHART JS
+========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const textColor = "#667085";
+
+const gridColor = "rgba(16,24,40,0.10)";
+
+
+    /* =========================
+       SALES TREND
+    ========================= */
+
+    const salesTrend = document.getElementById("salesTrendChart");
+
+    if (salesTrend) {
+
+        new Chart(salesTrend, {
+
+            type: "line",
+
+            data: {
+
+                labels: {{ sales_trend_labels|safe }},
+
+                datasets: [
+
+                    {
+                        label: "Leads",
+
+                        data: {{ sales_trend_leads|safe }},
+
+                        borderColor: "#4a98c0",
+
+                        backgroundColor: "#4a98c0",
+
+                        pointBackgroundColor: "#4a98c0",
+
+                        tension: 0.4
+
+                    },
+
+                    {
+                        label: "Deals",
+
+                        data: {{ sales_trend_deals|safe }},
+
+                        borderColor: "#6fc7c9",
+
+                        backgroundColor: "#6fc7c9",
+
+                        pointBackgroundColor: "#6fc7c9",
+
+                        tension: 0.4
+
+                    },
+
+                    {
+                        label: "Won Deals",
+
+                        data: {{ sales_trend_won|safe }},
+
+                        borderColor: "#ffd666",
+
+                        backgroundColor: "#ffd666",
+
+                        pointBackgroundColor: "#ffd666",
+
+                        tension: 0.4
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true
+
+                        }
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor,
+
+                            stepSize: 0.5
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       FORECAST REVENUE
+    ========================= */
+
+    const forecastRevenue =
+        document.getElementById("forecastRevenueChart");
+
+    if (forecastRevenue) {
+
+        new Chart(forecastRevenue, {
+
+            type: "line",
+
+            data: {
+
+                labels: {{ forecast_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        label: "Forecasted",
+
+                        data: {{ forecasted_trend_data|safe }},
+
+                        borderColor: "#4a98c0",
+
+                        backgroundColor: "#4a98c0",
+
+                        tension: 0.4
+
+                    },
+
+                    {
+
+                        label: "Actual",
+
+                        data: {{ actual_trend_data|safe }},
+
+                        borderColor: "#ffd666",
+
+                        backgroundColor: "#ffd666",
+
+                        tension: 0.4
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true
+
+                        }
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       FUNNEL CONVERSION
+    ========================= */
+
+    const funnelChart =
+        document.getElementById("funnelChart");
+
+    if (funnelChart) {
+
+        new Chart(funnelChart, {
+
+            type: "bar",
+
+            data: {
+
+                labels: {{ funnel_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        label: "Count",
+
+                        data: {{ funnel_data|safe }},
+
+                        backgroundColor: "#4a98c0",
+
+                        borderRadius: 4
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                indexAxis: "y",
+
+                plugins: {
+
+                    legend: {
+
+                        display: false
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        beginAtZero: true,
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y: {
+
+                        grid: {
+
+                            display: false
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       DEALS BY STAGE
+    ========================= */
+
+    const dealsStageChart =
+        document.getElementById("dealsStageChart");
+
+    if (dealsStageChart) {
+
+        new Chart(dealsStageChart, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: {{ deal_stage_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        data: {{ deal_stage_data|safe }},
+
+                        backgroundColor: [
+
+                            "#4a98c0",
+                            "#ffd666",
+                            "#6fc7c9"
+
+                        ],
+
+                        borderWidth: 0
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "60%",
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true,
+
+                            padding: 18
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       LEADS BY SOURCE
+    ========================= */
+
+    const leadsSourceChart =
+        document.getElementById("leadsSourceChart");
+
+    if (leadsSourceChart) {
+
+        new Chart(leadsSourceChart, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: {{ lead_source_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        data: {{ lead_source_data|safe }},
+
+                        backgroundColor: [
+
+                            "#4a98c0",
+                            "#6fc7c9",
+                            "#ffd666",
+                            "#9b7ed9"
+
+                        ],
+
+                        borderWidth: 0
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "60%",
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true,
+
+                            padding: 18
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       DEALS BY SOURCE
+    ========================= */
+
+    const dealsSourceChart =
+        document.getElementById("dealsSourceChart");
+
+    if (dealsSourceChart) {
+
+        new Chart(dealsSourceChart, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: {{ deal_source_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        data: {{ deal_source_data|safe }},
+
+                        backgroundColor: [
+
+                            "#4a98c0",
+                            "#6fc7c9",
+                            "#ffd666",
+                            "#9b7ed9"
+
+                        ],
+
+                        borderWidth: 0
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "60%",
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true,
+
+                            padding: 18
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       DEALS BY TERRITORY
+    ========================= */
+
+    const territoryChart =
+        document.getElementById("territoryChart");
+
+    if (territoryChart) {
+
+        new Chart(territoryChart, {
+
+            type: "bar",
+
+            data: {
+
+                labels: {{ territory_chart_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        label: "Deals",
+
+                        data: {{ territory_deal_count_data|safe }},
+
+                        backgroundColor: "#4a98c0",
+
+                        yAxisID: "y"
+
+                    },
+
+                    {
+
+                        label: "Value",
+
+                        data: {{ territory_chart_data|safe }},
+
+                        backgroundColor: "#ffd666",
+
+                        yAxisID: "y1"
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true
+
+                        }
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+
+                            display: false
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        position: "left",
+
+                        title: {
+
+                            display: true,
+
+                            text: "↑ Number of deals",
+
+                            color: textColor
+
+                        },
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y1: {
+
+                        beginAtZero: true,
+
+                        position: "right",
+
+                        title: {
+
+                            display: true,
+
+                            text: "Deal value ($) ↑",
+
+                            color: textColor
+
+                        },
+
+                        grid: {
+
+                            drawOnChartArea: false
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       DEALS BY SALESPERSON
+    ========================= */
+
+    const salespersonChart =
+        document.getElementById("salespersonChart");
+
+    if (salespersonChart) {
+
+        new Chart(salespersonChart, {
+
+            type: "bar",
+
+            data: {
+
+                labels: {{ salesperson_chart_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        label: "Deals",
+
+                        data: {{ salesperson_deal_count_data|safe }},
+
+                        backgroundColor: "#4a98c0",
+
+                        yAxisID: "y"
+
+                    },
+
+                    {
+
+                        label: "Value",
+
+                        data: {{ salesperson_chart_data|safe }},
+
+                        backgroundColor: "#ffd666",
+
+                        yAxisID: "y1"
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        position: "bottom",
+
+                        labels: {
+
+                            color: textColor,
+
+                            usePointStyle: true
+
+                        }
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+
+                            display: false
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        position: "left",
+
+                        title: {
+
+                            display: true,
+
+                            text: "↑ Number of deals",
+
+                            color: textColor
+
+                        },
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y1: {
+
+                        beginAtZero: true,
+
+                        position: "right",
+
+                        title: {
+
+                            display: true,
+
+                            text: "Deal value ($) ↑",
+
+                            color: textColor
+
+                        },
+
+                        grid: {
+
+                            drawOnChartArea: false
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================
+       LOST DEAL REASONS
+    ========================= */
+
+    const lostReasonsChart =
+        document.getElementById("lostReasonsChart");
+
+    if (lostReasonsChart) {
+
+        new Chart(lostReasonsChart, {
+
+            type: "bar",
+
+            data: {
+
+                labels: {{ lost_reason_labels|safe }},
+
+                datasets: [
+
+                    {
+
+                        label: "Lost Deals",
+
+                        data: {{ lost_reason_data|safe }},
+
+                        backgroundColor: "#4a98c0",
+
+                        borderRadius: 4
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+
+                        display: false
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        grid: {
+
+                            display: false
+
+                        },
+
+                        ticks: {
+
+                            color: textColor
+
+                        }
+
+                    },
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        grid: {
+
+                            color: gridColor
+
+                        },
+
+                        ticks: {
+
+                            color: textColor,
+
+                            stepSize: 1
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+});
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const dateBtn = document.getElementById("dateDropdownBtn");
+    const dateMenu = document.getElementById("dateDropdownMenu");
+
+    const salesUserBtn = document.getElementById("salesUserDropdownBtn");
+    const salesUserMenu = document.getElementById("salesUserDropdownMenu");
+
+    const selectedDate = document.getElementById("selectedDate");
+    const selectedSalesUser = document.getElementById("selectedSalesUser");
+
+    const salesUserSearch = document.getElementById("salesUserSearch");
+    const clearSearch = document.getElementById("clearSearch");
+    const clearSalesUser = document.getElementById("clearSalesUser");
+
+
+    // DATE DROPDOWN
+    if (dateBtn) {
+        dateBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            dateMenu.classList.toggle("show");
+
+            if (salesUserMenu) {
+                salesUserMenu.classList.remove("show");
+            }
+        });
+    }
+
+
+    // SALES USER DROPDOWN
+    if (salesUserBtn) {
+        salesUserBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            salesUserMenu.classList.toggle("show");
+
+            if (dateMenu) {
+                dateMenu.classList.remove("show");
+            }
+        });
+    }
+
+
+    // DATE SELECT
+    document.querySelectorAll(".date-dropdown .dropdown-item").forEach(function (item) {
+
+        item.addEventListener("click", function () {
+
+            selectedDate.textContent = this.dataset.value;
+
+            document.querySelectorAll(".date-dropdown .dropdown-item")
+                .forEach(function (el) {
+                    el.classList.remove("active");
+                });
+
+            this.classList.add("active");
+
+            dateMenu.classList.remove("show");
+        });
+
+    });
+
+
+    // SALES USER SELECT
+    document.querySelectorAll(".sales-user-item").forEach(function (item) {
+
+        item.addEventListener("click", function () {
+
+            selectedSalesUser.textContent = this.dataset.user;
+
+            salesUserMenu.classList.remove("show");
+
+            if (salesUserSearch) {
+                salesUserSearch.value = "";
+            }
+
+        });
+
+    });
+
+
+    // SEARCH
+    if (salesUserSearch) {
+
+        salesUserSearch.addEventListener("input", function () {
+
+            const value = this.value.toLowerCase();
+
+            document.querySelectorAll(".sales-user-item").forEach(function (item) {
+
+                const user = item.dataset.user.toLowerCase();
+
+                item.style.display =
+                    user.includes(value) ? "flex" : "none";
+
+            });
+
+        });
+
+    }
+
+
+    // CLEAR SEARCH
+    if (clearSearch) {
+
+        clearSearch.addEventListener("click", function (e) {
+
+            e.stopPropagation();
+
+            salesUserSearch.value = "";
+
+            document.querySelectorAll(".sales-user-item").forEach(function (item) {
+                item.style.display = "flex";
+            });
+
+            salesUserSearch.focus();
+
+        });
+
+    }
+
+
+    // CLEAR SALES USER
+    if (clearSalesUser) {
+
+        clearSalesUser.addEventListener("click", function () {
+
+            selectedSalesUser.textContent = "Sales User";
+
+            if (salesUserSearch) {
+                salesUserSearch.value = "";
+            }
+
+            salesUserMenu.classList.remove("show");
+
+        });
+
+    }
+
+
+    // CLICK OUTSIDE
+    document.addEventListener("click", function (e) {
+
+        if (!e.target.closest(".custom-dropdown")) {
+
+            if (dateMenu) {
+                dateMenu.classList.remove("show");
+            }
+
+            if (salesUserMenu) {
+                salesUserMenu.classList.remove("show");
+            }
+
+        }
+
+    });
+
+});
+</script>
+
+{% endblock %}

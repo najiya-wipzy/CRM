@@ -1,0 +1,185 @@
+<div class="modal fade"
+     id="createTerritoryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered crm-territory-dialog">
+
+        <div class="modal-content crm-territory-modal">
+
+            <!-- HEADER -->
+            <div class="crm-model-header">
+
+                <h4>New Territory</h4>
+
+                <div class="crm-model-actions">
+
+                    <button type="button"
+                            class="crm-icon-btn">
+                        <i class="ti ti-edit"></i>
+                    </button>
+
+                    <button type="button"
+                            class="crm-icon-btn"
+                            data-bs-dismiss="modal">
+                        <i class="ti ti-x"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- BODY -->
+            <form method="POST"
+                  action="{% url 'add_territory' %}"
+                  id="createTerritoryForm">
+
+                {% csrf_token %}
+
+                <div class="crm-territory-body">
+
+                    <!-- Territory Name + Manager -->
+                    <div class="crm-territory-grid">
+
+                        <div class="crm-field">
+
+                            <label>
+                                Territory Name
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input type="text"
+                                   name="name"
+                                   id="newTerritoryName"
+                                   class="crm-control"
+                                   placeholder="Territory Name"
+                                   required>
+
+                        </div>
+
+
+                        <div class="crm-field">
+
+                            <label>Territory Manager</label>
+
+                            <select name="territory_manager"
+                                    id="newTerritoryManager"
+                                    class="crm-control crm-select">
+
+                                <option value="">
+                                    Territory Manager
+                                </option>
+
+                                {% for user in users %}
+
+                                    <option value="{{ user.id }}">
+                                        {{ user.full_name }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <!-- Old Parent + Is Group -->
+                    <div class="crm-territory-grid">
+
+                        <div class="crm-field">
+
+                            <label>Old Parent</label>
+
+                            <select name="old_parent"
+                                    id="newTerritoryOldParent"
+                                    class="crm-control crm-select">
+
+                                <option value="">
+                                    Old Parent
+                                </option>
+
+                                {% for territory in territories %}
+
+                                    <option value="{{ territory.id }}">
+                                        {{ territory.territory_name }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="crm-group-field">
+
+                            <label class="crm-checkbox-label">
+
+                                <input type="checkbox"
+                                       name="is_group"
+                                       value="1"
+                                       id="newTerritoryIsGroup">
+
+                                <span>Is Group</span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Parent CRM Territory -->
+                    <div class="crm-field crm-parent-territory">
+
+                        <label>Parent CRM Territory</label>
+
+                        <select name="parent_crm_territory"
+                                id="newTerritoryParent"
+                                class="crm-control crm-select">
+
+                            <option value="">
+                                Parent CRM Territory
+                            </option>
+
+                            {% for territory in territories %}
+
+                                <option value="{{ territory.id }}">
+                                    {{ territory.territory_name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+                <div class="crm-model-footer">
+
+                    <button type="button"
+                            id="createTerritorySubmitBtn"
+                            class="crm-create-btn">
+
+                        Create
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

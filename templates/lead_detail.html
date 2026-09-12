@@ -1,0 +1,5359 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+>
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+.lead-detail-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff;
+    color: #1f2937;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.lead-header {
+    width: 100%;
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+
+    gap: 20px;
+}
+
+.lead-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.breadcrumb-leads,
+.breadcrumb-list-link {
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-list-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.breadcrumb-leads:hover,
+.breadcrumb-list-link:hover {
+    color: #2563eb;
+}
+
+.breadcrumb-separator {
+    color: #cbd5e1;
+}
+
+.breadcrumb-current {
+    color: #1e293b;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   HEADER RIGHT
+===================================================== */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* =====================================================
+   STATUS DROPDOWN
+===================================================== */
+
+.status-dropdown {
+    position: relative;
+}
+
+.status-dropdown-btn {
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #d8dee8;
+    border-radius: 8px;
+
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.status-dropdown-btn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.status-dropdown-menu {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 190px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .12);
+
+    z-index: 9999;
+
+    display: none;
+}
+
+.status-dropdown-menu.show {
+    display: block;
+}
+
+.status-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #475569;
+
+    text-align: left;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.status-option:hover {
+    background: #f1f5f9;
+}
+
+
+/* =====================================================
+   STATUS DOTS
+===================================================== */
+
+.status-dot,
+.deal-status-dot {
+    width: 8px;
+    height: 8px;
+
+    min-width: 8px;
+
+    border-radius: 50%;
+
+    display: inline-block;
+}
+
+.status-new {
+    background: #64748b;
+}
+
+.status-contacted {
+    background: #f59e0b;
+}
+
+.status-nurture {
+    background: #8b5cf6;
+}
+
+.status-qualified {
+    background: #22c55e;
+}
+
+.status-converted {
+    background: #3b82f6;
+}
+
+.status-unqualified {
+    background: #ef4444;
+}
+
+.status-junk {
+    background: #94a3b8;
+}
+
+
+/* =====================================================
+   CONVERT BUTTON
+===================================================== */
+
+.convert-deal-btn {
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px;
+
+    background: #2563c7;
+
+    border: 1px solid #2563c7;
+    border-radius: 7px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 4px rgba(37, 99, 199, .18);
+
+    transition: all .2s ease;
+}
+
+.convert-deal-btn:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.lead-tabs {
+    width: 100%;
+    height: 52px;
+
+    display: flex;
+    align-items: stretch;
+
+    gap: 25px;
+
+    padding: 0 28px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    overflow-x: auto;
+}
+
+.lead-tabs::-webkit-scrollbar {
+    height: 3px;
+}
+
+.tab-button {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 3px;
+
+    background: transparent;
+
+    border: none;
+    border-bottom: 2px solid transparent;
+
+    color: #64748b;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.tab-button:hover {
+    color: #2563eb;
+}
+
+.tab-button.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.lead-main {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) 400px;
+
+    min-height: calc(100vh - 110px);
+
+    background: #ffffff;
+}
+
+
+/* =====================================================
+   LEFT SIDE
+===================================================== */
+
+.lead-left {
+    min-width: 0;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border-right: 1px solid #e5e7eb;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.content-title {
+    margin: 0 0 25px;
+
+    color: #1e293b;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   ACTIVITY
+===================================================== */
+
+.activity-card {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 13px;
+
+    padding: 18px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    background: #ffffff;
+}
+
+.activity-avatar {
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+}
+
+.activity-body {
+    padding-top: 2px;
+}
+
+.activity-text {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.activity-text strong {
+    color: #1e293b;
+}
+
+.activity-date {
+    margin-top: 6px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+/* =====================================================
+   ACTIVITY HEADER + NEW DROPDOWN
+===================================================== */
+
+.activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+
+.activity-header .content-title {
+    margin: 0;
+}
+
+
+/* NEW DROPDOWN */
+
+.activity-new-dropdown {
+    position: relative;
+}
+
+
+.activity-new-btn {
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #d8dee8;
+    border-radius: 8px;
+
+    color: #334155;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+
+.activity-new-btn:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+
+/* DROPDOWN MENU */
+
+.activity-new-menu {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 190px;
+
+    display: none;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .14);
+
+    z-index: 9999;
+}
+
+
+.activity-new-menu.show {
+    display: block;
+}
+
+
+/* MENU OPTION */
+
+.activity-new-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background: transparent;
+
+    border: none;
+    border-radius: 7px;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+
+.activity-new-option:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+}
+
+
+.activity-new-option i {
+    width: 16px;
+
+    color: #64748b;
+}
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-state {
+    padding: 80px 20px;
+
+    text-align: center;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 10px;
+
+    color: #94a3b8;
+}
+
+.empty-state i {
+    display: block;
+
+    margin-bottom: 14px;
+
+    font-size: 36px;
+
+    color: #cbd5e1;
+}
+
+.empty-state h3 {
+    margin: 0 0 8px;
+
+    color: #475569;
+}
+
+.empty-state p {
+    margin: 0;
+}
+
+
+/* =====================================================
+   DATA TABLE
+===================================================== */
+
+.data-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.data-table td {
+    padding: 14px 18px;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-label {
+    width: 38%;
+
+    background: #f8fafc;
+
+    color: #64748b;
+}
+
+.data-value {
+    color: #1e293b;
+}
+
+
+/* =====================================================
+   RIGHT PANEL
+===================================================== */
+
+.lead-right {
+    min-width: 0;
+
+    background: #ffffff;
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile-box {
+    padding: 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.profile-avatar {
+    width: 48px;
+    height: 48px;
+
+    min-width: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #edf2f7;
+
+    color: #64748b;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.profile-info {
+    min-width: 0;
+}
+
+.profile-name {
+    color: #334155;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-email {
+    margin-top: 4px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   PROFILE ACTIONS
+===================================================== */
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+.profile-action-btn {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: all .2s ease;
+}
+
+.profile-action-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #2563eb;
+}
+
+.profile-delete-btn {
+    border-color: #fecaca;
+
+    background: #fff5f5;
+
+    color: #dc2626;
+}
+
+.profile-delete-btn:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+
+
+/* =====================================================
+   DETAIL SECTION
+===================================================== */
+
+.sidebar-section {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
+
+.section-header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    background: #ffffff;
+
+    border: none;
+
+    color: #334155;
+
+    cursor: pointer;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.section-header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.section-chevron {
+    font-size: 11px;
+
+    color: #64748b;
+
+    transition: transform .2s ease;
+}
+
+.section-header.collapsed .section-chevron {
+    transform: rotate(-90deg);
+}
+
+.section-edit-btn {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+.section-edit-btn:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+}
+
+
+/* =====================================================
+   SECTION CONTENT
+===================================================== */
+
+.section-content {
+    padding: 0 24px 22px;
+
+    display: block;
+}
+
+.section-content.hidden {
+    display: none;
+}
+
+
+/* =====================================================
+   DETAIL ROW
+===================================================== */
+
+.detail-row {
+    display: grid;
+
+    grid-template-columns: 105px minmax(0, 1fr);
+
+    gap: 14px;
+
+    padding: 9px 0;
+
+    font-size: 14px;
+}
+
+.detail-label {
+    color: #64748b;
+}
+
+.detail-value {
+    min-width: 0;
+
+    color: #334155;
+
+    font-weight: 500;
+
+    word-break: break-word;
+}
+
+.detail-value.empty {
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.detail-value a {
+    color: #2563eb;
+
+    text-decoration: none;
+
+    word-break: break-all;
+}
+
+.detail-value a:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   LEAD OWNER
+===================================================== */
+
+.owner-value {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.owner-avatar-small {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* =====================================================
+   DELETE MODAL
+===================================================== */
+
+.delete-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, .55);
+
+    z-index: 20000;
+}
+
+.delete-modal-overlay.show {
+    display: flex;
+}
+
+
+.delete-modal {
+    width: 100%;
+    max-width: 520px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .30);
+
+    overflow: hidden;
+}
+
+
+/* HEADER */
+
+.delete-modal-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 22px;
+}
+
+
+.delete-modal-title {
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+.delete-modal-close {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #64748b;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+
+.delete-modal-close:hover {
+    background: #f1f5f9;
+}
+
+
+/* BODY */
+
+.delete-modal-body {
+    padding: 0 22px 22px;
+}
+
+
+.delete-modal-message {
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* FOOTER */
+
+.delete-modal-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 22px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+
+/* CANCEL */
+
+.delete-cancel-btn {
+    height: 38px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d8dee8;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.delete-cancel-btn:hover {
+    background: #f8fafc;
+}
+
+
+/* DELETE */
+
+.delete-confirm-btn {
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #ef4444;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.delete-confirm-btn:hover {
+    background: #dc2626;
+}
+
+/* =====================================================
+   CONVERT MODAL
+===================================================== */
+
+.convert-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, .35);
+
+    z-index: 10000;
+}
+
+.convert-modal-overlay.show {
+    display: flex;
+}
+
+.convert-modal {
+    width: 100%;
+    max-width: 520px;
+
+    max-height: calc(100vh - 40px);
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow: 0 25px 60px rgba(15, 23, 42, .22);
+
+    overflow: hidden;
+}
+
+.convert-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.convert-modal-title {
+    margin: 0;
+
+    color: #1e293b;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.convert-modal-close {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #64748b;
+
+    cursor: pointer;
+}
+
+.convert-modal-close:hover {
+    background: #f1f5f9;
+}
+
+.convert-modal-body {
+    padding: 22px;
+
+    overflow-y: auto;
+}
+
+.convert-section {
+    padding-bottom: 20px;
+
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.convert-section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 15px;
+
+    color: #334155;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.convert-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.convert-toggle-label {
+    color: #334155;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.convert-section-description {
+    margin: 8px 0 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   SWITCH
+===================================================== */
+
+.switch {
+    position: relative;
+
+    width: 42px;
+    height: 23px;
+}
+
+.switch input {
+    opacity: 0;
+
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 30px;
+
+    background: #cbd5e1;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.switch-slider::before {
+    content: "";
+
+    position: absolute;
+
+    width: 17px;
+    height: 17px;
+
+    left: 3px;
+    top: 3px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+
+    transition: .2s;
+}
+
+.switch input:checked + .switch-slider {
+    background: #2563eb;
+}
+
+.switch input:checked + .switch-slider::before {
+    transform: translateX(19px);
+}
+
+
+/* =====================================================
+   DEAL STATUS
+===================================================== */
+
+.convert-field-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.deal-status-dropdown {
+    position: relative;
+}
+
+.deal-status-dropdown-btn {
+    width: 100%;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #d8dee8;
+    border-radius: 7px;
+
+    color: #334155;
+
+    cursor: pointer;
+}
+
+.deal-status-dropdown-menu {
+    position: absolute;
+
+    top: calc(100% + 6px);
+    left: 0;
+
+    width: 100%;
+
+    display: none;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    box-shadow: 0 12px 25px rgba(15, 23, 42, .14);
+
+    z-index: 10010;
+}
+
+.deal-status-dropdown-menu.show {
+    display: block;
+}
+
+.deal-status-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px;
+
+    background: transparent;
+
+    border: none;
+    border-radius: 6px;
+
+    color: #475569;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.deal-status-option:hover {
+    background: #f1f5f9;
+}
+
+.qualification {
+    background: #64748b;
+}
+
+.demo-making {
+    background: #f97316;
+}
+
+.proposal {
+    background: #8b5cf6;
+}
+
+.negotiation {
+    background: #f59e0b;
+}
+
+.ready-close {
+    background: #3b82f6;
+}
+
+.won {
+    background: #22c55e;
+}
+
+.lost {
+    background: #ef4444;
+}
+
+
+/* =====================================================
+   MODAL FOOTER
+===================================================== */
+
+.convert-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 22px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.modal-cancel-btn {
+    height: 38px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d8dee8;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #475569;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.modal-cancel-btn:hover {
+    background: #f8fafc;
+}
+
+.modal-convert-btn {
+    height: 38px;
+
+    padding: 0 20px;
+
+    border: 1px solid #2563eb;
+    border-radius: 7px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.modal-convert-btn:hover {
+    background: #1d4ed8;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .lead-main {
+        grid-template-columns: 1fr;
+    }
+
+    .lead-left {
+        border-right: none;
+    }
+
+    .lead-right {
+        border-top: 1px solid #e5e7eb;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .lead-header {
+        height: auto;
+
+        padding: 14px 18px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .header-right {
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+    .lead-tabs {
+        padding: 0 18px;
+        gap: 20px;
+    }
+
+    .lead-left {
+        padding: 20px 18px;
+    }
+
+    .profile-box,
+    .section-header,
+    .section-content {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+}
+
+
+
+/* =====================================================
+   EMAIL / COMMENT INLINE BOXES
+===================================================== */
+
+.tab-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.tab-title-row .content-title {
+    margin: 0;
+}
+
+.small-new-btn,
+.data-edit-btn,
+.data-save-btn {
+    border: 1px solid #d8dee8;
+    background: #ffffff;
+    color: #334155;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.small-new-btn {
+    height: 36px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.email-empty-state,
+.comment-empty-state {
+    border: none;
+    padding: 45px 20px 25px;
+    margin-bottom: 10px;
+}
+
+.email-empty-state i,
+.comment-empty-state i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.inline-compose-box {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.inline-compose-top {
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 1px solid #eef0f3;
+}
+
+.inline-compose-top strong {
+    font-size: 15px;
+    color: #1e293b;
+}
+
+.inline-close-btn {
+    border: none;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.inline-field {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-bottom: 1px solid #eef0f3;
+}
+
+.inline-field label {
+    width: 58px;
+    flex: 0 0 58px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.inline-field input,
+.inline-field textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #1e293b;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.inline-message-field {
+    align-items: flex-start;
+    padding-top: 11px;
+    padding-bottom: 10px;
+}
+
+.inline-message-field textarea {
+    resize: vertical;
+    min-height: 58px;
+    max-height: 110px;
+}
+
+.comment-message-field label {
+    display: none;
+}
+
+.comment-message-field textarea {
+    min-height: 62px;
+}
+
+.inline-compose-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 10px 16px;
+}
+
+.inline-discard-btn,
+.inline-primary-btn {
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.inline-discard-btn {
+    border: 1px solid #d8dee8;
+    background: #ffffff;
+    color: #475569;
+}
+
+.inline-primary-btn {
+    border: none;
+    background: #2563eb;
+    color: #ffffff;
+}
+
+/* =====================================================
+   DATA TAB - FORM LAYOUT
+===================================================== */
+
+.data-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.data-edit-btn {
+    width: 36px;
+    height: 36px;
+}
+
+.data-save-btn {
+    height: 36px;
+    padding: 0 13px;
+}
+
+.data-save-btn:not(:disabled) {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+.data-save-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.data-form-section {
+    margin-top: 14px;
+}
+
+.data-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 16px;
+}
+
+.data-section-heading i {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.data-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px 14px;
+}
+
+.data-input-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.data-input-group label span {
+    color: #ef4444;
+}
+
+.data-input-group input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.data-input-group input:not([readonly]) {
+    background: #ffffff;
+    border-color: #93c5fd;
+}
+
+.data-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 24px 0 18px;
+}
+
+@media (max-width: 900px) {
+    .data-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .data-form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* =====================================================
+   CALLS TAB
+===================================================== */
+
+.calls-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.calls-header .content-title {
+    margin: 0;
+}
+
+.log-call-btn {
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 14px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.log-call-btn:hover {
+    background: #1d4ed8;
+}
+
+/* =====================================================
+   CREATE CALL LOG MODAL
+===================================================== */
+
+.call-modal-dialog {
+    max-width: 520px;
+}
+
+.call-modal {
+    border: none;
+    border-radius: 14px;
+    overflow: visible;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, .18);
+}
+
+.call-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.call-modal-header h4 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.call-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.call-edit-btn,
+.call-close-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 7px;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.call-close-btn {
+    border: none;
+    font-size: 18px;
+}
+
+.call-edit-btn:hover,
+.call-close-btn:hover {
+    background: #f8fafc;
+    color: #2563eb;
+}
+
+.call-layout-panel {
+    display: none;
+    padding: 14px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+.call-layout-panel.show {
+    display: block;
+}
+
+.call-layout-title {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.call-layout-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+    cursor: pointer;
+}
+
+.call-modal-body {
+    padding: 20px;
+}
+
+.call-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.call-field {
+    min-width: 0;
+}
+
+.call-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.call-field .required {
+    color: #ef4444;
+}
+
+.call-input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #dbe1ea;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #334155;
+    outline: none;
+    font-size: 13px;
+}
+
+.call-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+}
+
+.call-custom-dropdown {
+    position: relative;
+}
+
+.call-dropdown-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.call-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    display: none;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .12);
+    z-index: 1060;
+}
+
+.call-custom-dropdown.show .call-dropdown-menu {
+    display: block;
+}
+
+.call-dropdown-option,
+.caller-option {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #475569;
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.call-dropdown-option:hover,
+.caller-option:hover {
+    background: #f1f5f9;
+}
+
+.caller-menu {
+    min-width: 250px;
+}
+
+.caller-search-wrap {
+    position: relative;
+    padding: 4px;
+}
+
+.caller-search {
+    width: 100%;
+    height: 36px;
+    padding: 0 32px 0 10px;
+    border: 1px solid #dbe1ea;
+    border-radius: 7px;
+    outline: none;
+    font-size: 13px;
+}
+
+.caller-search-clear {
+    position: absolute;
+    right: 10px;
+    top: 9px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+}
+
+.caller-options {
+    max-height: 170px;
+    overflow-y: auto;
+}
+
+.caller-avatar {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.caller-clear {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 4px;
+    padding: 9px;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.caller-no-results {
+    padding: 12px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.call-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 8px;
+}
+
+.call-create-btn {
+    min-width: 74px;
+    height: 38px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.call-create-btn:hover {
+    background: #1d4ed8;
+}
+
+@media (max-width: 600px) {
+    .call-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+
+<div class="page-wrapper">
+
+<div class="content">
+
+<div class="lead-detail-wrapper">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<div class="lead-header">
+
+    <div class="lead-breadcrumb">
+
+        <a
+            href="{% url 'leads' %}"
+            class="breadcrumb-leads"
+        >
+            Leads
+        </a>
+
+        <span class="breadcrumb-separator">/</span>
+
+        <a
+            href="{% url 'leads' %}"
+            class="breadcrumb-list-link"
+        >
+            <i class="fa-solid fa-list"></i>
+            List
+        </a>
+
+        <span class="breadcrumb-separator">/</span>
+
+        <span class="breadcrumb-current">
+
+            {{ lead.first_name }}
+
+            {% if lead.last_name %}
+                {{ lead.last_name }}
+            {% endif %}
+
+        </span>
+
+    </div>
+
+
+    <div class="header-right">
+
+
+        <!-- STATUS -->
+
+        <div class="status-dropdown">
+
+            <button
+                type="button"
+                class="status-dropdown-btn"
+                id="statusDropdownBtn"
+            >
+
+                <span
+                    class="status-dot status-{{ lead.lead_status }}"
+                ></span>
+
+                <span>
+                    {{ lead.get_lead_status_display }}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </button>
+
+
+            <div
+                class="status-dropdown-menu"
+                id="statusDropdownMenu"
+            >
+
+                {% for value, label in lead_status_choices %}
+
+                <form
+                    method="POST"
+                    action="{% url 'update_lead_status' lead.id %}"
+                    style="margin:0;"
+                >
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="lead_status"
+                        value="{{ value }}"
+                    >
+
+                    <button
+                        type="submit"
+                        class="status-option"
+                    >
+
+                        <span
+                            class="status-dot status-{{ value }}"
+                        ></span>
+
+                        {{ label }}
+
+                    </button>
+
+                </form>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- CONVERT -->
+
+        <button
+            type="button"
+            class="convert-deal-btn"
+            id="openConvertDealModal"
+        >
+            Convert to Deal
+        </button>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TABS
+===================================================== -->
+
+<div class="lead-tabs">
+
+    <button
+        type="button"
+        class="tab-button active"
+        data-tab="activity"
+    >
+        <i class="fa-solid fa-bolt"></i>
+        Activity
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="emails"
+    >
+        <i class="fa-regular fa-envelope"></i>
+        Emails
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="comments"
+    >
+        <i class="fa-regular fa-comment"></i>
+        Comments
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="data"
+    >
+        <i class="fa-solid fa-table-cells"></i>
+        Data
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="calls"
+    >
+        <i class="fa-solid fa-phone"></i>
+        Calls
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="tasks"
+    >
+        <i class="fa-solid fa-check"></i>
+        Tasks
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="notes"
+    >
+        <i class="fa-regular fa-note-sticky"></i>
+        Notes
+    </button>
+
+
+    <button
+        type="button"
+        class="tab-button"
+        data-tab="attachments"
+    >
+        <i class="fa-solid fa-paperclip"></i>
+        Attachments
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="lead-main">
+
+
+<!-- =====================================================
+     LEFT PANEL
+===================================================== -->
+
+<div class="lead-left">
+
+
+<!-- ACTIVITY -->
+
+<div id="activity" class="tab-content active">
+
+    <div class="activity-header">
+
+        <h2 class="content-title">Activity</h2>
+
+        <div class="activity-new-dropdown">
+
+            <button type="button" class="activity-new-btn" id="activityNewBtn">
+                <i class="fa-solid fa-plus"></i>
+                <span>New</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <div class="activity-new-menu" id="activityNewMenu">
+
+                <button type="button" class="activity-new-option" data-action="email">
+                    <i class="fa-regular fa-envelope"></i>
+                    Email
+                </button>
+
+                <button type="button" class="activity-new-option" data-action="comment">
+                    <i class="fa-regular fa-comment"></i>
+                    Comment
+                </button>
+
+                <button type="button" class="activity-new-option" data-action="call">
+                    <i class="fa-solid fa-phone"></i>
+                    Log a Call
+                </button>
+
+                <button type="button" class="activity-new-option" data-action="note">
+                    <i class="fa-regular fa-note-sticky"></i>
+                    Note
+                </button>
+
+                <button type="button" class="activity-new-option" data-action="task">
+                    <i class="fa-solid fa-check"></i>
+                    Task
+                </button>
+
+                <button type="button" class="activity-new-option" data-action="attachment">
+                    <i class="fa-solid fa-paperclip"></i>
+                    Upload Attachment
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- LEAD CREATED -->
+    <div class="activity-card">
+        <div class="activity-avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>
+                    {{ lead.first_name }}
+                    {% if lead.last_name %} {{ lead.last_name }}{% endif %}
+                </strong>
+                created this lead
+            </div>
+            <div class="activity-date">
+                {{ lead.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- EMAIL ACTIVITY -->
+    {% for email in emails %}
+    <div class="activity-card" style="margin-top:12px;">
+        <div class="activity-avatar">
+            <i class="fa-regular fa-envelope"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>Email</strong>
+                {% if email.subject %}- {{ email.subject }}{% endif %}
+            </div>
+            <div class="activity-text" style="margin-top:5px;">
+                {{ email.content|truncatechars:120 }}
+            </div>
+            <div class="activity-date">
+                {{ email.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- COMMENT ACTIVITY -->
+    {% for comment in comments %}
+    <div class="activity-card" style="margin-top:12px;">
+        <div class="activity-avatar">
+            <i class="fa-regular fa-comment"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>Comment</strong>
+            </div>
+            <div class="activity-text" style="margin-top:5px;">
+                {{ comment.comment|truncatechars:150 }}
+            </div>
+            <div class="activity-date">
+                {{ comment.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- CALL ACTIVITY -->
+    {% for call in calls %}
+    <div class="activity-card" style="margin-top:12px;">
+        <div class="activity-avatar">
+            <i class="fa-solid fa-phone"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>Call</strong>
+                - {{ call.call_type|default:"Call" }}
+            </div>
+            <div class="activity-text" style="margin-top:5px;">
+                {{ call.call_status|default:"" }}
+                {% if call.duration %} · {{ call.duration }}{% endif %}
+            </div>
+            <div class="activity-date">
+                {{ call.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- TASK ACTIVITY -->
+    {% for task in tasks %}
+    <div class="activity-card" style="margin-top:12px;">
+        <div class="activity-avatar">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>Task</strong>
+                - {{ task.title }}
+            </div>
+            <div class="activity-date">
+                {{ task.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- NOTE ACTIVITY -->
+    {% for note in notes %}
+    <div class="activity-card" style="margin-top:12px;">
+        <div class="activity-avatar">
+            <i class="fa-regular fa-note-sticky"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>Note</strong>
+                - {{ note.title }}
+            </div>
+            <div class="activity-text" style="margin-top:5px;">
+                {{ note.content|truncatechars:120 }}
+            </div>
+            <div class="activity-date">
+                {{ note.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- ATTACHMENT ACTIVITY -->
+    {% for attachment in attachments %}
+    <div class="activity-card" style="margin-top:12px;">
+        <div class="activity-avatar">
+            <i class="fa-solid fa-paperclip"></i>
+        </div>
+        <div class="activity-body">
+            <div class="activity-text">
+                <strong>Attachment</strong>
+            </div>
+            <div class="activity-text" style="margin-top:5px;">
+                {{ attachment.file_name|default:"Attachment" }}
+            </div>
+            <div class="activity-date">
+                {{ attachment.created_at|date:"M d, Y h:i A" }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+<!-- EMAILS -->
+<div id="emails" class="tab-content">
+
+    <div class="tab-title-row">
+        <h2 class="content-title">Emails</h2>
+        <button type="button" class="small-new-btn" id="newEmailBtn">
+            <i class="fa-solid fa-plus"></i>
+            New Email
+        </button>
+    </div>
+
+    {% if emails %}
+        {% for email in emails %}
+        <div class="activity-card" style="margin-bottom:12px;">
+            <div class="activity-avatar">
+                <i class="fa-regular fa-envelope"></i>
+            </div>
+            <div class="activity-body">
+                <div class="activity-text"><strong>{{ email.subject|default:"No Subject" }}</strong></div>
+                <div class="activity-text" style="margin-top:5px;">To: {{ email.to_email }}</div>
+                <div class="activity-text" style="margin-top:5px;">{{ email.content }}</div>
+                <div class="activity-date">{{ email.created_at|date:"M d, Y h:i A" }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state email-empty-state">
+            <i class="fa-regular fa-envelope"></i>
+            <h3>No Emails Found</h3>
+            <p>No emails found for this lead. New messages will appear here soon.</p>
+        </div>
+    {% endif %}
+
+    <div class="inline-compose-box" id="emailComposeBox">
+        <div class="inline-compose-top">
+            <strong>New Email</strong>
+            <button type="button" class="inline-close-btn" id="closeEmailCompose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form method="POST" action="{% url 'add_lead_email' lead.id %}" id="leadEmailForm">
+            {% csrf_token %}
+            <div class="inline-field">
+                <label>To</label>
+                <input id="emailTo" name="to_email" type="email" value="{{ lead.email|default:'' }}" placeholder="Enter email address" required>
+            </div>
+            <div class="inline-field">
+                <label>Subject</label>
+                <input id="emailSubject" name="subject" type="text" placeholder="Enter subject" required>
+            </div>
+            <div class="inline-field inline-message-field">
+                <label>Message</label>
+                <textarea id="emailMessage" name="content" rows="3" placeholder="Write your message..." required></textarea>
+            </div>
+            <div class="inline-compose-actions">
+                <button type="button" class="inline-discard-btn" id="discardEmailBtn">Discard</button>
+                <button type="submit" class="inline-primary-btn" id="sendEmailBtn">
+                    <i class="fa-regular fa-paper-plane"></i>
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<!-- COMMENTS -->
+<div id="comments" class="tab-content">
+
+    <div class="tab-title-row">
+        <h2 class="content-title">Comments</h2>
+        <button type="button" class="small-new-btn" id="newCommentBtn">
+            <i class="fa-solid fa-plus"></i>
+            New Comment
+        </button>
+    </div>
+
+    {% if comments %}
+        {% for comment in comments %}
+        <div class="activity-card" style="margin-bottom:12px;">
+            <div class="activity-avatar">
+                <i class="fa-regular fa-comment"></i>
+            </div>
+            <div class="activity-body">
+                <div class="activity-text">{{ comment.comment }}</div>
+                <div class="activity-date">{{ comment.created_at|date:"M d, Y h:i A" }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state comment-empty-state">
+            <i class="fa-regular fa-comment"></i>
+            <h3>No Comments Found</h3>
+            <p>Be the first to add a comment.</p>
+        </div>
+    {% endif %}
+
+    <div class="inline-compose-box comment-compose-box" id="commentComposeBox">
+        <div class="inline-compose-top">
+            <strong>New Comment</strong>
+            <button type="button" class="inline-close-btn" id="closeCommentCompose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form method="POST" action="{% url 'add_lead_comment' lead.id %}" id="leadCommentForm">
+            {% csrf_token %}
+            <div class="inline-field inline-message-field comment-message-field">
+                <textarea id="commentMessage" name="comment" rows="3" placeholder="Write a comment..." required></textarea>
+            </div>
+            <div class="inline-compose-actions">
+                <button type="button" class="inline-discard-btn" id="discardCommentBtn">Discard</button>
+                <button type="submit" class="inline-primary-btn" id="saveCommentBtn">
+                    <i class="fa-regular fa-comment"></i>
+                    Comment
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<!-- DATA -->
+<div id="data" class="tab-content">
+
+    <div class="tab-title-row">
+        <h2 class="content-title">Data</h2>
+        <div class="data-actions">
+            <button type="button" class="data-edit-btn" id="editDataBtn" title="Edit data">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+            <button type="button" class="data-save-btn" id="saveDataBtn" disabled>Save</button>
+        </div>
+    </div>
+
+    <div class="data-form-section">
+        <div class="data-section-heading">Details <i class="fa-solid fa-chevron-down"></i></div>
+        <div class="data-form-grid">
+            <div class="data-input-group"><label>Organization</label><input type="text" value="{{ lead.organization|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Website</label><input type="text" value="{{ lead.website|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Territory</label><input type="text" value="{{ lead.territory|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Industry</label><input type="text" value="{{ lead.industry|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Job Title</label><input type="text" value="{{ lead.job_title|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Source</label><input type="text" value="{{ lead.source|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Lead Owner</label><input type="text" value="{{ lead.lead_owner|default:'Not Assigned' }}" readonly></div>
+            <div class="data-input-group"><label>Lead Status</label><input type="text" value="{{ lead.get_lead_status_display }}" readonly></div>
+        </div>
+    </div>
+
+    <div class="data-divider"></div>
+
+    <div class="data-form-section">
+        <div class="data-section-heading">Person <i class="fa-solid fa-chevron-down"></i></div>
+        <div class="data-form-grid">
+            <div class="data-input-group"><label>Salutation</label><input type="text" value="{{ lead.salutation|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>First Name <span>*</span></label><input type="text" value="{{ lead.first_name|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Last Name</label><input type="text" value="{{ lead.last_name|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Email</label><input type="email" value="{{ lead.email|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Mobile No.</label><input type="text" value="{{ lead.mobile_no|default:'' }}" readonly></div>
+            <div class="data-input-group"><label>Gender</label><input type="text" value="{{ lead.get_gender_display|default:lead.gender }}" readonly></div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- CALLS -->
+<div id="calls" class="tab-content">
+
+    <div class="calls-header">
+        <h2 class="content-title">Calls</h2>
+        <button type="button" class="log-call-btn" id="openCreateCallModal">
+            <i class="fa-solid fa-plus"></i>
+            Log a Call
+        </button>
+    </div>
+
+    {% if calls %}
+        {% for call in calls %}
+        <div class="activity-card" style="margin-bottom:12px;">
+            <div class="activity-avatar"><i class="fa-solid fa-phone"></i></div>
+            <div class="activity-body">
+                <div class="activity-text"><strong>{{ call.call_type|default:"Call" }}</strong></div>
+                <div class="activity-text" style="margin-top:5px;">
+                    From: {{ call.from_number|default:"-" }}<br>
+                    To: {{ call.to_number|default:"-" }}<br>
+                    Status: {{ call.call_status|default:"-" }}
+                    {% if call.duration %}<br>Duration: {{ call.duration }}{% endif %}
+                </div>
+                <div class="activity-date">{{ call.created_at|date:"M d, Y h:i A" }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fa-solid fa-phone"></i>
+            <h3>No Calls Found</h3>
+            <p>Call logs will appear here.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+
+<!-- TASKS -->
+<div id="tasks" class="tab-content">
+
+    <div class="tab-title-row">
+        <h2 class="content-title">Tasks</h2>
+    </div>
+
+    {% if tasks %}
+        {% for task in tasks %}
+        <div class="activity-card" style="margin-bottom:12px;">
+            <div class="activity-avatar"><i class="fa-solid fa-check"></i></div>
+            <div class="activity-body">
+                <div class="activity-text"><strong>{{ task.title }}</strong></div>
+                {% if task.description %}
+                <div class="activity-text" style="margin-top:5px;">{{ task.description }}</div>
+                {% endif %}
+                <div class="activity-text" style="margin-top:5px;">Status: {{ task.task_status|default:"-" }}</div>
+                <div class="activity-date">{{ task.created_at|date:"M d, Y h:i A" }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fa-solid fa-check"></i>
+            <h3>No Tasks Found</h3>
+            <p>Tasks for this lead will appear here.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+
+<!-- NOTES -->
+<div id="notes" class="tab-content">
+
+    <div class="tab-title-row">
+        <h2 class="content-title">Notes</h2>
+    </div>
+
+    {% if notes %}
+        {% for note in notes %}
+        <div class="activity-card" style="margin-bottom:12px;">
+            <div class="activity-avatar"><i class="fa-regular fa-note-sticky"></i></div>
+            <div class="activity-body">
+                <div class="activity-text"><strong>{{ note.title }}</strong></div>
+                <div class="activity-text" style="margin-top:5px;">{{ note.content }}</div>
+                <div class="activity-date">{{ note.created_at|date:"M d, Y h:i A" }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fa-regular fa-note-sticky"></i>
+            <h3>No Notes Found</h3>
+            <p>Notes for this lead will appear here.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+
+<!-- ATTACHMENTS -->
+<div id="attachments" class="tab-content">
+
+    <div class="tab-title-row">
+        <h2 class="content-title">Attachments</h2>
+    </div>
+
+    {% if attachments %}
+        {% for attachment in attachments %}
+        <div class="activity-card" style="margin-bottom:12px;">
+            <div class="activity-avatar"><i class="fa-solid fa-paperclip"></i></div>
+            <div class="activity-body" style="width:100%;">
+                <div class="activity-text">
+                    <strong>{{ attachment.file_name|default:"Attachment" }}</strong>
+                </div>
+                <div class="activity-date">
+                    {{ attachment.created_at|date:"M d, Y h:i A" }}
+                </div>
+                {% if attachment.file %}
+                <a href="{{ attachment.file.url }}" target="_blank" style="display:inline-block;margin-top:8px;color:#2563eb;text-decoration:none;">
+                    <i class="fa-solid fa-eye"></i> View Attachment
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <i class="fa-solid fa-paperclip"></i>
+            <h3>No Attachments Found</h3>
+            <p>Attachments for this lead will appear here.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     RIGHT PANEL
+===================================================== -->
+
+<div class="lead-right">
+
+
+<!-- =====================================================
+     PROFILE
+===================================================== -->
+
+<div class="profile-box">
+
+
+    <div class="profile-top">
+
+        <div class="profile-avatar">
+
+            {{ lead.first_name|slice:":1"|upper }}
+
+        </div>
+
+
+        <div class="profile-info">
+
+            <div class="profile-name">
+
+                {% if lead.salutation %}
+                    {{ lead.salutation }}
+                {% endif %}
+
+                {{ lead.first_name }}
+
+                {% if lead.last_name %}
+                    {{ lead.last_name }}
+                {% endif %}
+
+            </div>
+
+
+            <div class="profile-email">
+
+                {{ lead.email|default:"No email address" }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="profile-actions">
+
+
+        {% if lead.email %}
+
+        <a
+            href="mailto:{{ lead.email }}"
+            class="profile-action-btn"
+            title="Send Email"
+        >
+            <i class="fa-regular fa-envelope"></i>
+        </a>
+
+        {% else %}
+
+        <button
+            type="button"
+            class="profile-action-btn"
+            title="No Email"
+        >
+            <i class="fa-regular fa-envelope"></i>
+        </button>
+
+        {% endif %}
+
+
+        <!-- LINK -->
+
+        {% if lead.website %}
+
+        <a
+            href="{{ lead.website }}"
+            target="_blank"
+            class="profile-action-btn"
+            title="Open Website"
+        >
+            <i class="fa-solid fa-link"></i>
+        </a>
+
+        {% else %}
+
+        <button
+            type="button"
+            class="profile-action-btn"
+            title="Website"
+        >
+            <i class="fa-solid fa-link"></i>
+        </button>
+
+        {% endif %}
+
+
+        <!-- ATTACHMENT -->
+
+        <button
+            type="button"
+            class="profile-action-btn"
+            title="Attachment"
+            onclick="document.querySelector('[data-tab=attachments]').click()"
+        >
+            <i class="fa-solid fa-paperclip"></i>
+        </button>
+
+
+        <!-- DELETE -->
+
+        <button
+            type="button"
+            class="profile-action-btn profile-delete-btn"
+            id="deleteLeadBtn"
+            title="Delete Lead"
+        >
+            <i class="fa-solid fa-trash"></i>
+        </button>
+
+
+    </div>
+
+
+    <!-- DELETE FORM -->
+
+    <form
+        method="POST"
+        action="{% url 'delete_lead' lead.id %}"
+        id="deleteLeadForm"
+        style="display:none;"
+    >
+
+        {% csrf_token %}
+
+    </form>
+    <!-- =====================================================
+     DELETE CONFIRMATION MODAL
+===================================================== -->
+
+<div
+    class="delete-modal-overlay"
+    id="deleteLeadModal"
+>
+
+    <div class="delete-modal">
+
+
+        <!-- HEADER -->
+
+        <div class="delete-modal-header">
+
+            <h2 class="delete-modal-title">
+                Delete
+            </h2>
+
+
+            <button
+                type="button"
+                class="delete-modal-close"
+                id="closeDeleteLeadModal"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="delete-modal-body">
+
+            <p class="delete-modal-message">
+
+                Are you sure you want to delete
+
+                <strong>
+                    {{ lead.first_name }}
+
+                    {% if lead.last_name %}
+                        {{ lead.last_name }}
+                    {% endif %}
+                </strong>
+
+                ?
+
+            </p>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="delete-modal-footer">
+
+
+            <button
+                type="button"
+                class="delete-cancel-btn"
+                id="cancelDeleteLead"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="delete-confirm-btn"
+                id="confirmDeleteLead"
+            >
+
+                <i class="fa-solid fa-trash"></i>
+
+                Delete
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     DETAILS SECTION
+===================================================== -->
+
+<div class="sidebar-section">
+
+
+    <button
+        type="button"
+        class="section-header"
+        data-section="detailsContent"
+    >
+
+        <span class="section-header-left">
+
+            <i
+                class="fa-solid fa-chevron-down section-chevron"
+            ></i>
+
+            Details
+
+        </span>
+
+
+        <span class="section-edit-btn">
+
+            <i class="fa-regular fa-pen-to-square"></i>
+
+        </span>
+
+    </button>
+
+
+    <div
+        class="section-content"
+        id="detailsContent"
+    >
+
+
+        <!-- ORGANIZATION -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Organization
+            </div>
+
+            <div
+                class="detail-value {% if not lead.organization %}empty{% endif %}"
+            >
+
+                {{ lead.organization|default:"Add Organization..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- WEBSITE -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Website
+            </div>
+
+
+            <div
+                class="detail-value {% if not lead.website %}empty{% endif %}"
+            >
+
+                {% if lead.website %}
+
+                    <a
+                        href="{{ lead.website }}"
+                        target="_blank"
+                    >
+                        {{ lead.website }}
+                    </a>
+
+                {% else %}
+
+                    Add Website...
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- TERRITORY -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Territory
+            </div>
+
+            <div
+                class="detail-value {% if not lead.territory %}empty{% endif %}"
+            >
+
+                {{ lead.territory|default:"Add Territory..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- INDUSTRY -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Industry
+            </div>
+
+            <div
+                class="detail-value {% if not lead.industry %}empty{% endif %}"
+            >
+
+                {{ lead.industry|default:"Add Industry..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- JOB TITLE -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Job Title
+            </div>
+
+            <div
+                class="detail-value {% if not lead.job_title %}empty{% endif %}"
+            >
+
+                {{ lead.job_title|default:"Add Job Title..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- SOURCE -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Source
+            </div>
+
+            <div
+                class="detail-value {% if not lead.source %}empty{% endif %}"
+            >
+
+                {{ lead.source|default:"Add Source..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- LEAD OWNER -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Lead Owner
+            </div>
+
+            <div class="detail-value">
+
+                <div class="owner-value">
+
+                    <div class="owner-avatar-small">
+
+                        {{ lead.lead_owner|slice:":1"|upper|default:"N" }}
+
+                    </div>
+
+                    <span>
+
+                        {{ lead.lead_owner|default:"Not Assigned" }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LEAD STATUS -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Lead Status
+            </div>
+
+            <div class="detail-value">
+
+                {{ lead.get_lead_status_display }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PERSON SECTION
+===================================================== -->
+
+<div class="sidebar-section">
+
+
+    <button
+        type="button"
+        class="section-header"
+        data-section="personContent"
+    >
+
+        <span class="section-header-left">
+
+            <i
+                class="fa-solid fa-chevron-down section-chevron"
+            ></i>
+
+            Person
+
+        </span>
+
+
+        <span class="section-edit-btn">
+
+            <i class="fa-regular fa-pen-to-square"></i>
+
+        </span>
+
+    </button>
+
+
+    <div
+        class="section-content"
+        id="personContent"
+    >
+
+
+        <!-- SALUTATION -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Salutation
+            </div>
+
+            <div
+                class="detail-value {% if not lead.salutation %}empty{% endif %}"
+            >
+
+                {{ lead.salutation|default:"Add Salutation..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- FIRST NAME -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                First Name
+            </div>
+
+            <div class="detail-value">
+
+                {{ lead.first_name|default:"-" }}
+
+            </div>
+
+        </div>
+
+
+        <!-- LAST NAME -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Last Name
+            </div>
+
+            <div
+                class="detail-value {% if not lead.last_name %}empty{% endif %}"
+            >
+
+                {{ lead.last_name|default:"Add Last Name..." }}
+
+            </div>
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Email
+            </div>
+
+            <div
+                class="detail-value {% if not lead.email %}empty{% endif %}"
+            >
+
+                {% if lead.email %}
+
+                    <a href="mailto:{{ lead.email }}">
+
+                        {{ lead.email }}
+
+                    </a>
+
+                {% else %}
+
+                    Add Email...
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- MOBILE -->
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Mobile Number
+            </div>
+
+            <div
+                class="detail-value {% if not lead.mobile_no %}empty{% endif %}"
+            >
+
+                {{ lead.mobile_no|default:"Add Mobile Number..." }}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- =============================================================
+     CREATE CALL LOG MODAL
+============================================================== -->
+
+<div
+    class="modal fade"
+    id="createCallModal"
+    tabindex="-1"
+    aria-labelledby="createCallModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered call-modal-dialog">
+
+        <div class="modal-content call-modal">
+
+            <div class="call-modal-header">
+
+                <h4 id="createCallModalLabel">Create Call Log</h4>
+
+                <div class="call-header-actions">
+
+                    <button
+                        type="button"
+                        class="call-edit-btn"
+                        id="callLayoutToggle"
+                        title="Edit Fields Layout">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="call-close-btn"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="call-layout-panel" id="callLayoutPanel">
+
+                <div class="call-layout-title">Fields Layout</div>
+
+                <label class="call-layout-option">
+                    <input type="checkbox" id="showCallerField">
+                    <span>Caller</span>
+                </label>
+
+            </div>
+
+            <div class="call-modal-body">
+
+                <form
+                    method="POST"
+                    action="{% url 'add_lead_call' lead.id %}"
+                    id="createCallForm">
+
+                    {% csrf_token %}
+
+                    <div class="call-row">
+
+                        <div class="call-field">
+
+                            <label>
+                                Type <span class="required">*</span>
+                            </label>
+
+                            <div class="call-custom-dropdown" id="modalTypeDropdown">
+
+                                <button type="button" class="call-input call-dropdown-button">
+                                    <span id="modalTypeText">Type</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                <div class="call-dropdown-menu">
+
+                                    <button type="button" class="call-dropdown-option" data-value="Incoming">Incoming</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Outgoing">Outgoing</button>
+
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="call_type" id="callTypeValue" required>
+
+                        </div>
+
+                        <div class="call-field">
+
+                            <label>
+                                To Number <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                name="to_number"
+                                class="call-input"
+                                placeholder="To Number"
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="call-row">
+
+                        <div class="call-field">
+
+                            <label>
+                                From Number <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                name="from_number"
+                                class="call-input"
+                                placeholder="From Number"
+                                required>
+
+                        </div>
+
+                        <div class="call-field">
+
+                            <label>
+                                Status <span class="required">*</span>
+                            </label>
+
+                            <div class="call-custom-dropdown" id="modalStatusDropdown">
+
+                                <button type="button" class="call-input call-dropdown-button">
+                                    <span id="modalStatusText">Status</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                <div class="call-dropdown-menu">
+
+                                    <button type="button" class="call-dropdown-option" data-value="Initiated">Initiated</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Ringing">Ringing</button>
+                                    <button type="button" class="call-dropdown-option" data-value="In Progress">In Progress</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Completed">Completed</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Failed">Failed</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Busy">Busy</button>
+                                    <button type="button" class="call-dropdown-option" data-value="No Answer">No Answer</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Queued">Queued</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Canceled">Canceled</button>
+
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="call_status" id="callStatusValue" required>
+
+                        </div>
+
+                    </div>
+
+                    <div class="call-row">
+
+                        <div class="call-field">
+
+                            <label>Duration</label>
+
+                            <input
+                                type="text"
+                                name="duration"
+                                class="call-input"
+                                placeholder="Duration">
+
+                        </div>
+
+                        <div class="call-field" id="callerField" style="display:none;">
+
+                            <label id="callerFieldLabel">Caller</label>
+
+                            <div class="call-custom-dropdown caller-dropdown" id="callerDropdown">
+
+                                <button type="button" class="call-input call-dropdown-button">
+                                    <span id="callerSelectedText">Caller</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                <div class="call-dropdown-menu caller-menu">
+
+                                    <div class="caller-search-wrap">
+
+                                        <input
+                                            type="text"
+                                            id="callerSearch"
+                                            class="caller-search"
+                                            placeholder="Search"
+                                            autocomplete="off">
+
+                                        <button type="button" class="caller-search-clear" id="callerSearchClear">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+
+                                    </div>
+
+                                    <div class="caller-options" id="callerOptions">
+
+                                        {% for user in users %}
+
+                                            <button
+                                                type="button"
+                                                class="caller-option"
+                                                data-value="{{ user.id }}"
+                                                data-name="{{ user.full_name }}">
+
+                                                <span class="caller-avatar">
+                                                    {{ user.full_name|slice:":1"|upper }}
+                                                </span>
+
+                                                <span>{{ user.full_name }}</span>
+
+                                            </button>
+
+                                        {% empty %}
+
+                                            <div class="caller-no-results">No users found</div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                    <button type="button" class="caller-clear" id="callerClear">
+                                        <i class="fa-solid fa-xmark"></i>
+                                        Clear
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="caller" id="callerValue">
+                            <input type="hidden" name="call_received_by" id="callReceivedByValue">
+
+                        </div>
+
+                    </div>
+
+                    <div class="call-modal-footer">
+
+                        <button type="submit" class="call-create-btn">
+                            Create
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONVERT MODAL
+===================================================== -->
+
+<div
+    class="convert-modal-overlay"
+    id="convertDealModal"
+>
+
+    <div class="convert-modal">
+
+
+        <!-- HEADER -->
+
+        <div class="convert-modal-header">
+
+            <h2 class="convert-modal-title">
+                Convert to Deal
+            </h2>
+
+
+            <a
+    href="{% url 'convert_lead_to_deal' lead.id %}"
+    class="modal-convert-btn"
+    id="confirmConvertDeal"
+>
+    Convert
+</a>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="convert-modal-body">
+
+
+            <!-- ORGANIZATION -->
+
+            <div class="convert-section">
+
+                <div class="convert-section-title">
+
+                    <i class="fa-regular fa-building"></i>
+
+                    Organization
+
+                </div>
+
+
+                <div class="convert-toggle-row">
+
+                    <div class="convert-toggle-label">
+
+                        Choose Existing
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="chooseOrganization"
+                        >
+
+                        <span class="switch-slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <p class="convert-section-description">
+
+                    New organization will be created based on
+                    the lead details.
+
+                </p>
+
+            </div>
+
+
+            <!-- CONTACT -->
+
+            <div class="convert-section">
+
+                <div class="convert-section-title">
+
+                    <i class="fa-regular fa-user"></i>
+
+                    Contact
+
+                </div>
+
+
+                <div class="convert-toggle-row">
+
+                    <div class="convert-toggle-label">
+
+                        Choose Existing
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="chooseContact"
+                        >
+
+                        <span class="switch-slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <p class="convert-section-description">
+
+                    New contact will be created based on
+                    the person's details.
+
+                </p>
+
+            </div>
+
+
+            <!-- DEAL STATUS -->
+
+            <div class="convert-field">
+
+
+                <label class="convert-field-label">
+
+                    Status
+
+                    <span class="required">*</span>
+
+                </label>
+
+
+                <div
+                    class="deal-status-dropdown"
+                    id="dealStatusDropdown"
+                >
+
+
+                    <button
+                        type="button"
+                        class="deal-status-dropdown-btn"
+                        id="dealStatusBtn"
+                    >
+
+                        <span id="selectedDealStatus">
+                            Select Status
+                        </span>
+
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </button>
+
+
+                    <div
+                        class="deal-status-dropdown-menu"
+                        id="dealStatusMenu"
+                    >
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="qualification"
+                            data-label="Qualification"
+                        >
+
+                            <span
+                                class="deal-status-dot qualification"
+                            ></span>
+
+                            Qualification
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="demo_making"
+                            data-label="Demo/Making"
+                        >
+
+                            <span
+                                class="deal-status-dot demo-making"
+                            ></span>
+
+                            Demo/Making
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="proposal_quotation"
+                            data-label="Proposal/Quotation"
+                        >
+
+                            <span
+                                class="deal-status-dot proposal"
+                            ></span>
+
+                            Proposal/Quotation
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="negotiation"
+                            data-label="Negotiation"
+                        >
+
+                            <span
+                                class="deal-status-dot negotiation"
+                            ></span>
+
+                            Negotiation
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="ready_to_close"
+                            data-label="Ready to Close"
+                        >
+
+                            <span
+                                class="deal-status-dot ready-close"
+                            ></span>
+
+                            Ready to Close
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="won"
+                            data-label="Won"
+                        >
+
+                            <span
+                                class="deal-status-dot won"
+                            ></span>
+
+                            Won
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="deal-status-option"
+                            data-value="lost"
+                            data-label="Lost"
+                        >
+
+                            <span
+                                class="deal-status-dot lost"
+                            ></span>
+
+                            Lost
+
+                        </button>
+
+
+                    </div>
+
+
+                    <input
+                        type="hidden"
+                        id="dealStatus"
+                        value=""
+                    >
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="convert-modal-footer">
+
+
+            <button
+                type="button"
+                class="modal-cancel-btn"
+                id="cancelConvertDeal"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="modal-convert-btn"
+                id="confirmConvertDeal"
+            >
+                Convert
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+/* =============================================
+   CREATE CALL MODAL
+============================================= */
+
+const openCreateCallModal =
+    document.getElementById(
+        'openCreateCallModal'
+    );
+
+const createCallModal =
+    document.getElementById(
+        'createCallModal'
+    );
+
+function showCreateCallModal() {
+
+    if (!createCallModal) {
+        return;
+    }
+
+    if (
+        window.bootstrap &&
+        bootstrap.Modal
+    ) {
+
+        const modalInstance =
+            bootstrap.Modal.getOrCreateInstance(
+                createCallModal
+            );
+
+        modalInstance.show();
+
+    }
+
+}
+
+if (openCreateCallModal) {
+
+    openCreateCallModal.addEventListener(
+        'click',
+        function() {
+            showCreateCallModal();
+        }
+    );
+
+}
+
+
+/* CALL TYPE / STATUS / CALLER DROPDOWNS */
+
+document.querySelectorAll(
+    '.call-custom-dropdown'
+).forEach(
+    function(dropdown) {
+
+        const button =
+            dropdown.querySelector(
+                '.call-dropdown-button'
+            );
+
+        if (button) {
+
+            button.addEventListener(
+                'click',
+                function(event) {
+
+                    event.stopPropagation();
+
+                    document.querySelectorAll(
+                        '.call-custom-dropdown.show'
+                    ).forEach(
+                        function(item) {
+
+                            if (item !== dropdown) {
+                                item.classList.remove('show');
+                            }
+
+                        }
+                    );
+
+                    dropdown.classList.toggle('show');
+
+                }
+            );
+
+        }
+
+    }
+);
+
+const modalTypeDropdown =
+    document.getElementById('modalTypeDropdown');
+
+const modalStatusDropdown =
+    document.getElementById('modalStatusDropdown');
+
+const callerDropdown =
+    document.getElementById('callerDropdown');
+
+if (modalTypeDropdown) {
+
+    modalTypeDropdown.querySelectorAll(
+        '.call-dropdown-option'
+    ).forEach(
+        function(option) {
+
+            option.addEventListener(
+                'click',
+                function() {
+
+                    document.getElementById(
+                        'modalTypeText'
+                    ).textContent = this.dataset.value;
+
+                    document.getElementById(
+                        'callTypeValue'
+                    ).value = this.dataset.value;
+
+                    modalTypeDropdown.classList.remove('show');
+
+                }
+            );
+
+        }
+    );
+
+}
+
+if (modalStatusDropdown) {
+
+    modalStatusDropdown.querySelectorAll(
+        '.call-dropdown-option'
+    ).forEach(
+        function(option) {
+
+            option.addEventListener(
+                'click',
+                function() {
+
+                    document.getElementById(
+                        'modalStatusText'
+                    ).textContent = this.dataset.value;
+
+                    document.getElementById(
+                        'callStatusValue'
+                    ).value = this.dataset.value;
+
+                    modalStatusDropdown.classList.remove('show');
+
+                }
+            );
+
+        }
+    );
+
+}
+
+const callLayoutToggle =
+    document.getElementById('callLayoutToggle');
+
+const callLayoutPanel =
+    document.getElementById('callLayoutPanel');
+
+const showCallerField =
+    document.getElementById('showCallerField');
+
+const callerField =
+    document.getElementById('callerField');
+
+if (callLayoutToggle && callLayoutPanel) {
+
+    callLayoutToggle.addEventListener(
+        'click',
+        function() {
+            callLayoutPanel.classList.toggle('show');
+        }
+    );
+
+}
+
+if (showCallerField && callerField) {
+
+    showCallerField.addEventListener(
+        'change',
+        function() {
+
+            callerField.style.display =
+                this.checked ? 'block' : 'none';
+
+        }
+    );
+
+}
+
+if (callerDropdown) {
+
+    callerDropdown.querySelectorAll(
+        '.caller-option'
+    ).forEach(
+        function(option) {
+
+            option.addEventListener(
+                'click',
+                function() {
+
+                    const value = this.dataset.value;
+                    const name = this.dataset.name;
+
+                    document.getElementById(
+                        'callerSelectedText'
+                    ).textContent = name;
+
+                    document.getElementById(
+                        'callerValue'
+                    ).value = value;
+
+                    document.getElementById(
+                        'callReceivedByValue'
+                    ).value = value;
+
+                    callerDropdown.classList.remove('show');
+
+                }
+            );
+
+        }
+    );
+
+}
+
+const callerSearch =
+    document.getElementById('callerSearch');
+
+if (callerSearch) {
+
+    callerSearch.addEventListener(
+        'input',
+        function() {
+
+            const keyword =
+                this.value.toLowerCase().trim();
+
+            document.querySelectorAll(
+                '.caller-option'
+            ).forEach(
+                function(option) {
+
+                    const name =
+                        option.dataset.name.toLowerCase();
+
+                    option.style.display =
+                        name.includes(keyword) ? '' : 'none';
+
+                }
+            );
+
+        }
+    );
+
+}
+
+const callerSearchClear =
+    document.getElementById('callerSearchClear');
+
+if (callerSearchClear && callerSearch) {
+
+    callerSearchClear.addEventListener(
+        'click',
+        function() {
+
+            callerSearch.value = '';
+            callerSearch.dispatchEvent(
+                new Event('input')
+            );
+
+        }
+    );
+
+}
+
+const callerClear =
+    document.getElementById('callerClear');
+
+if (callerClear) {
+
+    callerClear.addEventListener(
+        'click',
+        function() {
+
+            document.getElementById(
+                'callerSelectedText'
+            ).textContent = 'Caller';
+
+            document.getElementById(
+                'callerValue'
+            ).value = '';
+
+            document.getElementById(
+                'callReceivedByValue'
+            ).value = '';
+
+            if (callerDropdown) {
+                callerDropdown.classList.remove('show');
+            }
+
+        }
+    );
+
+}
+
+        /* =============================================
+           TABS
+        ============================================= */
+
+        const tabs =
+            document.querySelectorAll(
+                '.tab-button'
+            );
+
+        const contents =
+            document.querySelectorAll(
+                '.tab-content'
+            );
+
+
+        tabs.forEach(
+            function(tab) {
+
+                tab.addEventListener(
+                    'click',
+                    function() {
+
+                        const tabName =
+                            this.dataset.tab;
+
+
+                        tabs.forEach(
+                            function(item) {
+
+                                item.classList.remove(
+                                    'active'
+                                );
+
+                            }
+                        );
+
+
+                        contents.forEach(
+                            function(content) {
+
+                                content.classList.remove(
+                                    'active'
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            'active'
+                        );
+
+
+                        const selected =
+                            document.getElementById(
+                                tabName
+                            );
+
+
+                        if (selected) {
+
+                            selected.classList.add(
+                                'active'
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =============================================
+           COLLAPSIBLE SECTIONS
+        ============================================= */
+
+        const sectionHeaders =
+            document.querySelectorAll(
+                '.section-header'
+            );
+
+
+        sectionHeaders.forEach(
+            function(header) {
+
+                header.addEventListener(
+                    'click',
+                    function(event) {
+
+                        if (
+                            event.target.closest(
+                                '.section-edit-btn'
+                            )
+                        ) {
+                            return;
+                        }
+
+
+                        const sectionId =
+                            this.dataset.section;
+
+
+                        const sectionContent =
+                            document.getElementById(
+                                sectionId
+                            );
+
+
+                        if (!sectionContent) {
+                            return;
+                        }
+
+
+                        sectionContent.classList.toggle(
+                            'hidden'
+                        );
+
+
+                        this.classList.toggle(
+                            'collapsed'
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+        /* =============================================
+   ACTIVITY NEW DROPDOWN
+============================================= */
+
+const activityNewBtn =
+    document.getElementById(
+        'activityNewBtn'
+    );
+
+const activityNewMenu =
+    document.getElementById(
+        'activityNewMenu'
+    );
+
+const activityNewOptions =
+    document.querySelectorAll(
+        '.activity-new-option'
+    );
+
+
+if (
+    activityNewBtn &&
+    activityNewMenu
+) {
+
+    activityNewBtn.addEventListener(
+        'click',
+        function(event) {
+
+            event.stopPropagation();
+
+            activityNewMenu.classList.toggle(
+                'show'
+            );
+
+        }
+    );
+
+}
+
+
+/* =============================================
+   ACTIVITY NEW OPTIONS
+============================================= */
+
+activityNewOptions.forEach(
+    function(option) {
+
+        option.addEventListener(
+            'click',
+            function() {
+
+                const action =
+                    this.dataset.action;
+
+
+                console.log(
+                    'Selected Action:',
+                    action
+                );
+
+
+                activityNewMenu.classList.remove(
+                    'show'
+                );
+
+
+                /* TEMPORARY */
+
+                if (
+                    action === 'email'
+                ) {
+
+                    document
+                        .querySelector(
+                            '[data-tab="emails"]'
+                        )
+                        .click();
+
+                    setTimeout(function() {
+                        const emailSubject = document.getElementById('emailSubject');
+                        if (emailSubject) emailSubject.focus();
+                    }, 0);
+
+                }
+
+
+                else if (
+                    action === 'comment'
+                ) {
+
+                    document
+                        .querySelector(
+                            '[data-tab="comments"]'
+                        )
+                        .click();
+
+                    setTimeout(function() {
+                        const commentMessage = document.getElementById('commentMessage');
+                        if (commentMessage) commentMessage.focus();
+                    }, 0);
+
+                }
+
+
+                else if (
+                    action === 'call'
+                ) {
+
+                    document
+                        .querySelector(
+                            '[data-tab="calls"]'
+                        )
+                        .click();
+
+                    showCreateCallModal();
+
+                }
+
+
+                else if (
+                    action === 'note'
+                ) {
+
+                    document
+                        .querySelector(
+                            '[data-tab="notes"]'
+                        )
+                        .click();
+
+                }
+
+
+                else if (
+                    action === 'task'
+                ) {
+
+                    document
+                        .querySelector(
+                            '[data-tab="tasks"]'
+                        )
+                        .click();
+
+                }
+
+
+                else if (
+                    action === 'attachment'
+                ) {
+
+                    document
+                        .querySelector(
+                            '[data-tab="attachments"]'
+                        )
+                        .click();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+        /* =============================================
+           EMAIL / COMMENT INLINE BOX ACTIONS
+        ============================================= */
+
+        function clearEmailCompose() {
+            const emailSubject = document.getElementById('emailSubject');
+            const emailMessage = document.getElementById('emailMessage');
+            if (emailSubject) emailSubject.value = '';
+            if (emailMessage) emailMessage.value = '';
+        }
+
+        function clearCommentCompose() {
+            const commentMessage = document.getElementById('commentMessage');
+            if (commentMessage) commentMessage.value = '';
+        }
+
+        const newEmailBtn = document.getElementById('newEmailBtn');
+        const newCommentBtn = document.getElementById('newCommentBtn');
+        const closeEmailCompose = document.getElementById('closeEmailCompose');
+        const closeCommentCompose = document.getElementById('closeCommentCompose');
+        const discardEmailBtn = document.getElementById('discardEmailBtn');
+        const discardCommentBtn = document.getElementById('discardCommentBtn');
+        const sendEmailBtn = document.getElementById('sendEmailBtn');
+        const saveCommentBtn = document.getElementById('saveCommentBtn');
+
+        if (newEmailBtn) {
+            newEmailBtn.addEventListener('click', function() {
+                const input = document.getElementById('emailSubject');
+                if (input) input.focus();
+            });
+        }
+
+        if (newCommentBtn) {
+            newCommentBtn.addEventListener('click', function() {
+                const input = document.getElementById('commentMessage');
+                if (input) input.focus();
+            });
+        }
+
+        if (closeEmailCompose) closeEmailCompose.addEventListener('click', clearEmailCompose);
+        if (discardEmailBtn) discardEmailBtn.addEventListener('click', clearEmailCompose);
+        if (closeCommentCompose) closeCommentCompose.addEventListener('click', clearCommentCompose);
+        if (discardCommentBtn) discardCommentBtn.addEventListener('click', clearCommentCompose);
+
+        if (sendEmailBtn) {
+            sendEmailBtn.addEventListener('click', function() {
+                const to = document.getElementById('emailTo');
+                const subject = document.getElementById('emailSubject');
+                if (!to || !to.value.trim()) {
+                    alert('Please enter recipient email.');
+                    return;
+                }
+                if (!subject || !subject.value.trim()) {
+                    alert('Please enter email subject.');
+                    return;
+                }
+                alert('Email UI is ready. Connect the Django send-email view to save/send this email.');
+            });
+        }
+
+        if (saveCommentBtn) {
+            saveCommentBtn.addEventListener('click', function() {
+                const comment = document.getElementById('commentMessage');
+                if (!comment || !comment.value.trim()) {
+                    alert('Please write a comment.');
+                    return;
+                }
+                alert('Comment UI is ready. Connect the Django comment view to save this comment.');
+            });
+        }
+
+        /* =============================================
+           DATA EDIT UI
+        ============================================= */
+
+        const editDataBtn = document.getElementById('editDataBtn');
+        const saveDataBtn = document.getElementById('saveDataBtn');
+        const dataInputs = document.querySelectorAll('#data .data-input-group input');
+        let dataEditMode = false;
+
+        if (editDataBtn && saveDataBtn) {
+            editDataBtn.addEventListener('click', function() {
+                dataEditMode = !dataEditMode;
+                dataInputs.forEach(function(input) {
+                    input.readOnly = !dataEditMode;
+                });
+                saveDataBtn.disabled = !dataEditMode;
+                editDataBtn.classList.toggle('active', dataEditMode);
+            });
+
+            saveDataBtn.addEventListener('click', function() {
+                if (!dataEditMode) return;
+                alert('Data edit UI is ready. Connect the Django update-lead view to save changes.');
+            });
+        }
+
+        /* =============================================
+           LEAD STATUS DROPDOWN
+        ============================================= */
+
+        const statusDropdownBtn =
+            document.getElementById(
+                'statusDropdownBtn'
+            );
+
+        const statusDropdownMenu =
+            document.getElementById(
+                'statusDropdownMenu'
+            );
+
+
+        if (
+            statusDropdownBtn &&
+            statusDropdownMenu
+        ) {
+
+            statusDropdownBtn.addEventListener(
+                'click',
+                function(event) {
+
+                    event.stopPropagation();
+
+                    statusDropdownMenu.classList.toggle(
+                        'show'
+                    );
+
+                }
+            );
+
+        }
+
+
+/* =============================================
+   DELETE LEAD MODAL
+============================================= */
+
+const deleteLeadBtn =
+    document.getElementById(
+        'deleteLeadBtn'
+    );
+
+const deleteLeadForm =
+    document.getElementById(
+        'deleteLeadForm'
+    );
+
+const deleteLeadModal =
+    document.getElementById(
+        'deleteLeadModal'
+    );
+
+const closeDeleteLeadModal =
+    document.getElementById(
+        'closeDeleteLeadModal'
+    );
+
+const cancelDeleteLead =
+    document.getElementById(
+        'cancelDeleteLead'
+    );
+
+const confirmDeleteLead =
+    document.getElementById(
+        'confirmDeleteLead'
+    );
+
+
+function openDeleteModal() {
+
+    if (deleteLeadModal) {
+
+        deleteLeadModal.classList.add(
+            'show'
+        );
+
+        document.body.style.overflow =
+            'hidden';
+
+    }
+
+}
+
+
+function closeDeleteModal() {
+
+    if (deleteLeadModal) {
+
+        deleteLeadModal.classList.remove(
+            'show'
+        );
+
+    }
+
+
+    document.body.style.overflow = '';
+
+}
+
+
+/* OPEN DELETE MODAL */
+
+if (deleteLeadBtn) {
+
+    deleteLeadBtn.addEventListener(
+        'click',
+        function() {
+
+            openDeleteModal();
+
+        }
+    );
+
+}
+
+
+/* CLOSE BUTTON */
+
+if (closeDeleteLeadModal) {
+
+    closeDeleteLeadModal.addEventListener(
+        'click',
+        closeDeleteModal
+    );
+
+}
+
+
+/* CANCEL BUTTON */
+
+if (cancelDeleteLead) {
+
+    cancelDeleteLead.addEventListener(
+        'click',
+        closeDeleteModal
+    );
+
+}
+
+
+/* CONFIRM DELETE */
+
+if (
+    confirmDeleteLead &&
+    deleteLeadForm
+) {
+
+    confirmDeleteLead.addEventListener(
+        'click',
+        function() {
+
+            deleteLeadForm.submit();
+
+        }
+    );
+
+}
+
+
+/* CLICK OUTSIDE MODAL */
+
+if (deleteLeadModal) {
+
+    deleteLeadModal.addEventListener(
+        'click',
+        function(event) {
+
+            if (
+                event.target ===
+                deleteLeadModal
+            ) {
+
+                closeDeleteModal();
+
+            }
+
+        }
+    );
+
+}
+
+        /* =============================================
+           CONVERT MODAL
+        ============================================= */
+
+        const openConvertDealModal =
+            document.getElementById(
+                'openConvertDealModal'
+            );
+
+        const convertDealModal =
+            document.getElementById(
+                'convertDealModal'
+            );
+
+        const closeConvertDealModal =
+            document.getElementById(
+                'closeConvertDealModal'
+            );
+
+        const cancelConvertDeal =
+            document.getElementById(
+                'cancelConvertDeal'
+            );
+
+
+        function openModal() {
+
+            if (convertDealModal) {
+
+                convertDealModal.classList.add(
+                    'show'
+                );
+
+                document.body.style.overflow =
+                    'hidden';
+
+            }
+
+        }
+
+
+        function closeModal() {
+
+            if (convertDealModal) {
+
+                convertDealModal.classList.remove(
+                    'show'
+                );
+
+            }
+
+
+            document.body.style.overflow = '';
+
+        }
+
+
+        if (openConvertDealModal) {
+
+            openConvertDealModal.addEventListener(
+                'click',
+                openModal
+            );
+
+        }
+
+
+        if (closeConvertDealModal) {
+
+            closeConvertDealModal.addEventListener(
+                'click',
+                closeModal
+            );
+
+        }
+
+
+        if (cancelConvertDeal) {
+
+            cancelConvertDeal.addEventListener(
+                'click',
+                closeModal
+            );
+
+        }
+
+
+        /* =============================================
+           DEAL STATUS
+        ============================================= */
+
+        const dealStatusBtn =
+            document.getElementById(
+                'dealStatusBtn'
+            );
+
+        const dealStatusMenu =
+            document.getElementById(
+                'dealStatusMenu'
+            );
+
+        const selectedDealStatus =
+            document.getElementById(
+                'selectedDealStatus'
+            );
+
+        const dealStatus =
+            document.getElementById(
+                'dealStatus'
+            );
+
+        const dealStatusOptions =
+            document.querySelectorAll(
+                '.deal-status-option'
+            );
+
+
+        if (
+            dealStatusBtn &&
+            dealStatusMenu
+        ) {
+
+            dealStatusBtn.addEventListener(
+                'click',
+                function(event) {
+
+                    event.stopPropagation();
+
+                    dealStatusMenu.classList.toggle(
+                        'show'
+                    );
+
+                }
+            );
+
+        }
+
+
+        dealStatusOptions.forEach(
+            function(option) {
+
+                option.addEventListener(
+                    'click',
+                    function() {
+
+                        const value =
+                            this.dataset.value;
+
+                        const label =
+                            this.dataset.label;
+
+
+                        if (dealStatus) {
+
+                            dealStatus.value =
+                                value;
+
+                        }
+
+
+                        if (selectedDealStatus) {
+
+                            selectedDealStatus.textContent =
+                                label;
+
+                        }
+
+
+                        dealStatusMenu.classList.remove(
+                            'show'
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =============================================
+           CONFIRM CONVERT
+        ============================================= */
+
+        const confirmConvertDeal =
+            document.getElementById(
+                'confirmConvertDeal'
+            );
+
+
+        if (confirmConvertDeal) {
+
+            confirmConvertDeal.addEventListener(
+                'click',
+                function() {
+
+                    if (
+                        !dealStatus ||
+                        !dealStatus.value
+                    ) {
+
+                        alert(
+                            'Please select a deal status.'
+                        );
+
+                        return;
+
+                    }
+
+
+                    console.log(
+                        {
+                            organization_existing:
+                                document.getElementById(
+                                    'chooseOrganization'
+                                ).checked,
+
+                            contact_existing:
+                                document.getElementById(
+                                    'chooseContact'
+                                ).checked,
+
+                            deal_status:
+                                dealStatus.value
+                        }
+                    );
+
+
+                    alert(
+                        'Ready to convert lead to deal!'
+                    );
+
+
+                    closeModal();
+
+                }
+            );
+
+        }
+
+
+
+        /* =============================================
+           CALL DROPDOWN OUTSIDE CLICK
+        ============================================= */
+
+        document.addEventListener(
+            'click',
+            function(event) {
+
+                document.querySelectorAll(
+                    '.call-custom-dropdown.show'
+                ).forEach(
+                    function(dropdown) {
+
+                        if (!dropdown.contains(event.target)) {
+                            dropdown.classList.remove('show');
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+        /* =============================================
+           OUTSIDE CLICK
+        ============================================= */
+
+        document.addEventListener(
+            'click',
+            function(event) {
+                if (
+    activityNewMenu &&
+    activityNewBtn &&
+    !activityNewMenu.contains(
+        event.target
+    ) &&
+    !activityNewBtn.contains(
+        event.target
+    )
+) {
+
+    activityNewMenu.classList.remove(
+        'show'
+    );
+
+}
+
+
+                if (
+                    statusDropdownMenu &&
+                    statusDropdownBtn &&
+                    !statusDropdownMenu.contains(
+                        event.target
+                    ) &&
+                    !statusDropdownBtn.contains(
+                        event.target
+                    )
+                ) {
+
+                    statusDropdownMenu.classList.remove(
+                        'show'
+                    );
+
+                }
+
+
+                if (
+                    dealStatusMenu &&
+                    dealStatusBtn &&
+                    !dealStatusMenu.contains(
+                        event.target
+                    ) &&
+                    !dealStatusBtn.contains(
+                        event.target
+                    )
+                ) {
+
+                    dealStatusMenu.classList.remove(
+                        'show'
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =============================================
+           MODAL BACKDROP
+        ============================================= */
+
+        if (convertDealModal) {
+
+            convertDealModal.addEventListener(
+                'click',
+                function(event) {
+
+                    if (
+                        event.target ===
+                        convertDealModal
+                    ) {
+
+                        closeModal();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =============================================
+           ESC KEY
+        ============================================= */
+
+        document.addEventListener(
+            'keydown',
+            function(event) {
+
+                if (
+                    event.key === 'Escape'
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+    }
+);
+
+</script>
+
+{% endblock %}

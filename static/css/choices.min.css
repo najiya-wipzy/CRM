@@ -1,0 +1,203 @@
+/* Choices.js - select dropdown styling */
+
+.choices {
+  position: relative;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.choices:focus {
+  outline: none;
+}
+
+.choices__inner {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  min-height: 38px;
+  padding: 7.5px 7.5px 3.75px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 14px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.choices.is-focused .choices__inner,
+.choices.is-open .choices__inner {
+  border-color: #d9d9d9;
+}
+
+.choices__list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.choices__list--single {
+  display: inline-block;
+  width: 100%;
+  padding: 3px 16px 3px 4px;
+}
+
+.choices__list--dropdown,
+.choices__list[aria-expanded="true"] {
+  visibility: hidden;
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  top: 100%;
+  margin-top: -1px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.is-open .choices__list--dropdown,
+.is-open .choices__list[aria-expanded="true"] {
+  visibility: visible;
+}
+
+.choices__list--dropdown .choices__list,
+.choices__list[aria-expanded="true"] .choices__list {
+  position: relative;
+  max-height: 300px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  will-change: scroll-position;
+}
+
+.choices__list--dropdown .choices__item,
+.choices__list[aria-expanded="true"] .choices__item {
+  position: relative;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded="true"] .choices__item--selectable.is-highlighted {
+  background-color: #f5f5f5;
+}
+
+.choices__item {
+  cursor: default;
+}
+
+.choices__item--selectable {
+  cursor: pointer;
+}
+
+.choices[data-type*="select-one"] {
+  cursor: pointer;
+}
+
+.choices[data-type*="select-one"]::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  margin-top: -3px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #777;
+  pointer-events: none;
+}
+
+.choices[data-type*="select-one"].is-open::after {
+  margin-top: -4px;
+  border-top: 0;
+  border-bottom: 5px solid #777;
+}
+
+.choices[data-type*="select-one"] .choices__inner {
+  padding-bottom: 7.5px;
+}
+
+.choices__input {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-bottom: 1px solid #e6e6e6;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.choices__input:focus {
+  outline: none;
+}
+
+.choices.is-disabled .choices__inner,
+.choices.is-disabled .choices__input {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.choices.is-disabled .choices__item {
+  cursor: not-allowed;
+}
+
+.choices__placeholder {
+  opacity: .7;
+}
+
+.choices__item--choice.is-selected {
+  font-weight: 500;
+}
+
+.choices[data-type*="select-one"] .choices__button {
+  display: none;
+}
+
+/* Match Bootstrap/Dreams template form controls */
+.choices {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.choices__inner {
+  min-height: 38px;
+  padding: 8px 36px 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  color: #262626;
+  line-height: 1.5;
+}
+
+.choices__list--single {
+  padding: 0;
+}
+
+.choices__list--dropdown,
+.choices__list[aria-expanded="true"] {
+  margin-top: 4px;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .08);
+}
+
+.choices__list--dropdown .choices__item,
+.choices__list[aria-expanded="true"] .choices__item {
+  padding: 9px 12px;
+  color: #333;
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted,
+.choices__list[aria-expanded="true"] .choices__item--selectable.is-highlighted {
+  background-color: #f5f5f5;
+  color: #111;
+}
+
+.choices[data-type*="select-one"]::after {
+  right: 14px;
+}
+
+.choices.is-focused .choices__inner {
+  border-color: #e31e24;
+  box-shadow: 0 0 0 0.2rem rgba(227, 30, 36, .08);
+}

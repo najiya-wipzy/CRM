@@ -1,0 +1,183 @@
+
+<style>
+.crm-model-modal {
+    border: none;
+    border-radius: 18px;
+    overflow: visible;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+}
+
+.address-create-dialog {
+    max-width: 720px;
+    width: 100%;
+}
+
+.crm-small-dialog {
+    max-width: 720px;
+    width: 100%;
+}
+
+.crm-territory-dialog {
+    max-width: 720px;
+    width: 100%;
+}
+
+.crm-model-header {
+    height: 72px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.crm-model-header h4 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #111;
+}
+
+.crm-model-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.crm-icon-btn {
+    border: none;
+    background: transparent;
+    padding: 4px;
+    font-size: 20px;
+    color: #222;
+    cursor: pointer;
+}
+
+.crm-model-body {
+    padding: 22px 30px 5px;
+}
+
+.crm-field {
+    margin-bottom: 17px;
+    min-width: 0;
+}
+
+.crm-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 15px;
+    color: #777;
+    font-weight: 400;
+}
+
+.crm-control {
+    width: 100%;
+    height: 38px;
+    border: none;
+    outline: none;
+    background: #f2f2f2;
+    border-radius: 9px;
+    padding: 0 12px;
+    font-size: 15px;
+    color: #555;
+}
+
+.crm-control::placeholder {
+    color: #999;
+}
+
+.crm-control:focus {
+    background: #eeeeee;
+    box-shadow: none;
+}
+
+.crm-select {
+    appearance: auto;
+    cursor: pointer;
+}
+
+.crm-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.crm-divider {
+    border-top: 1px solid #eeeeee;
+    margin: 6px 0 22px;
+}
+
+.crm-checkbox-field {
+    display: flex;
+    align-items: center;
+    padding-top: 25px;
+}
+
+.crm-check-label {
+    display: flex !important;
+    align-items: center;
+    gap: 9px;
+    margin: 0 !important;
+    cursor: pointer;
+    color: #777;
+}
+
+.crm-check-label input {
+    width: 19px;
+    height: 19px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.crm-parent-field {
+    width: 50%;
+}
+
+.crm-model-footer {
+    padding: 12px 30px 28px;
+}
+
+.crm-create-btn {
+    width: 100%;
+    height: 36px;
+    border: none;
+    border-radius: 9px;
+    background: #151515;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.crm-create-btn:hover {
+    background: #000;
+}
+
+@media (max-width: 600px) {
+    .crm-two-column {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .crm-parent-field {
+        width: 100%;
+    }
+
+    .crm-model-header,
+    .crm-model-body {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .crm-model-footer {
+        padding: 10px 20px 20px;
+    }
+
+    .address-create-dialog,
+    .crm-small-dialog,
+    .crm-territory-dialog {
+        margin: 10px;
+        max-width: none;
+    }
+}
+</style>

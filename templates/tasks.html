@@ -1,0 +1,1391 @@
+```
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.tasks-page {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.tasks-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.tasks-title {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 20px;
+    color: #222;
+}
+
+.tasks-title span {
+    margin: 0 8px;
+    color: #999;
+}
+
+.tasks-title i {
+    color: #777;
+    font-size: 17px;
+    margin-right: 7px;
+}
+
+.tasks-title .ti-chevron-down {
+    margin-left: 6px;
+    margin-right: 0;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   CREATE BUTTON
+========================================================= */
+
+.create-btn {
+    height: 40px;
+    padding: 0 16px;
+    background: #111;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    background: #222;
+    color: #fff;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.tasks-toolbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.tasks-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.tasks-select {
+    min-width: 145px;
+    height: 34px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #777;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tasks-select i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.tasks-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.tasks-action {
+    height: 34px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    color: #333;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tasks-action:hover {
+    background: #e9e9e9;
+}
+
+.tasks-action.icon-only {
+    width: 38px;
+    padding: 0;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.tasks-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+table.tasks-table thead {
+    background: #f3f3f3;
+}
+
+table.tasks-table thead th {
+    text-align: left;
+    font-weight: 400;
+    color: #777;
+    font-size: 14px;
+    padding: 9px 10px;
+    height: 35px;
+    white-space: nowrap;
+}
+
+table.tasks-table tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+table.tasks-table tbody tr.task-table-row {
+    display: table-row;
+}
+
+table.tasks-table tbody tr.task-table-row:hover {
+    background: #fafafa;
+}
+
+table.tasks-table tbody td {
+    vertical-align: middle;
+}
+
+table.tasks-table tbody td {
+    padding: 10px;
+    font-size: 14px;
+    color: #222;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.tasks-empty {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    padding: 70px 20px;
+}
+
+.tasks-empty i {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #ccc;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.tasks-pagination {
+    height: 50px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.page-size {
+    display: flex;
+    gap: 3px;
+}
+
+.page-size span {
+    padding: 7px 12px;
+    color: #777;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.page-size .active {
+    background: #f3f3f3;
+    color: #222;
+}
+
+.page-count {
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   CREATE TASK MODAL
+========================================================= */
+
+.task-modal-dialog {
+    max-width: 660px;
+    width: calc(100% - 30px);
+    margin: auto;
+}
+
+.task-modal {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.task-modal-header {
+    height: 70px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-modal-header h4 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+}
+
+.task-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.task-edit-btn,
+.task-close-btn {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #222;
+    cursor: pointer;
+}
+
+.task-edit-btn:hover,
+.task-close-btn:hover {
+    color: #000;
+}
+
+
+/* =========================================================
+   MODAL BODY
+========================================================= */
+
+.task-modal-body {
+    padding: 0 28px 15px;
+}
+
+.task-field {
+    margin-bottom: 17px;
+}
+
+.task-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #888;
+    font-weight: 400;
+}
+
+.task-input {
+    width: 100%;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    background: #f3f3f3;
+    padding: 0 12px;
+    font-size: 15px;
+    color: #555;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.task-input:focus {
+    background: #eeeeee;
+}
+
+
+/* =========================================================
+   TWO COLUMN ROW
+========================================================= */
+
+.task-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.task-select {
+    appearance: auto;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   DESCRIPTION EDITOR
+========================================================= */
+
+.task-editor {
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.task-toolbar {
+    height: 43px;
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 0 8px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    color: #444;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.toolbar-text {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    border-radius: 7px;
+    color: #888;
+}
+
+.toolbar-heading {
+    font-size: 15px;
+}
+
+.task-description {
+    height: 145px;
+    padding: 15px;
+    outline: none;
+    background: #f5f5f5;
+    color: #444;
+    font-size: 14px;
+}
+
+.task-description:empty:before {
+    content: attr(data-placeholder);
+    color: #aaa;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.task-modal-footer {
+    padding: 0 28px 25px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.task-create-btn {
+    height: 38px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #151515;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.task-create-btn:hover {
+    background: #000;
+}
+
+
+
+/* =========================================================
+   ASSIGNED USER DROPDOWN
+========================================================= */
+
+.task-user-select {
+    position: relative;
+    width: 100%;
+}
+
+.task-user-button {
+    width: 100%;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    background: #f3f3f3;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #999;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.task-user-button.selected {
+    color: #444;
+}
+
+.task-user-button i {
+    font-size: 15px;
+}
+
+.task-user-dropdown {
+    position: absolute;
+    z-index: 1080;
+    left: 0;
+    right: 0;
+    top: calc(100% + 8px);
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.14);
+    overflow: hidden;
+    display: none;
+}
+
+.task-user-dropdown.show {
+    display: block;
+}
+
+.task-user-search {
+    display: flex;
+    align-items: center;
+    margin: 8px;
+    height: 36px;
+    border: 1px solid #aaa;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+.task-user-search input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: none;
+    padding: 0 10px;
+    font-size: 14px;
+}
+
+.task-user-search button {
+    width: 34px;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: #444;
+    cursor: pointer;
+}
+
+.task-user-list {
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.task-user-option {
+    width: 100%;
+    min-height: 42px;
+    border: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.task-user-option:hover {
+    background: #f5f5f5;
+}
+
+.task-user-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #777;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-user-empty {
+    padding: 15px;
+    text-align: center;
+    color: #999;
+    font-size: 13px;
+}
+
+.task-user-clear-row {
+    width: 100%;
+    height: 42px;
+    border: 0;
+    border-top: 1px solid #eee;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    color: #444;
+    cursor: pointer;
+}
+
+.task-user-clear-row:hover {
+    background: #f7f7f7;
+}
+
+@media (max-width: 700px) {
+    .tasks-select {
+        min-width: 100%;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .tasks-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tasks-actions {
+        justify-content: flex-end;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .task-modal-dialog {
+        margin: 10px;
+    }
+
+    .task-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .task-modal-header {
+        padding: 0 20px;
+    }
+
+    .task-modal-body {
+        padding: 0 20px 10px;
+    }
+
+    .task-modal-footer {
+        padding: 0 20px 20px;
+    }
+}
+
+</style>
+
+
+<!-- =====================================================
+     TASKS PAGE
+====================================================== -->
+
+<div class="page-wrapper">
+
+    <div class="content">
+
+        <div class="tasks-page">
+
+
+            <!-- HEADER -->
+
+            <div class="tasks-header">
+
+                <div class="tasks-title">
+
+                    Tasks
+
+                    <span>/</span>
+
+                    <i class="ti ti-list"></i>
+
+                    List
+
+                    <i class="ti ti-chevron-down"></i>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="create-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#createTaskModal">
+
+                    <i class="ti ti-plus"></i>
+
+                    Create
+
+                </button>
+
+            </div>
+
+
+            <!-- FILTER / TOOLBAR -->
+            <div class="tasks-toolbar">
+
+                <div class="tasks-filters">
+
+                    <input type="text"
+                           id="taskTitleSearch"
+                           class="tasks-select"
+                           placeholder="Title"
+                           autocomplete="off">
+
+                    <input type="text"
+                           id="taskContentSearch"
+                           class="tasks-select"
+                           placeholder="Description"
+                           autocomplete="off">
+
+                    <select id="taskPriorityFilter" class="tasks-select">
+                        <option value="">Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+
+                    <select id="taskAssignedFilter" class="tasks-select">
+                        <option value="">Assigned To</option>
+                        {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.full_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="taskStatusFilter" class="tasks-select">
+                        <option value="">Status</option>
+                        <option value="backlog">Backlog</option>
+                        <option value="todo">Todo</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="done">Done</option>
+                        <option value="canceled">Canceled</option>
+                    </select>
+
+                </div>
+
+                <div class="tasks-actions">
+
+                    <button type="button"
+                            class="tasks-action icon-only"
+                            title="Refresh"
+                            onclick="window.location.reload();">
+                        <i class="ti ti-refresh"></i>
+                    </button>
+
+                    <button type="button"
+                            class="tasks-action"
+                            id="taskFilterButton">
+                        <i class="ti ti-filter"></i>
+                        Filter
+                    </button>
+
+                    <button type="button"
+                            class="tasks-action"
+                            id="taskSortButton">
+                        <i class="ti ti-arrows-sort"></i>
+                        Sort
+                    </button>
+
+                    <button type="button"
+                            class="tasks-action">
+                        <i class="ti ti-layout-columns"></i>
+                        Columns
+                    </button>
+
+                    <button type="button"
+                            class="tasks-action icon-only">
+                        <i class="ti ti-dots"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- =====================================================
+                 TABLE
+            ====================================================== -->
+
+            <div class="tasks-table-wrap">
+
+                <table class="tasks-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th style="width:35px;">
+
+                                <input type="checkbox">
+
+                            </th>
+
+                            <th>Title</th>
+
+                            <th>Status</th>
+
+                            <th>Priority</th>
+
+                            <th>Due Date</th>
+
+                            <th>Assigned To</th>
+
+                            <th>Last Modified</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tasksTableBody">
+
+                        {% for task in tasks %}
+                        <tr class="task-table-row"
+                            data-title="{{ task.title|default:''|escape }}"
+                            data-description="{{ task.description|default:''|striptags|escape }}"
+                            data-priority="{{ task.priority|default:'' }}"
+                            data-assigned="{{ task.assigned_to.id|default:'' }}"
+                            data-status="{{ task.task_status|default:'' }}"
+                            data-due-date="{{ task.due_date|date:'Y-m-d' }}"
+                            data-updated="{{ task.updated_at|date:'Y-m-d H:i:s' }}"
+                            style="cursor:pointer;">
+
+                            <td>
+                                <input type="checkbox"
+                                       class="task-check"
+                                       onclick="event.stopPropagation();">
+                            </td>
+
+                            <td>{{ task.title }}</td>
+
+                            <td>{{ task.get_task_status_display }}</td>
+
+                            <td>{{ task.get_priority_display }}</td>
+
+                            <td>
+                                {% if task.due_date %}
+                                    {{ task.due_date|date:"d M Y" }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if task.assigned_to %}
+                                    {{ task.assigned_to.full_name }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if task.updated_at %}
+                                    {{ task.updated_at|date:"d M Y, h:i A" }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+                        <tr id="taskNoDataRow">
+                            <td colspan="7">
+                                <div class="tasks-empty">
+                                    <i class="ti ti-checklist"></i>
+                                    No tasks yet.
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        <tr id="taskNoMatchRow" style="display:none;">
+                            <td colspan="7">
+                                <div class="tasks-empty">
+                                    <i class="ti ti-search"></i>
+                                    No tasks match your search or filter.
+                                </div>
+                            </td>
+                        </tr>
+
+                </table>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+
+<!--            <div class="tasks-pagination">-->
+
+<!--                <div class="page-size">-->
+
+<!--                    <span class="active">-->
+<!--                        20-->
+<!--                    </span>-->
+
+<!--                    <span>-->
+<!--                        50-->
+<!--                    </span>-->
+
+<!--                    <span>-->
+<!--                        100-->
+<!--                    </span>-->
+
+<!--                </div>-->
+
+
+<!--                <div class="page-count">-->
+
+<!--                    {{ tasks|length|default:"0" }} of-->
+<!--                    {{ tasks|length|default:"0" }}-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =============================================================
+     CREATE TASK MODAL
+============================================================== -->
+
+<div
+    class="modal fade"
+    id="createTaskModal"
+    tabindex="-1"
+    aria-labelledby="createTaskModalLabel"
+    aria-hidden="true">
+
+
+    <div class="modal-dialog modal-dialog-centered task-modal-dialog">
+
+        <div class="modal-content task-modal">
+
+
+            <!-- HEADER -->
+
+            <div class="task-modal-header">
+
+                <h4 id="createTaskModalLabel">
+                    Create Task
+                </h4>
+
+
+                <div class="task-header-actions">
+
+                    <button
+                        type="button"
+                        class="task-edit-btn"
+                        title="Edit Fields Layout">
+
+                        <i class="ti ti-edit"></i>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="task-close-btn"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+
+                        <i class="ti ti-x"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div class="task-modal-body">
+
+                <form method="POST" action="{% url 'add_task' %}" id="createTaskForm">
+                    {% csrf_token %}
+
+                    <!-- TITLE -->
+                    <div class="task-field">
+                        <label>
+                            Title <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                               name="title"
+                               class="task-input"
+                               placeholder="Title"
+                               required>
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="task-field">
+                        <label>Description</label>
+
+                        <div class="task-editor">
+                            <div class="task-toolbar">
+                                <span class="toolbar-text">T</span>
+                                <span class="toolbar-heading">Heading</span>
+                                <span>H₂</span>
+                                <span>H₃</span>
+                                <span>H₄</span>
+                                <b>B</b>
+                                <i>I</i>
+                                <span>☷</span>
+                                <span>☷</span>
+                                <span>☰</span>
+                                <span>≡</span>
+                                <span>☷</span>
+                                <span>A</span>
+                                <span>▧</span>
+                                <span>▣</span>
+                            </div>
+
+                            <div class="task-description"
+                                 id="taskDescriptionEditor"
+                                 contenteditable="true"
+                                 data-placeholder="Description"></div>
+                        </div>
+
+                        <input type="hidden"
+                               name="description"
+                               id="taskDescription">
+                    </div>
+
+                    <!-- PRIORITY / ASSIGNED TO -->
+                    <div class="task-row">
+
+                        <div class="task-field">
+                            <label>Priority</label>
+                            <select name="priority"
+                                    class="task-input task-select"
+                                    required>
+                                <option value="low" selected>Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        <div class="task-field">
+                            <label>Assigned To</label>
+
+                            <div class="task-user-select" id="taskUserSelect">
+                                <button type="button"
+                                        class="task-user-button"
+                                        id="taskUserButton">
+                                    <span id="taskUserText">Assigned To</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="task-user-dropdown" id="taskUserDropdown">
+
+                                    <div class="task-user-search">
+                                        <input type="text"
+                                               id="taskUserSearch"
+                                               placeholder="Search"
+                                               autocomplete="off">
+                                        <button type="button"
+                                                id="taskUserClear"
+                                                title="Clear">
+                                            <i class="ti ti-x"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="task-user-list" id="taskUserList">
+                                        {% for user in users %}
+                                        <button type="button"
+                                                class="task-user-option"
+                                                data-id="{{ user.id }}"
+                                                data-name="{{ user.full_name|escape }}">
+                                            <span class="task-user-avatar">
+                                                {{ user.full_name|first|upper }}
+                                            </span>
+                                            <span>{{ user.full_name }}</span>
+                                        </button>
+                                        {% empty %}
+                                        <div class="task-user-empty">No users found.</div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <button type="button"
+                                            class="task-user-clear-row"
+                                            id="taskUserClearRow">
+                                        <i class="ti ti-x"></i>
+                                        Clear
+                                    </button>
+                                </div>
+
+                                <input type="hidden"
+                                       name="assigned_to"
+                                       id="taskAssignedTo">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- DUE DATE / STATUS -->
+                    <div class="task-row">
+
+                        <div class="task-field">
+                            <label>Due Date</label>
+                            <input type="date"
+                                   name="due_date"
+                                   id="taskDueDate"
+                                   class="task-input"
+                                   aria-label="Due Date">
+                        </div>
+
+                        <div class="task-field">
+                            <label>Status</label>
+                            <select name="task_status"
+                                    class="task-input task-select"
+                                    required>
+                                <option value="backlog" selected>Backlog</option>
+                                <option value="todo">Todo</option>
+                                <option value="in_progress">In Progress</option>
+                                <option value="done">Done</option>
+                                <option value="canceled">Canceled</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div class="task-modal-footer">
+                        <button type="submit"
+                                class="task-create-btn">
+                            Create
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       TASK SEARCH + FILTER
+    ===================================================== */
+
+    const titleSearch = document.getElementById("taskTitleSearch");
+    const contentSearch = document.getElementById("taskContentSearch");
+    const priorityFilter = document.getElementById("taskPriorityFilter");
+    const assignedFilter = document.getElementById("taskAssignedFilter");
+    const statusFilter = document.getElementById("taskStatusFilter");
+    const filterButton = document.getElementById("taskFilterButton");
+    const sortButton = document.getElementById("taskSortButton");
+    const tbody = document.getElementById("tasksTableBody");
+    const noMatchRow = document.getElementById("taskNoMatchRow");
+
+    function applyTaskFilters() {
+
+        const title = (titleSearch?.value || "").toLowerCase().trim();
+        const content = (contentSearch?.value || "").toLowerCase().trim();
+        const priority = (priorityFilter?.value || "").toLowerCase();
+        const assigned = assignedFilter?.value || "";
+        const status = (statusFilter?.value || "").toLowerCase();
+
+        let visibleCount = 0;
+
+        document.querySelectorAll(".task-table-row").forEach(function (row) {
+
+            const rowTitle = (row.dataset.title || "").toLowerCase();
+            const rowDescription = (row.dataset.description || "").toLowerCase();
+            const rowPriority = (row.dataset.priority || "").toLowerCase();
+            const rowAssigned = row.dataset.assigned || "";
+            const rowStatus = (row.dataset.status || "").toLowerCase();
+            const rowDueDate = row.dataset.dueDate || "";
+
+            const matches =
+                (!title || rowTitle.includes(title)) &&
+                (!content || rowDescription.includes(content)) &&
+                (!priority || rowPriority === priority) &&
+                (!assigned || rowAssigned === assigned) &&
+                (!status || rowStatus === status) &&
+                (!dueDate || rowDueDate === dueDate);
+
+            row.style.display = matches ? "" : "none";
+
+            if (matches) {
+                visibleCount++;
+            }
+        });
+
+        if (noMatchRow) {
+            noMatchRow.style.display =
+                visibleCount === 0 ? "table-row" : "none";
+        }
+    }
+
+    titleSearch?.addEventListener("input", applyTaskFilters);
+    contentSearch?.addEventListener("input", applyTaskFilters);
+    priorityFilter?.addEventListener("change", applyTaskFilters);
+    assignedFilter?.addEventListener("change", applyTaskFilters);
+    statusFilter?.addEventListener("change", applyTaskFilters);
+    filterButton?.addEventListener("click", applyTaskFilters);
+
+    /* =====================================================
+       SORT
+    ===================================================== */
+
+    let sortNewestFirst = true;
+
+    sortButton?.addEventListener("click", function () {
+
+        const rows = Array.from(
+            document.querySelectorAll("#tasksTableBody .task-row")
+        );
+
+        rows.sort(function (a, b) {
+
+            const dateA = a.dataset.updated || "";
+            const dateB = b.dataset.updated || "";
+
+            if (dateA === dateB) {
+                return (a.dataset.title || "").localeCompare(
+                    b.dataset.title || ""
+                );
+            }
+
+            return sortNewestFirst
+                ? dateB.localeCompare(dateA)
+                : dateA.localeCompare(dateB);
+        });
+
+        rows.forEach(function (row) {
+            tbody.appendChild(row);
+        });
+
+        sortNewestFirst = !sortNewestFirst;
+    });
+
+    /* =====================================================
+       ASSIGNED TO USER DROPDOWN
+    ===================================================== */
+
+    const userButton = document.getElementById("taskUserButton");
+    const userDropdown = document.getElementById("taskUserDropdown");
+    const userSearch = document.getElementById("taskUserSearch");
+    const assignedInput = document.getElementById("taskAssignedTo");
+    const userText = document.getElementById("taskUserText");
+    const clearSearch = document.getElementById("taskUserClear");
+    const clearUser = document.getElementById("taskUserClearRow");
+
+    userButton?.addEventListener("click", function (event) {
+        event.stopPropagation();
+        userDropdown?.classList.toggle("show");
+
+        if (userDropdown?.classList.contains("show")) {
+            setTimeout(function () {
+                userSearch?.focus();
+            }, 50);
+        }
+    });
+
+    document.querySelectorAll(".task-user-option").forEach(function (option) {
+
+        option.addEventListener("click", function () {
+
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+
+            if (assignedInput) {
+                assignedInput.value = id;
+            }
+
+            if (userText) {
+                userText.textContent = name;
+            }
+
+            userButton?.classList.add("selected");
+            userDropdown?.classList.remove("show");
+
+            if (userSearch) {
+                userSearch.value = "";
+            }
+
+            filterUsers("");
+        });
+    });
+
+    function filterUsers(value) {
+
+        const search = value.toLowerCase().trim();
+
+        document.querySelectorAll(".task-user-option").forEach(function (option) {
+
+            const name = (option.dataset.name || "").toLowerCase();
+
+            option.style.display =
+                !search || name.includes(search)
+                    ? "flex"
+                    : "none";
+        });
+    }
+
+    userSearch?.addEventListener("input", function () {
+        filterUsers(this.value);
+    });
+
+    clearSearch?.addEventListener("click", function () {
+        if (userSearch) {
+            userSearch.value = "";
+            filterUsers("");
+            userSearch.focus();
+        }
+    });
+
+    function clearAssignedUser() {
+
+        if (assignedInput) {
+            assignedInput.value = "";
+        }
+
+        if (userText) {
+            userText.textContent = "Assigned To";
+        }
+
+        userButton?.classList.remove("selected");
+        userDropdown?.classList.remove("show");
+
+        if (userSearch) {
+            userSearch.value = "";
+        }
+
+        filterUsers("");
+    }
+
+    clearUser?.addEventListener("click", clearAssignedUser);
+
+    document.addEventListener("click", function (event) {
+
+        if (!document.getElementById("taskUserSelect")?.contains(event.target)) {
+            userDropdown?.classList.remove("show");
+        }
+
+    });
+
+    /* =====================================================
+       DESCRIPTION EDITOR
+    ===================================================== */
+
+    const descriptionEditor =
+        document.getElementById("taskDescriptionEditor");
+
+    const descriptionInput =
+        document.getElementById("taskDescription");
+
+    const taskForm =
+        document.getElementById("createTaskForm");
+
+    taskForm?.addEventListener("submit", function () {
+
+        if (descriptionEditor && descriptionInput) {
+            descriptionInput.value = descriptionEditor.innerHTML;
+        }
+
+    });
+
+});
+</script>
+
+{% endblock %}
+```

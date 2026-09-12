@@ -1,0 +1,1056 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+
+
+<div class="settings-page">
+
+    <!-- =========================
+         SETTINGS SIDEBAR
+    ========================== -->
+
+    <div class="settings-sidebar">
+
+        <div class="settings-scroll">
+
+            <!-- USER CONFIGURATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    User Configuration
+                </div>
+
+                <a href="{% url 'settings' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                    <i class="ti ti-user-circle"></i>
+                    <span>Profile</span>
+                </a>
+
+                <a href="{% url 'preferences' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'preferences' %}active{% endif %}">
+                    <i class="ti ti-adjustments"></i>
+                    <span>Preferences</span>
+                </a>
+
+            </div>
+
+
+            <!-- SYSTEM CONFIGURATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    System Configuration
+                </div>
+
+                <a href="{% url 'general' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'general' %}active{% endif %}">
+                    <i class="ti ti-settings"></i>
+                    <span>General</span>
+                </a>
+
+                <a href="{% url 'settings_dashboard' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'settings_dashboard' %}active{% endif %}">
+                    <i class="ti ti-layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{% url 'defaults' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'defaults' %}active{% endif %}">
+                    <i class="ti ti-settings-automation"></i>
+                    <span>Defaults</span>
+                </a>
+
+                <a href="{% url 'brand' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'brand' %}active{% endif %}">
+                    <i class="ti ti-sparkles"></i>
+                    <span>Brand</span>
+                </a>
+
+            </div>
+
+
+            <!-- USER MANAGEMENT -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    User Management
+                </div>
+
+                <a href="{% url 'users' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'users' %}active{% endif %}">
+                    <i class="ti ti-user"></i>
+                    <span>Users</span>
+                </a>
+
+                <a href="{% url 'invite_user' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'invite_user' %}active{% endif %}">
+                    <i class="ti ti-user-plus"></i>
+                    <span>Invite User</span>
+                </a>
+
+                <a href="{% url 'sales_hierarchy' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'sales_hierarchy' %}active{% endif %}">
+                    <i class="ti ti-hierarchy-3"></i>
+                    <span>Sales Hierarchy</span>
+                </a>
+
+            </div>
+
+
+            <!-- EMAIL -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Email
+                </div>
+
+                <a href="{% url 'accounts' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}">
+                    <i class="ti ti-mail"></i>
+                    <span>Accounts</span>
+                </a>
+
+                <a href="{% url 'templates' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'templates' %}active{% endif %}">
+                    <i class="ti ti-file-text"></i>
+                    <span>Templates</span>
+                </a>
+
+            </div>
+
+
+            <!-- AUTOMATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Automation &amp; Rules
+                </div>
+
+                <a href="{% url 'assignment_rules' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'assignment_rules' %}active{% endif %}">
+                    <i class="ti ti-git-branch"></i>
+                    <span>Assignment Rules</span>
+                </a>
+
+                <a href="{% url 'sla_policies' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'sla_policies' %}active{% endif %}">
+                    <i class="ti ti-shield-check"></i>
+                    <span>SLA Policies</span>
+                </a>
+
+                <a href="{% url 'forms' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'forms' %}active{% endif %}">
+                    <i class="ti ti-forms"></i>
+                    <span>Forms</span>
+                </a>
+
+            </div>
+
+
+            <!-- CUSTOMIZATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Customization
+                </div>
+
+                <a href="{% url 'home_actions' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'home_actions' %}active{% endif %}">
+                    <i class="ti ti-home"></i>
+                    <span>Home Actions</span>
+                </a>
+
+            </div>
+
+
+            <!-- INTEGRATIONS -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Integrations
+                </div>
+
+                <a href="{% url 'telephony' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'telephony' %}active{% endif %}">
+                    <i class="ti ti-phone"></i>
+                    <span>Telephony</span>
+                </a>
+
+                <a href="{% url 'erpnext' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'erpnext' %}active{% endif %}">
+                    <i class="ti ti-building-community"></i>
+                    <span>ERPNext</span>
+                </a>
+
+                <a href="{% url 'lead_syncing' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'lead_syncing' %}active{% endif %}">
+                    <i class="ti ti-refresh"></i>
+                    <span>Lead Syncing</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         BRAND CONTENT
+    ========================== -->
+
+    <div class="settings-content">
+
+        <div class="settings-card">
+
+            <!-- HEADER -->
+
+            <div class="settings-content-header">
+
+                <h2>Brand Settings</h2>
+
+                <p>
+                    Configure your brand name, logo and favicon
+                </p>
+
+            </div>
+
+
+            <!-- BRAND NAME -->
+
+            <div class="settings-option brand-name-option">
+
+                <div class="settings-option-info">
+
+                    <h4>Brand Name</h4>
+
+                    <p>
+                        Set the name of your brand. Appears in the left sidebar.
+                    </p>
+
+                </div>
+
+                <input
+                    type="text"
+                    class="brand-input"
+                    placeholder="Enter Brand Name"
+                >
+
+            </div>
+
+
+            <div class="settings-divider"></div>
+
+
+            <!-- BRAND LOGO -->
+
+            <div class="brand-upload-row">
+
+                <!-- Preview -->
+
+                <div class="brand-preview-box">
+
+                    <i class="ti ti-photo"></i>
+
+                </div>
+
+
+                <!-- Content -->
+
+                <div class="brand-upload-info">
+
+                    <h4>Brand Logo</h4>
+
+                    <p>
+                        Appears in the left sidebar. Recommended size is
+                        32x32 px in PNG or SVG
+                    </p>
+
+                </div>
+
+
+                <!-- Upload -->
+
+                <label class="upload-btn">
+
+                    <i class="ti ti-photo-up"></i>
+
+                    <span>Upload</span>
+
+                    <input
+                        type="file"
+                        accept=".png,.jpg,.jpeg,.svg"
+                        hidden
+                    >
+
+                </label>
+
+            </div>
+
+
+            <!-- FAVICON -->
+
+            <div class="brand-upload-row favicon-row">
+
+                <!-- Preview -->
+
+                <div class="brand-preview-box">
+
+                    <i class="ti ti-photo"></i>
+
+                </div>
+
+
+                <!-- Content -->
+
+                <div class="brand-upload-info">
+
+                    <h4>Favicon</h4>
+
+                    <p>
+                        Appears next to the title in your browser tab.
+                        Recommended size is 32x32 px in PNG or ICO
+                    </p>
+
+                </div>
+
+
+                <!-- Upload -->
+
+                <label class="upload-btn">
+
+                    <i class="ti ti-photo-up"></i>
+
+                    <span>Upload</span>
+
+                    <input
+                        type="file"
+                        accept=".png,.ico"
+                        hidden
+                    >
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* ==================================
+   SETTINGS PAGE
+================================== */
+
+.settings-page {
+
+    width: 100%;
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+
+    padding: 20px;
+
+    background: #f8fafc;
+
+}
+
+
+/* ==================================
+   SETTINGS SIDEBAR
+================================== */
+
+.settings-sidebar {
+
+    width: 260px;
+
+    min-width: 260px;
+
+    height: calc(100vh - 120px);
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-right: none;
+
+    border-radius: 12px 0 0 12px;
+
+    overflow: hidden;
+
+}
+
+
+/* ==================================
+   SIDEBAR SCROLL
+================================== */
+
+.settings-scroll {
+
+    height: 100%;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding: 14px 10px;
+
+}
+
+
+/* Scrollbar */
+
+.settings-scroll::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+
+.settings-scroll::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb {
+
+    background: #d0d5dd;
+
+    border-radius: 10px;
+
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb:hover {
+
+    background: #98a2b3;
+
+}
+
+
+/* ==================================
+   SETTINGS SECTION
+================================== */
+
+.settings-section {
+
+    margin-bottom: 20px;
+
+}
+
+
+.settings-section-title {
+
+    padding: 0 10px;
+
+    margin-bottom: 7px;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    letter-spacing: 0.1px;
+
+}
+
+
+/* ==================================
+   MENU ITEM
+================================== */
+
+.settings-menu-item {
+
+    width: 100%;
+
+    min-height: 38px;
+
+    padding: 0 10px;
+
+    margin-bottom: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    transition: all 0.2s ease;
+
+}
+
+
+.settings-menu-item i {
+
+    font-size: 17px;
+
+    color: #667085;
+
+    flex-shrink: 0;
+
+}
+
+
+.settings-menu-item span {
+
+    white-space: nowrap;
+
+}
+
+
+.settings-menu-item:hover {
+
+    background: #f2f4f7;
+
+    color: #344054;
+
+}
+
+
+.settings-menu-item:hover i {
+
+    color: #475467;
+
+}
+
+
+/* ACTIVE */
+
+.settings-menu-item.active {
+
+    background: #f2f4f7;
+
+    color: #344054;
+
+    font-weight: 500;
+
+    border: 1px solid #eaecf0;
+
+}
+
+
+.settings-menu-item.active i {
+
+    color: #475467;
+
+}
+
+
+/* ==================================
+   SETTINGS CONTENT
+================================== */
+
+.settings-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: calc(100vh - 120px);
+
+}
+
+
+/* ==================================
+   SETTINGS CARD
+================================== */
+
+.settings-card {
+
+    width: 100%;
+
+    min-height: calc(100vh - 120px);
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 0 12px 12px 0;
+
+}
+
+
+/* ==================================
+   HEADER
+================================== */
+
+.settings-content-header {
+
+    margin-bottom: 30px;
+
+}
+
+
+.settings-content-header h2 {
+
+    margin: 0 0 7px;
+
+    color: #344054;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+}
+
+
+.settings-content-header p {
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ==================================
+   SETTINGS OPTION
+================================== */
+
+.settings-option {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding: 0;
+
+}
+
+
+.settings-option-info {
+
+    flex: 1;
+
+}
+
+
+.settings-option h4 {
+
+    margin: 0 0 5px;
+
+    color: #344054;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+}
+
+
+.settings-option p {
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+}
+
+
+/* ==================================
+   BRAND INPUT
+================================== */
+
+.brand-input {
+
+    width: 195px;
+
+    height: 40px;
+
+    padding: 0 13px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    font-size: 13px;
+
+    transition: all 0.2s ease;
+
+}
+
+
+.brand-input::placeholder {
+
+    color: #98a2b3;
+
+}
+
+
+.brand-input:focus {
+
+    border-color: #98a2b3;
+
+    box-shadow: 0 0 0 3px rgba(152, 162, 179, 0.12);
+
+}
+
+
+/* ==================================
+   DIVIDER
+================================== */
+
+.settings-divider {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin: 18px 0 14px;
+
+    background: #eaecf0;
+
+}
+
+
+/* ==================================
+   BRAND UPLOAD ROW
+================================== */
+
+.brand-upload-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 0;
+
+    min-height: 72px;
+
+}
+
+
+.favicon-row {
+
+    margin-top: 16px;
+
+}
+
+
+/* ==================================
+   PREVIEW BOX
+================================== */
+
+.brand-preview-box {
+
+    width: 72px;
+
+    height: 72px;
+
+    min-width: 72px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.brand-preview-box i {
+
+    font-size: 19px;
+
+    color: #98a2b3;
+
+}
+
+
+/* ==================================
+   BRAND UPLOAD INFO
+================================== */
+
+.brand-upload-info {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.brand-upload-info h4 {
+
+    margin: 0 0 5px;
+
+    color: #344054;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+}
+
+
+.brand-upload-info p {
+
+    margin: 0;
+
+    max-width: 500px;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    line-height: 1.55;
+
+}
+
+
+/* ==================================
+   UPLOAD BUTTON
+================================== */
+
+.upload-btn {
+
+    min-width: 84px;
+
+    height: 36px;
+
+    padding: 0 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    border-radius: 7px;
+
+    background: #f2f4f7;
+
+    color: #475467;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+
+}
+
+
+.upload-btn i {
+
+    font-size: 16px;
+
+}
+
+
+.upload-btn:hover {
+
+    background: #eaecf0;
+
+    color: #344054;
+
+}
+
+
+/* ==================================
+   RESPONSIVE
+================================== */
+
+@media (max-width: 992px) {
+
+    .settings-sidebar {
+
+        width: 220px;
+
+        min-width: 220px;
+
+    }
+
+
+    .settings-card {
+
+        padding: 25px;
+
+    }
+
+
+    .brand-input {
+
+        width: 180px;
+
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .settings-page {
+
+        flex-direction: column;
+
+        padding: 15px;
+
+    }
+
+
+    .settings-sidebar {
+
+        width: 100%;
+
+        min-width: 100%;
+
+        height: auto;
+
+        max-height: 350px;
+
+        border-radius: 12px 12px 0 0;
+
+        border-right: 1px solid #e4e7ec;
+
+        border-bottom: none;
+
+    }
+
+
+    .settings-content {
+
+        width: 100%;
+
+    }
+
+
+    .settings-card {
+
+        min-height: auto;
+
+        border-radius: 0 0 12px 12px;
+
+    }
+
+
+    .settings-option {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .brand-input {
+
+        width: 100%;
+
+    }
+
+
+    .brand-upload-row {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .upload-btn {
+
+        margin-left: 88px;
+
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .settings-page {
+
+        padding: 10px;
+
+    }
+
+
+    .settings-card {
+
+        padding: 20px;
+
+    }
+
+
+    .brand-upload-row {
+
+        align-items: flex-start;
+
+    }
+
+
+    .brand-upload-info {
+
+        flex-basis: calc(100% - 88px);
+
+    }
+
+
+    .upload-btn {
+
+        width: 100%;
+
+        margin-left: 0;
+
+        margin-top: 5px;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

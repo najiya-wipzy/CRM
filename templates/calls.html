@@ -1,0 +1,2542 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.calls-page {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.calls-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.calls-title {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 20px;
+    color: #222;
+}
+
+.calls-title span {
+    margin: 0 8px;
+    color: #999;
+}
+
+.calls-title i {
+    color: #777;
+    font-size: 17px;
+    margin-right: 7px;
+}
+
+.calls-title .ti-chevron-down {
+    margin-left: 6px;
+    margin-right: 0;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   CREATE BUTTON
+========================================================= */
+
+.create-btn {
+    height: 40px;
+    padding: 0 16px;
+    background: #111;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    background: #222;
+    color: #fff;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.calls-toolbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.calls-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+
+/* Filter boxes */
+
+.calls-select,
+.calls-input {
+    height: 34px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #777;
+    box-sizing: border-box;
+}
+
+.calls-select {
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.calls-input {
+    width: 185px;
+    outline: none;
+}
+
+.calls-input::placeholder {
+    color: #999;
+}
+
+.calls-select i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.calls-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.calls-action {
+    height: 34px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    color: #333;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.calls-action:hover {
+    background: #e9e9e9;
+}
+
+.calls-action.icon-only {
+    width: 38px;
+    padding: 0;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.calls-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table.calls-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+
+/* Header */
+
+table.calls-table thead {
+    background: #f3f3f3;
+}
+
+table.calls-table thead th {
+    text-align: left;
+    font-weight: 400;
+    color: #777;
+    font-size: 14px;
+    padding: 9px 10px;
+    height: 35px;
+    white-space: nowrap;
+}
+
+
+/* Rows */
+
+table.calls-table tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+table.calls-table tbody td {
+    padding: 10px;
+    font-size: 15px;
+    color: #222;
+    white-space: nowrap;
+}
+
+
+/* Checkbox */
+
+.calls-check {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.calls-empty {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    padding: 70px 20px;
+}
+
+.calls-empty i {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #ccc;
+}
+
+
+/* =========================================================
+   PAGINATION
+========================================================= */
+
+.calls-pagination {
+    height: 50px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.page-size {
+    display: flex;
+    gap: 3px;
+}
+
+.page-size span {
+    padding: 7px 12px;
+    color: #777;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.page-size .active {
+    background: #f3f3f3;
+    color: #222;
+}
+
+.page-count {
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   CREATE CALL MODAL
+========================================================= */
+
+.call-modal-dialog {
+    max-width: 680px;
+    width: calc(100% - 30px);
+    margin: auto;
+}
+
+.call-modal {
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(0,0,0,.18);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.call-modal-header {
+    height: 72px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.call-modal-header h4 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 600;
+    color: #111;
+}
+
+.call-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.call-edit-btn,
+.call-close-btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #222;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.call-edit-btn:hover,
+.call-close-btn:hover {
+    color: #000;
+}
+
+
+/* =========================================================
+   MODAL BODY
+========================================================= */
+
+.call-modal-body {
+    padding: 0 28px 8px;
+}
+
+.call-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.call-field {
+    margin-bottom: 16px;
+}
+
+.call-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #888;
+}
+
+.call-field label .required {
+    color: #f44336;
+}
+
+
+/* =========================================================
+   MODAL INPUT
+========================================================= */
+
+.call-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    color: #555;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.call-input::placeholder {
+    color: #999;
+}
+
+.call-input:focus {
+    background: #eeeeee;
+}
+
+select.call-input {
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.call-modal-footer {
+    padding: 5px 28px 28px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.call-create-btn {
+    height: 38px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #151515;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.call-create-btn:hover {
+    background: #000;
+}
+
+
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+.modal-backdrop.show {
+    opacity: .55;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .calls-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .calls-filters {
+        width: 100%;
+    }
+
+    .calls-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .call-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .call-modal-header {
+        padding: 0 20px;
+    }
+
+    .call-modal-body {
+        padding: 0 20px 8px;
+    }
+
+    .call-modal-footer {
+        padding: 5px 20px 22px;
+    }
+
+    .calls-filters {
+        flex-wrap: wrap;
+    }
+
+    .calls-input,
+    .calls-select {
+        flex: 1;
+    }
+}
+
+</style>
+
+
+<!-- =====================================================
+     CALL LOGS PAGE
+====================================================== -->
+
+<div class="page-wrapper">
+
+    <div class="content">
+
+        <div class="calls-page">
+
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="calls-header">
+
+                <div class="calls-title">
+
+                    Call Logs
+
+                    <span>/</span>
+
+                    <i class="ti ti-list"></i>
+
+                    List
+
+                    <i class="ti ti-chevron-down"></i>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="create-btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#createCallModal">
+
+                    <i class="ti ti-plus"></i>
+
+                    Create
+
+                </button>
+
+            </div>
+
+
+            <!-- =====================================================
+                 FILTER BAR
+            ====================================================== -->
+
+            <div class="calls-toolbar">
+
+                <div class="calls-filters">
+
+                    <!-- Telephony Medium -->
+                    <div class="calls-dropdown" id="telephonyMediumDropdown">
+                        <button type="button" class="calls-select calls-dropdown-btn">
+                            <span class="calls-selected-text">Telephony Medium</span>
+                            <i class="ti ti-chevron-down"></i>
+                        </button>
+
+                        <div class="calls-dropdown-menu">
+                            <button type="button" class="calls-option selected" data-value="">
+                                <span></span>
+                                <i class="ti ti-check"></i>
+                            </button>
+                            <button type="button" class="calls-option" data-value="Manual">
+                                <span>Manual</span>
+                            </button>
+                            <button type="button" class="calls-option" data-value="Twilio">
+                                <span>Twilio</span>
+                            </button>
+                            <button type="button" class="calls-option" data-value="Exotel">
+                                <span>Exotel</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Type -->
+                    <div class="calls-dropdown" id="callTypeFilterDropdown">
+                        <button type="button" class="calls-select calls-dropdown-btn">
+                            <span class="calls-selected-text">Type</span>
+                            <i class="ti ti-chevron-down"></i>
+                        </button>
+
+                        <div class="calls-dropdown-menu">
+                            <button type="button" class="calls-option selected" data-value="">
+                                <span></span>
+                                <i class="ti ti-check"></i>
+                            </button>
+                            <button type="button" class="calls-option" data-value="Incoming">
+                                <span>Incoming</span>
+                            </button>
+                            <button type="button" class="calls-option" data-value="Outgoing">
+                                <span>Outgoing</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="calls-dropdown" id="callStatusFilterDropdown">
+                        <button type="button" class="calls-select calls-dropdown-btn">
+                            <span class="calls-selected-text">Status</span>
+                            <i class="ti ti-chevron-down"></i>
+                        </button>
+
+                        <div class="calls-dropdown-menu status-menu">
+                            <button type="button" class="calls-option selected" data-value="">
+                                <span></span>
+                                <i class="ti ti-check"></i>
+                            </button>
+                            <button type="button" class="calls-option" data-value="Initiated"><span>Initiated</span></button>
+                            <button type="button" class="calls-option" data-value="Ringing"><span>Ringing</span></button>
+                            <button type="button" class="calls-option" data-value="In Progress"><span>In Progress</span></button>
+                            <button type="button" class="calls-option" data-value="Completed"><span>Completed</span></button>
+                            <button type="button" class="calls-option" data-value="Failed"><span>Failed</span></button>
+                            <button type="button" class="calls-option" data-value="Busy"><span>Busy</span></button>
+                            <button type="button" class="calls-option" data-value="No Answer"><span>No Answer</span></button>
+                            <button type="button" class="calls-option" data-value="Queued"><span>Queued</span></button>
+                            <button type="button" class="calls-option" data-value="Canceled"><span>Canceled</span></button>
+                        </div>
+                    </div>
+
+                    <input type="text" class="calls-input" placeholder="From Number">
+                    <input type="text" class="calls-input" placeholder="To Number">
+
+                </div>
+
+                <div class="calls-actions">
+
+                    <button type="button" class="calls-action icon-only" title="Refresh">
+                        <i class="ti ti-refresh"></i>
+                    </button>
+
+                    <button type="button" class="calls-action">
+                        <i class="ti ti-filter"></i>
+                        Filter
+                    </button>
+
+                    <button type="button" class="calls-action">
+                        <i class="ti ti-arrows-sort"></i>
+                        Sort
+                    </button>
+
+                    <button type="button" class="calls-action">
+                        <i class="ti ti-layout-columns"></i>
+                        Columns
+                    </button>
+
+                    <button type="button" class="calls-action icon-only">
+                        <i class="ti ti-dots"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 TABLE
+            ====================================================== -->
+
+            <div class="calls-table-wrap">
+
+                <table class="calls-table">
+
+                    <thead>
+
+                            <th style="width:35px;">
+
+                                <input
+                                    type="checkbox"
+                                    class="calls-check">
+
+                            </th>
+
+                            <th>Caller</th>
+
+                            <th>Receiver</th>
+
+                            <th>Type</th>
+
+                            <th>Status</th>
+
+                            <th>Duration</th>
+
+                            <th>From (number)</th>
+
+                            <th>To (number)</th>
+
+                            <th>Created On</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <!--
+                        NO DUMMY DATA HERE.
+                        Django records can be added later.
+                    -->
+
+                    <tbody>
+
+                        {% for call in calls %}
+
+<tr
+    class="call-log-row"
+    data-detail-url="{% url 'call_detail' call.pk %}"
+>
+
+    <td onclick="event.stopPropagation();">
+
+        <input
+            type="checkbox"
+            class="calls-check">
+
+    </td>
+
+    <td>
+
+        {% if call.caller %}
+            {{ call.caller.full_name }}
+        {% else %}
+            Unknown
+        {% endif %}
+
+    </td>
+
+    <td>
+
+        {% if call.call_received_by %}
+            {{ call.call_received_by.full_name }}
+        {% else %}
+            Unknown
+        {% endif %}
+
+    </td>
+
+    <td>
+        {{ call.get_call_type_display }}
+    </td>
+
+    <td>
+        {{ call.get_call_status_display }}
+    </td>
+
+    <td>
+        {{ call.duration }}s
+    </td>
+
+    <td>
+        {{ call.from_number }}
+    </td>
+
+    <td>
+        {{ call.to_number }}
+    </td>
+
+    <td>
+        {{ call.created_at|date:"d M Y, h:i A" }}
+    </td>
+
+</tr>
+
+{% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- =====================================================
+                 PAGINATION
+            ====================================================== -->
+
+<!--            <div class="calls-pagination">-->
+
+<!--                <div class="page-size">-->
+
+<!--                    <span class="active">-->
+<!--                        20-->
+<!--                    </span>-->
+
+<!--                    <span>-->
+<!--                        50-->
+<!--                    </span>-->
+
+<!--                    <span>-->
+<!--                        100-->
+<!--                    </span>-->
+
+<!--                </div>-->
+
+
+<!--                <div class="page-count">-->
+
+<!--                    {{ calls|length|default:"0" }} of-->
+<!--                    {{ calls|length|default:"0" }}-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =============================================================
+     CREATE CALL LOG MODAL
+============================================================== -->
+
+<div
+    class="modal fade"
+    id="createCallModal"
+    tabindex="-1"
+    aria-labelledby="createCallModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered call-modal-dialog">
+
+        <div class="modal-content call-modal">
+
+            <!-- HEADER -->
+            <div class="call-modal-header">
+
+                <h4 id="createCallModalLabel">Create Call Log</h4>
+
+                <div class="call-header-actions">
+
+                    <!-- Edit Fields Layout -->
+                    <button
+                        type="button"
+                        class="call-edit-btn"
+                        id="callLayoutToggle"
+                        title="Edit Fields Layout">
+                        <i class="ti ti-edit"></i>
+                    </button>
+
+                    <!-- Close -->
+                    <button
+                        type="button"
+                        class="call-close-btn"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <i class="ti ti-x"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- FIELD LAYOUT PANEL -->
+            <div class="call-layout-panel" id="callLayoutPanel">
+
+                <div class="call-layout-title">Fields Layout</div>
+
+                <label class="call-layout-option">
+                    <input type="checkbox" id="showCallerField">
+                    <span>Caller</span>
+                </label>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="call-modal-body">
+
+                <form
+                    method="POST"
+                    action="{% url 'add_call' %}"
+                    id="createCallForm">
+
+                    {% csrf_token %}
+
+                    <!-- ROW 1 -->
+                    <div class="call-row">
+
+                        <div class="call-field">
+                            <label>
+                                Type <span class="required">*</span>
+                            </label>
+
+                            <div class="call-custom-dropdown" id="modalTypeDropdown">
+
+                                <button type="button" class="call-input call-dropdown-button">
+                                    <span id="modalTypeText">Type</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="call-dropdown-menu">
+
+                                    <button type="button"
+                                            class="call-dropdown-option"
+                                            data-value="Incoming">
+                                        Incoming
+                                    </button>
+
+                                    <button type="button"
+                                            class="call-dropdown-option"
+                                            data-value="Outgoing">
+                                        Outgoing
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="call_type" id="callTypeValue" required>
+
+                        </div>
+
+                        <div class="call-field">
+
+                            <label>
+                                To Number <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                name="to_number"
+                                class="call-input"
+                                placeholder="To Number"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ROW 2 -->
+                    <div class="call-row">
+
+                        <div class="call-field">
+
+                            <label>
+                                From Number <span class="required">*</span>
+                            </label>
+
+                            <input
+                                type="text"
+                                name="from_number"
+                                class="call-input"
+                                placeholder="From Number"
+                                required>
+
+                        </div>
+
+
+                        <div class="call-field">
+
+                            <label>
+                                Status <span class="required">*</span>
+                            </label>
+
+                            <div class="call-custom-dropdown" id="modalStatusDropdown">
+
+                                <button type="button" class="call-input call-dropdown-button">
+                                    <span id="modalStatusText">Status</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="call-dropdown-menu">
+
+                                    <button type="button" class="call-dropdown-option" data-value="Initiated">Initiated</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Ringing">Ringing</button>
+                                    <button type="button" class="call-dropdown-option" data-value="In Progress">In Progress</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Completed">Completed</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Failed">Failed</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Busy">Busy</button>
+                                    <button type="button" class="call-dropdown-option" data-value="No Answer">No Answer</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Queued">Queued</button>
+                                    <button type="button" class="call-dropdown-option" data-value="Canceled">Canceled</button>
+
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="call_status" id="callStatusValue" required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ROW 3 -->
+                    <div class="call-row">
+
+                        <div class="call-field">
+
+                            <label>Duration</label>
+
+                            <input
+                                type="text"
+                                name="duration"
+                                class="call-input"
+                                placeholder="Duration">
+
+                        </div>
+
+
+                        <!-- Caller / Call Received By -->
+                        <div
+                            class="call-field"
+                            id="callerField"
+                            style="display:none;">
+
+                            <label id="callerFieldLabel">Caller</label>
+
+                            <div class="call-custom-dropdown caller-dropdown" id="callerDropdown">
+
+                                <button
+                                    type="button"
+                                    class="call-input call-dropdown-button">
+
+                                    <span id="callerSelectedText">Caller</span>
+
+                                    <i class="ti ti-chevron-down"></i>
+
+                                </button>
+
+
+                                <div class="call-dropdown-menu caller-menu">
+
+                                    <div class="caller-search-wrap">
+
+                                        <input
+                                            type="text"
+                                            id="callerSearch"
+                                            class="caller-search"
+                                            placeholder="Search"
+                                            autocomplete="off">
+
+                                        <button
+                                            type="button"
+                                            class="caller-search-clear"
+                                            id="callerSearchClear">
+                                            <i class="ti ti-x"></i>
+                                        </button>
+
+                                    </div>
+
+
+                                    <div class="caller-options" id="callerOptions">
+
+                                        {% for user in users %}
+
+                                            <button
+                                                type="button"
+                                                class="caller-option"
+                                                data-value="{{ user.id }}"
+                                                data-name="{{ user.full_name }}">
+
+                                                <span class="caller-avatar">
+                                                    {{ user.full_name|slice:":1"|upper }}
+                                                </span>
+
+                                                <span>
+                                                    {{ user.full_name }}
+                                                </span>
+
+                                            </button>
+
+                                        {% empty %}
+
+                                            <div class="caller-no-results">
+                                                No users found
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+
+
+                                    <button
+                                        type="button"
+                                        class="caller-clear"
+                                        id="callerClear">
+
+                                        <i class="ti ti-x"></i>
+                                        Clear
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="caller" id="callerValue">
+
+                            <input type="hidden" name="call_received_by" id="callReceivedByValue">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FOOTER -->
+                    <div class="call-modal-footer">
+
+                        <button
+                            type="submit"
+                            class="call-create-btn">
+                            Create
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+/* =========================================================
+   CALL LAYOUT PANEL
+========================================================= */
+
+.call-layout-panel {
+    display: none;
+    margin: 0 28px 8px;
+    padding: 12px 14px;
+    background: #f7f7f7;
+    border-radius: 10px;
+    border: 1px solid #eeeeee;
+}
+
+.call-layout-panel.show {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.call-layout-title {
+    font-size: 14px;
+    color: #555;
+}
+
+.call-layout-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.call-layout-option input {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   CALL MODAL - IMPROVED
+========================================================= */
+
+.call-modal-dialog {
+    max-width: 680px;
+    width: calc(100% - 30px);
+    margin: auto;
+}
+
+.call-modal {
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(0,0,0,.18);
+}
+
+.call-modal-header {
+    height: 72px;
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.call-modal-header h4 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 600;
+    color: #111;
+}
+
+.call-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.call-edit-btn,
+.call-close-btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #222;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.call-edit-btn:hover,
+.call-close-btn:hover {
+    color: #000;
+}
+
+.call-modal-body {
+    padding: 0 28px 8px;
+}
+
+.call-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.call-field {
+    margin-bottom: 16px;
+}
+
+.call-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #888;
+}
+
+.call-field label .required {
+    color: #f44336;
+}
+
+.call-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    color: #555;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.call-input::placeholder {
+    color: #999;
+}
+
+.call-input:focus {
+    background: #eeeeee;
+}
+
+select.call-input {
+    cursor: pointer;
+}
+
+.call-modal-footer {
+    padding: 5px 0 28px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.call-create-btn {
+    height: 38px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #151515;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.call-create-btn:hover {
+    background: #000;
+}
+
+
+/* =========================================================
+   FILTER DROPDOWNS
+========================================================= */
+
+.calls-dropdown {
+    position: relative;
+    min-width: 150px;
+}
+
+.calls-dropdown .calls-select {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+}
+
+.calls-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 215px;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.13);
+    z-index: 5000;
+    padding: 6px 0;
+    overflow: hidden;
+}
+
+.calls-dropdown.open .calls-dropdown-menu {
+    display: block;
+}
+
+.calls-dropdown-menu.status-menu {
+    width: 185px;
+    max-height: 365px;
+    overflow-y: auto;
+}
+
+.calls-option {
+    width: 100%;
+    min-height: 39px;
+    padding: 0 14px;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    font-size: 15px;
+    color: #444;
+    cursor: pointer;
+}
+
+.calls-option:hover {
+    background: #f6f6f6;
+}
+
+.calls-option.selected {
+    margin: 0 6px 3px;
+    width: calc(100% - 12px);
+    height: 34px;
+    min-height: 34px;
+    border-radius: 9px;
+    background: #f0f0f0;
+}
+
+.calls-option.selected i {
+    font-size: 17px;
+    color: #555;
+}
+
+.call-log-row {
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.call-log-row:hover {
+    background: #fafafa;
+}
+
+
+/* =========================================================
+   MODAL CUSTOM DROPDOWNS
+========================================================= */
+
+.call-custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.call-dropdown-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    cursor: pointer;
+}
+
+.call-dropdown-button span {
+    color: #999;
+}
+
+.call-custom-dropdown.has-value .call-dropdown-button span {
+    color: #555;
+}
+
+.call-dropdown-button i {
+    font-size: 14px;
+    color: #777;
+}
+
+.call-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.14);
+    z-index: 6000;
+    overflow: hidden;
+    max-height: 205px;
+    overflow-y: auto;
+}
+
+.call-custom-dropdown.open .call-dropdown-menu {
+    display: block;
+}
+
+.call-custom-dropdown.drop-up .call-dropdown-menu {
+    top: auto;
+    bottom: calc(100% + 6px);
+}
+
+.call-dropdown-option {
+    width: 100%;
+    min-height: 43px;
+    padding: 0 14px;
+    border: 0;
+    border-bottom: 1px solid #eeeeee;
+    background: #fff;
+    color: #444;
+    text-align: left;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.call-dropdown-option:hover {
+    background: #f6f6f6;
+}
+
+
+/* =========================================================
+   CALLER DROPDOWN - SEARCH + USERS + CLEAR
+========================================================= */
+
+.caller-menu {
+    width: 100%;
+    padding: 7px 0 0;
+    max-height: 235px;
+    overflow: hidden;
+}
+
+.caller-search-wrap {
+    position: relative;
+    padding: 0 8px 7px;
+}
+
+.caller-search {
+    width: 100%;
+    height: 36px;
+    padding: 0 36px 0 10px;
+    border: 1px solid #bdbdbd;
+    border-radius: 9px;
+    background: #f7f7f7;
+    outline: none;
+    font-size: 15px;
+    color: #444;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.04);
+}
+
+.caller-search:focus {
+    border-color: #999;
+    background: #fff;
+}
+
+.caller-search::placeholder {
+    color: #999;
+}
+
+.caller-search-clear {
+    position: absolute;
+    right: 15px;
+    top: 8px;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #444;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.caller-options {
+    max-height: 135px;
+    overflow-y: auto;
+}
+
+.caller-option {
+    width: 100%;
+    min-height: 40px;
+    padding: 7px 14px;
+    border: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    font-size: 15px;
+    color: #222;
+    cursor: pointer;
+}
+
+.caller-option:hover {
+    background: #f6f6f6;
+}
+
+.caller-avatar {
+    width: 26px;
+    height: 26px;
+    flex: 0 0 26px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    color: #777;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+.caller-clear {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+}
+
+.caller-clear:hover {
+    background: #f6f6f6;
+}
+
+.caller-no-results {
+    padding: 14px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   KEEP DROPDOWNS ABOVE CREATE BUTTON
+========================================================= */
+
+.call-row {
+    position: relative;
+}
+
+.call-field {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+
+    .call-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .call-modal-header {
+        padding: 0 20px;
+    }
+
+    .call-modal-body {
+        padding: 0 20px 8px;
+    }
+
+    .call-modal-footer {
+        padding: 5px 0 22px;
+    }
+
+    .call-layout-panel {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       FILTER DROPDOWNS
+    ===================================================== */
+
+    document.querySelectorAll(".calls-dropdown").forEach(function (dropdown) {
+
+        const button = dropdown.querySelector(".calls-dropdown-btn");
+        const selectedText = dropdown.querySelector(".calls-selected-text");
+        const options = dropdown.querySelectorAll(".calls-option");
+
+        button?.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            document.querySelectorAll(".calls-dropdown.open").forEach(function (other) {
+                if (other !== dropdown) {
+                    other.classList.remove("open");
+                }
+            });
+
+            dropdown.classList.toggle("open");
+
+            if (dropdown.classList.contains("open")) {
+                positionCallDropdown(dropdown);
+            }
+        });
+
+        options.forEach(function (option) {
+
+            option.addEventListener("click", function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                options.forEach(function (item) {
+                    item.classList.remove("selected");
+                });
+
+                option.classList.add("selected");
+
+                const value = option.dataset.value || "";
+                const label = option.querySelector("span")?.textContent.trim() || "";
+
+                selectedText.textContent =
+                    label || dropdown.id === "telephonyMediumDropdown"
+                        ? (label || "Telephony Medium")
+                        : (label || "Type");
+
+                if (dropdown.id === "callStatusFilterDropdown" && !label) {
+                    selectedText.textContent = "Status";
+                }
+
+                dropdown.classList.remove("open");
+            });
+
+        });
+
+    });
+
+
+    /* =====================================================
+       MODAL ELEMENTS
+    ===================================================== */
+
+    const editButton = document.getElementById("callLayoutToggle");
+    const layoutPanel = document.getElementById("callLayoutPanel");
+
+    const callerToggle = document.getElementById("showCallerField");
+    const callerField = document.getElementById("callerField");
+    const callerFieldLabel = document.getElementById("callerFieldLabel");
+
+    const callerDropdown = document.getElementById("callerDropdown");
+    const callerSelectedText = document.getElementById("callerSelectedText");
+    const callerValue = document.getElementById("callerValue");
+    const callerReceivedByValue = document.getElementById("callReceivedByValue");
+    const callerSearch = document.getElementById("callerSearch");
+    const callerSearchClear = document.getElementById("callerSearchClear");
+    const callerClear = document.getElementById("callerClear");
+    const callerOptions = document.querySelectorAll(".caller-option");
+
+    const typeDropdown = document.getElementById("modalTypeDropdown");
+    const typeText = document.getElementById("modalTypeText");
+    const typeValue = document.getElementById("callTypeValue");
+
+    const statusDropdown = document.getElementById("modalStatusDropdown");
+    const statusText = document.getElementById("modalStatusText");
+    const statusValue = document.getElementById("callStatusValue");
+
+    const createModal = document.getElementById("createCallModal");
+
+
+    /* =====================================================
+       GENERIC MODAL DROPDOWN
+    ===================================================== */
+
+    function positionCallDropdown(dropdown) {
+
+        if (!dropdown) return;
+
+        const menu = dropdown.querySelector(".call-dropdown-menu");
+        const button = dropdown.querySelector(".call-dropdown-button");
+
+        if (!menu || !button) return;
+
+        dropdown.classList.remove("drop-up");
+
+        const rect = button.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const spaceAbove = rect.top;
+
+        if (spaceBelow < 245 && spaceAbove > spaceBelow) {
+            dropdown.classList.add("drop-up");
+        }
+    }
+
+
+    function setupModalDropdown(dropdown, textElement, valueElement) {
+
+        if (!dropdown) return;
+
+        const button = dropdown.querySelector(".call-dropdown-button");
+        const options = dropdown.querySelectorAll(".call-dropdown-option");
+
+        button?.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            document.querySelectorAll(".call-custom-dropdown.open").forEach(function (other) {
+                if (other !== dropdown) {
+                    other.classList.remove("open");
+                }
+            });
+
+            dropdown.classList.toggle("open");
+        });
+
+        options.forEach(function (option) {
+
+            option.addEventListener("click", function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                const value = option.dataset.value || "";
+                const label = option.textContent.trim();
+
+                if (textElement) {
+                    textElement.textContent = label;
+                }
+
+                if (valueElement) {
+                    valueElement.value = value;
+                }
+
+                dropdown.classList.add("has-value");
+                dropdown.classList.remove("open");
+
+                if (dropdown === typeDropdown) {
+                    updateCallerField();
+                }
+
+            });
+
+        });
+    }
+
+
+    setupModalDropdown(typeDropdown, typeText, typeValue);
+    setupModalDropdown(statusDropdown, statusText, statusValue);
+
+
+    /* =====================================================
+       CALLER LABEL
+       Incoming = Call Received By
+       Outgoing = Caller
+    ===================================================== */
+
+    function updateCallerField() {
+
+        if (!callerField) {
+            return;
+        }
+
+        const type = typeValue?.value || "";
+
+        /*
+         * Incoming  -> show "Call Received By"
+         * Outgoing  -> show "Caller"
+         * Nothing selected -> hide the field
+         */
+        if (type === "Incoming") {
+
+            if (callerValue) callerValue.value = "";
+            if (callerReceivedByValue) callerReceivedByValue.value = "";
+            callerField.style.display = "block";
+
+            if (callerFieldLabel) {
+                callerFieldLabel.textContent = "Call Received By";
+            }
+
+            if (callerSelectedText && !callerValue.value) {
+                callerSelectedText.textContent = "Call Received By";
+            }
+
+        } else if (type === "Outgoing") {
+
+            if (callerValue) callerValue.value = "";
+            if (callerReceivedByValue) callerReceivedByValue.value = "";
+            callerField.style.display = "block";
+
+            if (callerFieldLabel) {
+                callerFieldLabel.textContent = "Caller";
+            }
+
+            if (callerSelectedText && !callerValue.value) {
+                callerSelectedText.textContent = "Caller";
+            }
+
+        } else {
+
+            callerField.style.display = "none";
+
+            if (callerFieldLabel) {
+                callerFieldLabel.textContent = "Caller";
+            }
+
+            if (callerSelectedText) {
+                callerSelectedText.textContent = "Caller";
+            }
+        }
+    }
+
+
+    /* =====================================================
+       EDIT FIELDS LAYOUT
+    ===================================================== */
+
+    editButton?.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        layoutPanel?.classList.toggle("show");
+
+    });
+
+
+    callerToggle?.addEventListener("change", function () {
+        updateCallerField();
+    });
+
+
+    /* =====================================================
+       CALLER DROPDOWN
+    ===================================================== */
+
+    callerDropdown?.querySelector(".call-dropdown-button")?.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            document.querySelectorAll(".call-custom-dropdown.open").forEach(
+                function (other) {
+                    if (other !== callerDropdown) {
+                        other.classList.remove("open");
+                    }
+                }
+            );
+
+            callerDropdown.classList.toggle("open");
+
+            if (callerDropdown.classList.contains("open")) {
+
+                positionCallDropdown(callerDropdown);
+
+                /* Always start with the complete user list */
+                if (callerSearch) {
+                    callerSearch.value = "";
+                }
+
+                callerOptions.forEach(function (option) {
+                    option.style.display = "flex";
+                });
+
+                callerSearch?.focus();
+            }
+        }
+    );
+
+
+    callerOptions.forEach(function (option) {
+
+        option.addEventListener("click", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const value = option.dataset.value || "";
+            const name = option.dataset.name || "";
+
+            const selectedType = typeValue?.value || "";
+
+            if (selectedType === "Incoming") {
+                callerValue.value = "";
+                callerReceivedByValue.value = value;
+            } else {
+                callerValue.value = value;
+                callerReceivedByValue.value = "";
+            }
+
+            callerSelectedText.textContent = name;
+
+            callerDropdown.classList.add("has-value");
+            callerDropdown.classList.remove("open");
+
+        });
+
+    });
+
+
+    /* Caller search */
+    callerSearch?.addEventListener("input", function () {
+
+        const query = callerSearch.value.trim().toLowerCase();
+
+        callerOptions.forEach(function (option) {
+
+            const name =
+                (option.dataset.name || option.textContent).toLowerCase();
+
+            option.style.display =
+                name.includes(query) ? "flex" : "none";
+
+        });
+
+    });
+
+
+    /* Clear search text */
+    callerSearchClear?.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        callerSearch.value = "";
+
+        callerOptions.forEach(function (option) {
+            option.style.display = "flex";
+        });
+
+        callerSearch.focus();
+
+    });
+
+
+    /* Clear selected caller */
+    callerClear?.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        callerValue.value = "";
+        if (callerReceivedByValue) callerReceivedByValue.value = "";
+        callerDropdown.classList.remove("has-value");
+
+        const type = typeValue?.value || "";
+
+        callerSelectedText.textContent =
+            type === "Incoming" ? "Call Received By" : "Caller";
+
+        callerSearch.value = "";
+
+        callerOptions.forEach(function (option) {
+            option.style.display = "flex";
+        });
+
+        callerDropdown.classList.remove("open");
+
+    });
+
+
+    /* =====================================================
+       RESET MODAL
+    ===================================================== */
+
+    createModal?.addEventListener("show.bs.modal", function () {
+
+        /* Type */
+        typeValue.value = "";
+        typeText.textContent = "Type";
+        typeDropdown.classList.remove("has-value", "open");
+
+        /* Status */
+        statusValue.value = "";
+        statusText.textContent = "Status";
+        statusDropdown.classList.remove("has-value", "open");
+
+        /* Caller */
+        callerValue.value = "";
+        if (callerReceivedByValue) callerReceivedByValue.value = "";
+        callerSelectedText.textContent = "Caller";
+        callerDropdown?.classList.remove("has-value", "open");
+
+        callerSearch.value = "";
+
+        callerOptions.forEach(function (option) {
+            option.style.display = "flex";
+        });
+
+        /* Caller field is controlled automatically by Type */
+        callerField.style.display = "none";
+
+        layoutPanel?.classList.remove("show");
+
+        updateCallerField();
+
+    });
+
+
+    /* Close every custom dropdown when clicking outside */
+    document.addEventListener("click", function () {
+
+        document.querySelectorAll(
+            ".calls-dropdown.open, .call-custom-dropdown.open"
+        ).forEach(function (dropdown) {
+
+            dropdown.classList.remove("open");
+
+        });
+
+    });
+
+
+    /* Initial state */
+    if (callerField) {
+        callerField.style.display = "none";
+    }
+
+    updateCallerField();
+
+});
+</script>
+
+<style>
+/* =========================================================
+   CALL DETAIL POPUP
+========================================================= */
+
+.call-detail-popup {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 999999 !important;
+
+    display: none;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 20px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+
+    background: rgba(0, 0, 0, .30) !important;
+}
+
+.call-detail-popup.show {
+    display: flex !important;
+}
+
+.call-detail-popup-content {
+    width: 100% !important;
+    height: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* This is the ONLY element loaded from call_detail.html. */
+.call-detail-popup-content > .call-detail-modal {
+    position: relative !important;
+
+    width: 640px !important;
+    max-width: calc(100vw - 40px) !important;
+
+    max-height: calc(100vh - 40px) !important;
+
+    margin: 0 auto !important;
+
+    background: #fff !important;
+    border-radius: 20px !important;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .18) !important;
+
+    overflow: hidden auto !important;
+    box-sizing: border-box !important;
+}
+
+.call-detail-popup-content .call-detail-header {
+    height: 72px !important;
+    padding: 0 28px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    border-bottom: 1px solid #eeeeee !important;
+    box-sizing: border-box !important;
+}
+
+.call-detail-popup-content .call-detail-title {
+    margin: 0 !important;
+    font-size: 25px !important;
+    font-weight: 600 !important;
+    color: #111 !important;
+}
+
+.call-detail-popup-content .call-detail-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 18px !important;
+}
+
+.call-detail-popup-content .call-detail-action {
+    width: 30px !important;
+    height: 30px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+
+    color: #222 !important;
+    font-size: 20px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+}
+
+.call-detail-popup-content .call-detail-body {
+    padding: 20px 36px 28px !important;
+    box-sizing: border-box !important;
+}
+
+.call-detail-popup-content .call-detail-row {
+    min-height: 52px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 18px !important;
+}
+
+.call-detail-popup-content .call-detail-icon {
+    width: 28px !important;
+    min-width: 28px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.call-detail-popup-content .call-detail-text {
+    font-size: 17px !important;
+    color: #222 !important;
+}
+
+.call-detail-popup-content .call-persons {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+.call-detail-popup-content .call-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 50% !important;
+    background: #f1f1f1 !important;
+    color: #777 !important;
+    font-size: 14px !important;
+}
+
+.call-detail-popup-content .call-arrow {
+    color: #777 !important;
+    font-size: 19px !important;
+}
+
+.call-detail-popup-content .call-deal {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.call-detail-popup-content .call-deal a {
+    color: #222 !important;
+    text-decoration: none !important;
+}
+
+.call-detail-popup-content .call-external {
+    font-size: 17px !important;
+    color: #777 !important;
+}
+
+.call-detail-popup-content .call-phone {
+    font-size: 16px !important;
+    color: #555 !important;
+}
+
+.call-detail-popup-content .call-status {
+    color: #777 !important;
+}
+
+.call-detail-loading {
+    width: 300px;
+    min-height: 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.2);
+}
+
+.call-detail-error {
+    width: 300px;
+    min-height: 140px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.2);
+}
+
+.call-log-row {
+    cursor: pointer;
+}
+
+.call-log-row:hover {
+    background: #fafafa;
+}
+
+@media (max-width: 700px) {
+    .call-detail-popup {
+        padding: 12px !important;
+    }
+
+    .call-detail-popup-content > .call-detail-modal {
+        width: 100% !important;
+        max-width: calc(100vw - 24px) !important;
+        max-height: calc(100vh - 24px) !important;
+        border-radius: 16px !important;
+    }
+
+    .call-detail-popup-content .call-detail-header {
+        height: 64px !important;
+        padding: 0 20px !important;
+    }
+
+    .call-detail-popup-content .call-detail-body {
+        padding: 18px 20px 24px !important;
+    }
+
+    .call-detail-popup-content .call-detail-title {
+        font-size: 22px !important;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       CALL DETAIL POPUP
+       Click a call row -> load call_detail.html as popup
+    ===================================================== */
+
+    let detailPopup = document.getElementById("callDetailPopup");
+
+    if (!detailPopup) {
+        detailPopup = document.createElement("div");
+        detailPopup.id = "callDetailPopup";
+        detailPopup.className = "call-detail-popup";
+        detailPopup.innerHTML = '<div class="call-detail-popup-content"></div>';
+        document.body.appendChild(detailPopup);
+    }
+
+    const popupContent = detailPopup.querySelector(".call-detail-popup-content");
+
+    function closeCallDetail(updateHistory = true) {
+        detailPopup.classList.remove("show");
+        popupContent.innerHTML = "";
+
+        if (updateHistory && history.state && history.state.callDetail) {
+            history.back();
+        }
+    }
+
+    async function openCallDetail(url) {
+
+    if (!url) {
+        return;
+    }
+
+    const detailPopup =
+        document.getElementById("callDetailPopup");
+
+    const popupContent =
+        detailPopup.querySelector(
+            ".call-detail-popup-content"
+        );
+
+    try {
+
+        /* Show popup */
+        detailPopup.classList.add("show");
+
+        popupContent.innerHTML = `
+            <div class="call-detail-loading">
+                <i class="ti ti-loader-2"></i>
+                Loading...
+            </div>
+        `;
+
+
+        /* Get popup HTML */
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+
+
+        if (!response.ok) {
+
+            console.error(
+                "Call detail response:",
+                response.status,
+                response.statusText
+            );
+
+            throw new Error(
+                "HTTP " + response.status
+            );
+        }
+
+
+        const html = await response.text();
+
+
+        /* Insert popup content */
+        popupContent.innerHTML = html;
+
+
+        /* Make sure modal exists */
+        const modal =
+            popupContent.querySelector(
+                ".call-detail-modal"
+            );
+
+        if (!modal) {
+
+            console.error(
+                "Returned HTML:",
+                html
+            );
+
+            throw new Error(
+                "Call detail modal not found."
+            );
+        }
+
+
+        /* Close button */
+
+        const closeButton =
+            popupContent.querySelector(
+                ".call-detail-close"
+            );
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                function (event) {
+
+                    event.preventDefault();
+
+                    closeCallDetail(true);
+
+                }
+            );
+
+        }
+
+
+        /* Click outside modal */
+
+        detailPopup.onclick = function (event) {
+
+            if (event.target === detailPopup) {
+
+                closeCallDetail(true);
+
+            }
+
+        };
+
+
+        /* Change URL */
+
+        history.pushState(
+            {
+                callDetail: true
+            },
+            "",
+            url
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Call detail error:",
+            error
+        );
+
+
+        popupContent.innerHTML = `
+
+            <div class="call-detail-error">
+
+                <i class="ti ti-alert-circle"></i>
+
+                <div>
+                    Unable to load call details.
+                </div>
+
+                <button
+                    type="button"
+                    id="closeCallDetailError">
+
+                    Close
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        document
+            .getElementById(
+                "closeCallDetailError"
+            )
+            ?.addEventListener(
+                "click",
+                function () {
+
+                    closeCallDetail(true);
+
+                }
+            );
+
+    }
+
+}
+
+    document.querySelectorAll(".call-log-row").forEach(function (row) {
+
+        row.addEventListener("click", function (event) {
+
+            /* Do not open details when checkbox is clicked */
+            if (event.target.closest(".calls-check")) {
+                return;
+            }
+
+            /* Do not trigger row when clicking an interactive element */
+            if (event.target.closest("button, a, input, select, textarea")) {
+                return;
+            }
+
+            const url = row.dataset.detailUrl;
+
+            if (url) {
+                openCallDetail(url);
+            }
+        });
+
+    });
+
+    /* Browser Back button closes the popup */
+    window.addEventListener("popstate", function (event) {
+
+        if (!event.state || !event.state.callDetail) {
+            detailPopup.classList.remove("show");
+            popupContent.innerHTML = "";
+        }
+
+    });
+
+});
+</script>
+
+{% endblock %}

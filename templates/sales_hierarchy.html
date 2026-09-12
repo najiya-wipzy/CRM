@@ -1,0 +1,953 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+<div class="settings-page">
+
+    <!-- =========================
+         SETTINGS SIDEBAR
+    ========================== -->
+    <div class="settings-sidebar">
+
+        <div class="settings-scroll">
+
+            <!-- USER CONFIGURATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    User Configuration
+                </div>
+
+                <a href="{% url 'settings' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                    <i class="ti ti-user-circle"></i>
+                    <span>Profile</span>
+                </a>
+
+                <a href="{% url 'preferences' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'preferences' %}active{% endif %}">
+                    <i class="ti ti-adjustments"></i>
+                    <span>Preferences</span>
+                </a>
+
+            </div>
+
+
+            <!-- SYSTEM CONFIGURATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    System Configuration
+                </div>
+
+                <a href="{% url 'general' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'general' %}active{% endif %}">
+                    <i class="ti ti-settings"></i>
+                    <span>General</span>
+                </a>
+
+                <a href="{% url 'settings_dashboard' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'settings_dashboard' %}active{% endif %}">
+                    <i class="ti ti-layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{% url 'defaults' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'defaults' %}active{% endif %}">
+                    <i class="ti ti-settings-automation"></i>
+                    <span>Defaults</span>
+                </a>
+
+                <a href="{% url 'brand' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'brand' %}active{% endif %}">
+                    <i class="ti ti-brand-tabler"></i>
+                    <span>Brand</span>
+                </a>
+
+            </div>
+
+
+            <!-- USER MANAGEMENT -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    User Management
+                </div>
+
+                <a href="{% url 'users' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'users' %}active{% endif %}">
+                    <i class="ti ti-user"></i>
+                    <span>Users</span>
+                </a>
+
+                <a href="{% url 'invite_user' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'invite_user' %}active{% endif %}">
+                    <i class="ti ti-user-plus"></i>
+                    <span>Invite User</span>
+                </a>
+
+                <a href="{% url 'sales_hierarchy' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'sales_hierarchy' %}active{% endif %}">
+                    <i class="ti ti-hierarchy-3"></i>
+                    <span>Sales Hierarchy</span>
+                </a>
+
+            </div>
+
+
+            <!-- EMAIL -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Email
+                </div>
+
+                <a href="{% url 'accounts' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}">
+                    <i class="ti ti-mail"></i>
+                    <span>Accounts</span>
+                </a>
+
+                <a href="{% url 'templates' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'templates' %}active{% endif %}">
+                    <i class="ti ti-file-text"></i>
+                    <span>Templates</span>
+                </a>
+
+            </div>
+
+
+            <!-- AUTOMATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Automation &amp; Rules
+                </div>
+
+                <a href="{% url 'assignment_rules' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'assignment_rules' %}active{% endif %}">
+                    <i class="ti ti-git-branch"></i>
+                    <span>Assignment Rules</span>
+                </a>
+
+                <a href="{% url 'sla_policies' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'sla_policies' %}active{% endif %}">
+                    <i class="ti ti-shield-check"></i>
+                    <span>SLA Policies</span>
+                </a>
+
+                <a href="{% url 'forms' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'forms' %}active{% endif %}">
+                    <i class="ti ti-forms"></i>
+                    <span>Forms</span>
+                </a>
+
+            </div>
+
+
+            <!-- CUSTOMIZATION -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Customization
+                </div>
+
+                <a href="{% url 'home_actions' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'home_actions' %}active{% endif %}">
+                    <i class="ti ti-home"></i>
+                    <span>Home Actions</span>
+                </a>
+
+            </div>
+
+
+            <!-- INTEGRATIONS -->
+            <div class="settings-section">
+
+                <div class="settings-section-title">
+                    Integrations
+                </div>
+
+                <a href="{% url 'telephony' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'telephony' %}active{% endif %}">
+                    <i class="ti ti-phone"></i>
+                    <span>Telephony</span>
+                </a>
+
+                <a href="{% url 'erpnext' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'erpnext' %}active{% endif %}">
+                    <i class="ti ti-building-community"></i>
+                    <span>ERPNext</span>
+                </a>
+
+                <a href="{% url 'lead_syncing' %}"
+                   class="settings-menu-item {% if request.resolver_match.url_name == 'lead_syncing' %}active{% endif %}">
+                    <i class="ti ti-refresh"></i>
+                    <span>Lead Syncing</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         SALES HIERARCHY CONTENT
+    ========================== -->
+    <div class="settings-content">
+
+        <div class="settings-card">
+
+            <!-- HEADER -->
+            <div class="settings-content-header">
+
+                <div class="sales-title-row">
+
+                    <div>
+                        <h2>
+                            Sales Hierarchy
+                            <i class="ti ti-info-circle hierarchy-info"></i>
+                        </h2>
+
+                        <p>
+                            Restrict visibility of Leads and Deals based on a reporting tree.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPTY STATE -->
+            <div class="hierarchy-empty-state">
+
+                <div class="hierarchy-icon">
+                    <i class="ti ti-hierarchy-3"></i>
+                </div>
+
+                <h3>Enable Sales Hierarchy</h3>
+
+                <p>
+                    Restrict visibility using a reporting tree
+                </p>
+
+                <button
+                    type="button"
+                    class="enable-btn"
+                    id="enableHierarchyBtn">
+
+                    Enable
+
+                </button>
+
+            </div>
+
+
+            <!-- ENABLED STATE -->
+            <div
+                class="hierarchy-enabled"
+                id="hierarchyEnabled">
+
+                <div class="hierarchy-enabled-header">
+
+                    <div>
+
+                        <h3>Sales Hierarchy</h3>
+
+                        <p>
+                            Manage your reporting structure and team visibility.
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="disable-btn"
+                        id="disableHierarchyBtn">
+
+                        Disable
+
+                    </button>
+
+                </div>
+
+
+                <div class="hierarchy-tree">
+
+                    <div class="tree-node">
+
+                        <div class="tree-avatar">
+                            A
+                        </div>
+
+                        <div class="tree-details">
+
+                            <strong>Administrator</strong>
+
+                            <span>Top Level</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tree-line"></div>
+
+
+                    <div class="tree-node">
+
+                        <div class="tree-avatar">
+                            M
+                        </div>
+
+                        <div class="tree-details">
+
+                            <strong>Sales Manager</strong>
+
+                            <span>Reports to Administrator</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tree-line"></div>
+
+
+                    <div class="tree-node">
+
+                        <div class="tree-avatar">
+                            S
+                        </div>
+
+                        <div class="tree-details">
+
+                            <strong>Sales User</strong>
+
+                            <span>Reports to Sales Manager</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* ===============================
+   SETTINGS PAGE
+================================ */
+
+.settings-page {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    padding: 20px;
+    background: #f8fafc;
+}
+
+
+/* ===============================
+   SETTINGS SIDEBAR
+================================ */
+
+.settings-sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: calc(100vh - 120px);
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+    border-right: none;
+
+    border-radius: 12px 0 0 12px;
+
+    overflow: hidden;
+}
+
+
+.settings-scroll {
+    height: 100%;
+
+    overflow-y: auto;
+
+    padding: 14px 10px;
+}
+
+
+/* ===============================
+   SCROLLBAR
+================================ */
+
+.settings-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.settings-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: #d0d5dd;
+    border-radius: 10px;
+}
+
+
+/* ===============================
+   SETTINGS SECTION
+================================ */
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+
+.settings-section-title {
+    padding: 0 10px;
+
+    margin-bottom: 7px;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+
+/* ===============================
+   MENU ITEM
+================================ */
+
+.settings-menu-item {
+    width: 100%;
+
+    min-height: 38px;
+
+    padding: 0 10px;
+
+    margin-bottom: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    transition: all 0.2s ease;
+}
+
+
+.settings-menu-item i {
+    font-size: 17px;
+    color: #667085;
+}
+
+
+.settings-menu-item:hover {
+    background: #f2f4f7;
+    color: #344054;
+}
+
+
+.settings-menu-item.active {
+    background: #f2f4f7;
+
+    color: #344054;
+
+    font-weight: 500;
+
+    border: 1px solid #eaecf0;
+}
+
+
+/* ===============================
+   SETTINGS CONTENT
+================================ */
+
+.settings-content {
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: calc(100vh - 120px);
+}
+
+
+/* ===============================
+   SETTINGS CARD
+================================ */
+
+.settings-card {
+    width: 100%;
+
+    min-height: calc(100vh - 120px);
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 0 12px 12px 0;
+}
+
+
+/* ===============================
+   HEADER
+================================ */
+
+.settings-content-header {
+    margin-bottom: 30px;
+}
+
+
+.settings-content-header h2 {
+    margin: 0 0 7px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #344054;
+
+    font-size: 21px;
+
+    font-weight: 600;
+}
+
+
+.settings-content-header p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* ===============================
+   INFO ICON
+================================ */
+
+.hierarchy-info {
+    color: #98a2b3;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+/* ===============================
+   EMPTY STATE
+================================ */
+
+.hierarchy-empty-state {
+    width: 100%;
+
+    min-height: 380px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+
+.hierarchy-icon {
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    background: #f2f4f7;
+
+    color: #667085;
+}
+
+
+.hierarchy-icon i {
+    font-size: 28px;
+}
+
+
+.hierarchy-empty-state h3 {
+    margin: 0 0 6px;
+
+    color: #344054;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+
+.hierarchy-empty-state p {
+    margin: 0 0 14px;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+/* ===============================
+   ENABLE BUTTON
+================================ */
+
+.enable-btn {
+    padding: 7px 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #344054;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.enable-btn:hover {
+    background: #1d2939;
+}
+
+
+/* ===============================
+   ENABLED HIERARCHY
+================================ */
+
+.hierarchy-enabled {
+    display: none;
+
+    max-width: 850px;
+
+    margin-top: 10px;
+}
+
+
+.hierarchy-enabled-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+
+.hierarchy-enabled-header h3 {
+    margin: 0 0 6px;
+
+    color: #344054;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+.hierarchy-enabled-header p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+/* ===============================
+   DISABLE BUTTON
+================================ */
+
+.disable-btn {
+    padding: 7px 14px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #475467;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+.disable-btn:hover {
+    background: #f9fafb;
+}
+
+
+/* ===============================
+   HIERARCHY TREE
+================================ */
+
+.hierarchy-tree {
+    padding-top: 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+}
+
+
+.tree-node {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.tree-avatar {
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f2f4f7;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.tree-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.tree-details strong {
+    color: #344054;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.tree-details span {
+    color: #667085;
+
+    font-size: 12px;
+}
+
+
+/* ===============================
+   TREE CONNECTOR
+================================ */
+
+.tree-line {
+    width: 1px;
+
+    height: 28px;
+
+    margin-left: 21px;
+
+    background: #d0d5dd;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 992px) {
+
+    .settings-sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .settings-card {
+        padding: 25px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .settings-page {
+        flex-direction: column;
+
+        padding: 15px;
+    }
+
+
+    .settings-sidebar {
+        width: 100%;
+
+        min-width: 100%;
+
+        height: auto;
+
+        max-height: 350px;
+
+        border-radius: 12px 12px 0 0;
+
+        border-right: 1px solid #e4e7ec;
+
+        border-bottom: none;
+    }
+
+
+    .settings-content {
+        width: 100%;
+    }
+
+
+    .settings-card {
+        min-height: auto;
+
+        border-radius: 0 0 12px 12px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .settings-card {
+        padding: 20px;
+    }
+
+
+    .hierarchy-enabled-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .disable-btn {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const enableBtn = document.getElementById("enableHierarchyBtn");
+
+    const disableBtn = document.getElementById("disableHierarchyBtn");
+
+    const emptyState = document.querySelector(".hierarchy-empty-state");
+
+    const enabledState = document.getElementById("hierarchyEnabled");
+
+
+    /* ENABLE */
+
+    enableBtn.addEventListener("click", function () {
+
+        emptyState.style.display = "none";
+
+        enabledState.style.display = "block";
+
+    });
+
+
+    /* DISABLE */
+
+    disableBtn.addEventListener("click", function () {
+
+        enabledState.style.display = "none";
+
+        emptyState.style.display = "flex";
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

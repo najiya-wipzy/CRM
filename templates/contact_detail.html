@@ -1,0 +1,1270 @@
+```
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="page-wrapper">
+
+    <div class="content contact-detail-page">
+
+
+        <!-- =====================================
+             BREADCRUMB
+        ====================================== -->
+
+        <div class="contact-breadcrumb">
+
+            <a href="{% url 'contacts' %}">
+
+                Contacts
+
+            </a>
+
+            <span>/</span>
+
+            <span>List</span>
+
+            <span>/</span>
+
+            <strong>
+
+                {{ contact.first_name }}
+                {{ contact.last_name }}
+
+            </strong>
+
+        </div>
+
+
+        <div class="contact-detail-layout">
+
+
+            <!-- =====================================
+                 LEFT SIDE
+            ====================================== -->
+
+            <div class="contact-detail-sidebar">
+
+
+                <!-- =====================================
+                     CONTACT HEADER
+                ====================================== -->
+
+                <div class="contact-profile">
+
+
+                    <!-- AVATAR -->
+
+                    <div class="contact-detail-avatar">
+
+                        {{ contact.first_name|slice:":1"|upper }}
+
+                    </div>
+
+
+                    <!-- NAME -->
+
+                    <div class="contact-profile-name">
+
+                        <h4>
+
+                            {% if contact.salutation %}
+
+                                {{ contact.salutation }}
+
+                            {% endif %}
+
+                            {{ contact.first_name }}
+
+                            {{ contact.last_name }}
+
+                        </h4>
+
+
+                        {% if contact.company_name %}
+
+                            <p>
+
+                                {{ contact.company_name.organization_name }}
+
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =====================================
+                     ACTION BUTTONS
+                ====================================== -->
+
+                <div class="contact-actions">
+
+
+                    <a href="{% url 'delete_contact' contact.id %}"
+                       class="btn btn-danger">
+
+                        <i class="ti ti-trash"></i>
+
+                        Delete
+
+                    </a>
+
+
+                </div>
+
+
+                <hr>
+
+
+                <!-- =====================================
+                     DETAILS HEADER
+                ====================================== -->
+
+                <div class="details-header">
+
+                    <h6>
+
+                        <i class="ti ti-chevron-down"></i>
+
+                        Details
+
+                    </h6>
+
+                </div>
+
+
+                <!-- =====================================
+                     SALUTATION
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Salutation
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.salutation %}
+
+                            {{ contact.salutation }}
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                -
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     FIRST NAME
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        First Name
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {{ contact.first_name|default:"-" }}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     LAST NAME
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Last Name
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {{ contact.last_name|default:"-" }}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     EMAIL
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Email Address
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.email %}
+
+                            <a href="mailto:{{ contact.email }}">
+
+                                {{ contact.email }}
+
+                            </a>
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                Add Email...
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     MOBILE
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Mobile Number
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.mobile_no %}
+
+                            {{ contact.mobile_no }}
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                Add Mobile...
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     GENDER
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Gender
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.gender %}
+
+                            {{ contact.gender }}
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                -
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     ORGANIZATION
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Organization
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.company_name %}
+
+                            <a href="{% url 'organization_detail' contact.company_name.id %}"
+                               class="organization-link">
+
+                                {{ contact.company_name.organization_name }}
+
+                            </a>
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                Add Organization...
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     DESIGNATION
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Designation
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.designation %}
+
+                            {{ contact.designation }}
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                Add Designation...
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <!-- =====================================
+                     ADDRESS
+                ====================================== -->
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+
+                        Address
+
+                    </span>
+
+
+                    <span class="detail-value">
+
+                        {% if contact.address %}
+
+                            {{ contact.address }}
+
+                        {% else %}
+
+                            <span class="empty-value">
+
+                                Add Address...
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =====================================
+                 RIGHT SIDE
+            ====================================== -->
+
+            <div class="contact-detail-content">
+
+
+                <!-- =================================
+                     TABS
+                ================================== -->
+
+                <ul class="nav contact-tabs"
+                    id="contactTabs">
+
+
+                    <!-- DEALS TAB -->
+
+                    <li class="nav-item">
+
+                        <button
+                            class="nav-link active"
+                            data-bs-toggle="tab"
+                            data-bs-target="#dealsTab"
+                            type="button">
+
+                            <i class="ti ti-bolt"></i>
+
+                            Deals
+
+                            <span class="tab-count">
+
+                                {{ contact_deals|length }}
+
+                            </span>
+
+                        </button>
+
+                    </li>
+
+
+                </ul>
+
+
+                <!-- =================================
+                     TAB CONTENT
+                ================================== -->
+
+                <div class="tab-content">
+
+
+                    <!-- =================================
+                         DEALS TAB
+                    ================================== -->
+
+                    <div
+                        class="tab-pane fade show active"
+                        id="dealsTab">
+
+
+                        <div class="detail-table-wrapper">
+
+
+                            <table class="table detail-table">
+
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+
+                                            Deal
+
+                                        </th>
+
+                                        <th>
+
+                                            Organization
+
+                                        </th>
+
+                                        <th>
+
+                                            Amount
+
+                                        </th>
+
+                                        <th>
+
+                                            Status
+
+                                        </th>
+
+                                        <th>
+
+                                            Owner
+
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+
+                                    {% for deal in contact_deals %}
+
+
+                                    <tr>
+
+
+                                        <!-- DEAL -->
+
+                                        <td>
+
+                                            <div class="table-deal">
+
+                                                <div class="small-avatar">
+
+                                                    {{ deal.deal_name|slice:":1"|upper }}
+
+                                                </div>
+
+
+                                                <span>
+
+                                                    {{ deal.deal_name }}
+
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <!-- ORGANIZATION -->
+
+                                        <td>
+
+                                            {% if deal.organization %}
+
+                                                {{ deal.organization.organization_name }}
+
+                                            {% else %}
+
+                                                -
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                        <!-- AMOUNT -->
+
+                                        <td>
+
+                                            ₹ {{ deal.deal_value|floatformat:2 }}
+
+                                        </td>
+
+
+                                        <!-- STATUS -->
+
+                                        <td>
+
+                                            <span class="status-dot"></span>
+
+                                            {{ deal.get_deal_status_display }}
+
+                                        </td>
+
+
+                                        <!-- OWNER -->
+
+                                        <td>
+
+                                            {% if deal.deal_owner %}
+
+                                                {{ deal.deal_owner.full_name }}
+
+                                            {% else %}
+
+                                                -
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                    {% empty %}
+
+
+                                    <tr>
+
+                                        <td
+                                            colspan="5"
+                                            class="empty-table">
+
+                                            No deals found
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    {% endfor %}
+
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+                    </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<style>
+
+
+/* =====================================
+   PAGE
+===================================== */
+
+.contact-detail-page {
+
+    padding: 18px 20px;
+
+}
+
+
+/* =====================================
+   BREADCRUMB
+===================================== */
+
+.contact-breadcrumb {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+
+    font-size: 14px;
+
+}
+
+
+.contact-breadcrumb a {
+
+    color: #5c6570;
+
+    text-decoration: none;
+
+}
+
+
+.contact-breadcrumb strong {
+
+    color: #252525;
+
+}
+
+
+/* =====================================
+   MAIN LAYOUT
+===================================== */
+
+.contact-detail-layout {
+
+    display: flex;
+
+    min-height: 600px;
+
+    border-top: 1px solid #e5e7eb;
+
+}
+
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+.contact-detail-sidebar {
+
+    width: 320px;
+
+    min-width: 320px;
+
+    padding: 20px;
+
+    border-right: 1px solid #e5e7eb;
+
+}
+
+
+/* =====================================
+   PROFILE
+===================================== */
+
+.contact-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+
+.contact-detail-avatar {
+
+    width: 58px;
+
+    height: 58px;
+
+    min-width: 58px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f1f3f5;
+
+    color: #6b7280;
+
+    font-size: 18px;
+
+}
+
+
+.contact-profile-name h4 {
+
+    margin: 0;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    color: #252525;
+
+}
+
+
+.contact-profile-name p {
+
+    margin: 4px 0 0;
+
+    font-size: 13px;
+
+    color: #69727c;
+
+}
+
+
+/* =====================================
+   ACTIONS
+===================================== */
+
+.contact-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 15px;
+
+}
+
+
+.contact-actions .btn-danger {
+
+    font-size: 13px;
+
+}
+
+
+.link-btn {
+
+    border: 1px solid #dfe3e7;
+
+    background: #ffffff;
+
+}
+
+
+/* =====================================
+   DETAILS
+===================================== */
+
+.details-header {
+
+    margin: 15px 0 18px;
+
+}
+
+
+.details-header h6 {
+
+    margin: 0;
+
+    font-weight: 600;
+
+    color: #374151;
+
+}
+
+
+.detail-row {
+
+    display: grid;
+
+    grid-template-columns: 110px minmax(0, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 17px;
+
+    font-size: 13px;
+
+}
+
+
+.detail-label {
+
+    color: #7a838d;
+
+}
+
+
+.detail-value {
+
+    color: #374151;
+
+    font-weight: 500;
+
+    word-break: break-word;
+
+}
+
+
+.detail-value a {
+
+    color: #374151;
+
+    text-decoration: none;
+
+}
+
+
+.detail-value a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+.organization-link {
+
+    color: #374151;
+
+}
+
+
+.empty-value {
+
+    color: #8b949e;
+
+    font-weight: 400;
+
+}
+
+
+/* =====================================
+   RIGHT CONTENT
+===================================== */
+
+.contact-detail-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+/* =====================================
+   TABS
+===================================== */
+
+.contact-tabs {
+
+    border-bottom: 1px solid #e5e7eb;
+
+    padding-left: 18px;
+
+}
+
+
+.contact-tabs .nav-link {
+
+    border: none;
+
+    border-radius: 0;
+
+    color: #5c6570;
+
+    padding: 14px 18px;
+
+    font-size: 14px;
+
+}
+
+
+.contact-tabs .nav-link:hover {
+
+    color: #252525;
+
+}
+
+
+.contact-tabs .nav-link.active {
+
+    color: #252525;
+
+    border-bottom: 2px solid #252525;
+
+    background: transparent;
+
+}
+
+
+.tab-count {
+
+    margin-left: 4px;
+
+}
+
+
+/* =====================================
+   TABLE
+===================================== */
+
+.detail-table-wrapper {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+}
+
+
+.detail-table {
+
+    margin: 0;
+
+    min-width: 700px;
+
+}
+
+
+.detail-table thead {
+
+    background: #f7f8fa;
+
+}
+
+
+.detail-table th {
+
+    padding: 12px 18px;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: #69727c;
+
+    white-space: nowrap;
+
+}
+
+
+.detail-table td {
+
+    padding: 14px 18px;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+
+}
+
+
+/* =====================================
+   TABLE DEAL
+===================================== */
+
+.table-deal {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 500;
+
+}
+
+
+.table-organization {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 500;
+
+}
+
+
+.table-organization a {
+
+    color: #374151;
+
+    text-decoration: none;
+
+}
+
+
+.table-organization a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+/* =====================================
+   SMALL AVATAR
+===================================== */
+
+.small-avatar {
+
+    width: 24px;
+
+    height: 24px;
+
+    min-width: 24px;
+
+    border-radius: 50%;
+
+    background: #f1f3f5;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+}
+
+
+/* =====================================
+   STATUS
+===================================== */
+
+.status-dot {
+
+    display: inline-block;
+
+    width: 7px;
+
+    height: 7px;
+
+    background: #6b7280;
+
+    border-radius: 50%;
+
+    margin-right: 7px;
+
+}
+
+
+/* =====================================
+   EMPTY TABLE
+===================================== */
+
+.empty-table {
+
+    text-align: center;
+
+    padding: 40px !important;
+
+    color: #8b949e;
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 992px) {
+
+
+    .contact-detail-sidebar {
+
+        width: 290px;
+
+        min-width: 290px;
+
+    }
+
+
+}
+
+
+@media (max-width: 768px) {
+
+
+    .contact-detail-page {
+
+        padding: 15px;
+
+    }
+
+
+    .contact-detail-layout {
+
+        flex-direction: column;
+
+    }
+
+
+    .contact-detail-sidebar {
+
+        width: 100%;
+
+        min-width: 100%;
+
+        border-right: none;
+
+        border-bottom: 1px solid #e5e7eb;
+
+    }
+
+
+    .contact-tabs {
+
+        padding-left: 0;
+
+    }
+
+
+    .contact-tabs .nav-link {
+
+        padding: 14px 12px;
+
+    }
+
+
+}
+
+
+@media (max-width: 520px) {
+
+
+    .contact-breadcrumb {
+
+        font-size: 12px;
+
+        gap: 5px;
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .contact-profile-name h4 {
+
+        font-size: 16px;
+
+    }
+
+
+    .detail-row {
+
+        grid-template-columns: 105px 1fr;
+
+        font-size: 12px;
+
+    }
+
+
+}
+
+
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login | CRMS - Advanced Bootstrap 5 Admin Template for Customer Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Streamline your business with our advanced CRM template. Easily integrate and customize to manage sales, support, and customer interactions efficiently. Perfect for any business size">
+	<meta name="keywords" content="Advanced CRM template, customer relationship management, business CRM, sales optimization, customer support software, CRM integration, customizable CRM, business tools, enterprise CRM solutions">
+	<meta name="author" content="Dreams Technologies">
+	<meta name="robots" content="index, follow">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+
+    <!-- Apple Icon -->
+    <link rel="apple-touch-icon" href="{% static 'images/apple-icon.png' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Tabler Icon CSS -->
+    <link rel="stylesheet" href="{% static 'css/tabler-icons.min.css' %}">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" id="app-style">
+
+</head>
+
+
+<body class="account-page bg-white">
+
+    <!-- Begin Wrapper -->
+    <div class="main-wrapper">
+
+       <div class="overflow-hidden p-3 acc-vh">
+
+            <!-- start row -->
+            <div class="row vh-100 w-100 g-0">
+
+                <div class="col-lg-6 vh-100 overflow-y-auto overflow-x-hidden">
+
+
+                     <!-- start row -->
+                    <div class="row h-100">
+
+                        <div class="col-md-10 mx-auto d-flex align-items-center">
+<!--                            <form action="index.html" class=" vh-100 d-flex justify-content-between flex-column p-4 pb-0">-->
+                                <form action="{% url 'login' %}" method="POST" class="w-100 p-4">
+    {% csrf_token %}
+                                    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger mb-3">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+                                <div class="text-center mb-4 auth-logo">
+                                    <img src="{% static 'images/logo.svg' %}" class="img-fluid" alt="Logo">
+                                </div>
+                                <div>
+                                    <div class="mb-3">
+                                        <h3 class="mb-2">Sign In</h3>
+                                        <p class="mb-0">Access the CRMS panel using your email and passcode.</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">User Name</label>
+                                        <div class="input-group input-group-flat">
+                                            <input type="text" name="username" class="form-control" required>
+                                            <span class="input-group-text">
+                                                <i class="ti ti-mail"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Password</label>
+                                        <div class="input-group input-group-flat pass-group">
+                                            <input type="password" name="password" class="form-control pass-input" required>
+                                            <span class="input-group-text toggle-password ">
+                                                <i class="ti ti-eye-off"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <div class="form-check form-check-md d-flex align-items-center">
+                                            <input class="form-check-input mt-0" type="checkbox" value="" id="checkebox-md" checked="">
+                                            <label class="form-check-label text-dark ms-1" for="checkebox-md">
+                                                Remember Me
+                                            </label>
+                                        </div>
+                                        <div class="text-end">
+                                            <a href="forgot-password.html" class="link-danger fw-medium link-hover">Forgot Password?</a>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                                    </div>
+                                    <div class="mb-3">
+                                        <p class="mb-0">New on our platform?<a href="register.html" class="link-indigo fw-bold link-hover"> Create an account</a></p>
+                                    </div>
+                                    <div class="or-login text-center position-relative mb-3">
+                                        <h6 class="fs-14 mb-0 position-relative text-body">OR</h6>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center flex-wrap gap-2 mb-3">
+                                        <div class="text-center flex-fill">
+                                            <a href="javascript:void(0);" class="p-2 btn btn-info d-flex align-items-center justify-content-center">
+                                                <img class="img-fluid m-1" src="{% static 'images/facebook-logo.svg' %}" alt="Facebook">
+                                            </a>
+                                        </div>
+                                        <div class="text-center flex-fill">
+                                            <a href="javascript:void(0);" class="p-2 btn btn-outline-light d-flex align-items-center justify-content-center">
+                                                <img class="img-fluid m-1" src="{% static 'images/google-logo.svg' %}" alt="Google">
+                                            </a>
+                                        </div>
+                                        <div class="text-center flex-fill">
+                                            <a href="javascript:void(0);" class="p-2 btn btn-dark d-flex align-items-center justify-content-center">
+                                                <img class="img-fluid m-1" src="{% static 'images/apple-logo.svg' %}" alt="Apple">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center pb-4">
+                                    <p class="text-dark mb-0">Copyright &copy; <script>document.write(new Date().getFullYear())</script> - CRMS</p>
+                                </div>
+                            </form>
+                        </div> <!-- end col -->
+
+                    </div>
+                    <!-- end row -->
+
+                </div>
+
+                <div class="col-lg-6 account-bg-01"></div> <!-- end col -->
+
+            </div>
+            <!-- end row -->
+
+        </div>
+
+    </div>
+    <!-- End Wrapper -->
+
+
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Main JS -->
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

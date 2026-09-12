@@ -1,0 +1,6153 @@
+```
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+        <!-- Page Header -->
+        <div class="d-flex align-items-center justify-content-between gap-2 mb-4">
+
+            <div class="d-flex align-items-center gap-2">
+
+    <h4 class="mb-0 fw-normal">Leads</h4>
+
+    <span class="text-muted">/</span>
+
+
+    <div class="view-dropdown">
+
+        <button
+            type="button"
+            class="view-toggle-btn"
+            id="leadViewToggleBtn"
+        >
+
+            <i class="ti ti-list"></i>
+
+            <span id="leadCurrentViewText">
+                List
+            </span>
+
+            <i class="ti ti-chevron-down"></i>
+
+        </button>
+
+
+        <div
+            class="view-menu"
+            id="leadViewMenu"
+        >
+
+
+            <!-- LIST -->
+
+            <button
+                type="button"
+                class="view-item"
+                onclick="changeLeadView('list')"
+            >
+
+                <i class="ti ti-list"></i>
+
+                List
+
+            </button>
+
+
+            <!-- KANBAN -->
+
+            <button
+                type="button"
+                class="view-item"
+                onclick="changeLeadView('kanban')"
+            >
+
+                <i class="ti ti-layout-kanban"></i>
+
+                Kanban
+
+            </button>
+
+
+            <!-- GROUP BY -->
+
+            <button
+                type="button"
+                class="view-item"
+                onclick="changeLeadView('group')"
+            >
+
+                <i class="ti ti-list-details"></i>
+
+                Group By
+
+            </button>
+
+
+            <div class="view-divider"></div>
+
+
+            <!-- CREATE VIEW -->
+
+            <button
+                type="button"
+                class="view-item"
+                onclick="createLeadView()"
+            >
+
+                <i class="ti ti-plus"></i>
+
+                Create View
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+            <button type="button"
+        class="btn btn-dark"
+        data-bs-toggle="modal"
+        data-bs-target="#createLeadModal">
+    <i class="ti ti-plus me-1"></i>
+    Create
+</button>
+
+        </div>
+
+
+        <!-- Filters -->
+        <div class="lead-toolbar-wrapper">
+        <div class="lead-toolbar">
+
+            <!-- Full Name -->
+            <input type="text" id="leadNameFilter"
+                   class="form-control"
+                   placeholder="Full Name">
+
+            <!-- Email -->
+            <input type="text" id="leadEmailFilter"
+                   class="form-control"
+                   placeholder="Email">
+
+            <!-- Organization -->
+            <input type="text" id="leadOrganizationFilter"
+                   class="form-control"
+                   placeholder="Organization">
+
+            <!-- STATUS DROPDOWN -->
+<div class="lead-filter-dropdown">
+
+    <button type="button"
+            class="lead-dropdown-btn"
+            data-dropdown="statusFilterDropdown">
+
+        <span class="selected-text">Status</span>
+
+        <i class="ti ti-chevron-down"></i>
+
+    </button>
+
+
+    <div class="lead-dropdown-menu"
+         id="statusFilterDropdown">
+
+        <div class="dropdown-search">
+
+            <input type="text"
+                   class="form-control dropdown-search-input"
+                   placeholder="Search">
+
+            <i class="ti ti-x dropdown-search-clear"></i>
+
+        </div>
+
+
+        <div class="dropdown-options">
+
+            {% for value, label in lead_status_choices %}
+
+            <div class="lead-dropdown-option"
+                 data-value="{{ value }}"
+                 data-label="{{ label }}">
+
+                {{ label }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="dropdown-clear">
+
+            <i class="ti ti-x"></i>
+
+            <span>Clear</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SOURCE DROPDOWN -->
+<div class="lead-filter-dropdown">
+
+    <button type="button"
+            class="lead-dropdown-btn"
+            data-dropdown="sourceDropdown">
+
+        <span class="selected-text">Source</span>
+
+        <i class="ti ti-chevron-down"></i>
+
+    </button>
+
+
+    <div class="lead-dropdown-menu"
+         id="sourceDropdown">
+
+        <div class="dropdown-search">
+
+            <input type="text"
+                   class="form-control dropdown-search-input"
+                   placeholder="Search">
+
+            <i class="ti ti-x dropdown-search-clear"></i>
+
+        </div>
+
+
+        <div class="dropdown-options">
+
+            {% for value, label in source_choices %}
+
+            <div class="lead-dropdown-option"
+                 data-value="{{ value }}"
+                 data-label="{{ label }}">
+
+                {{ label }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="dropdown-clear">
+
+            <i class="ti ti-x"></i>
+
+            <span>Clear</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+            <!-- Refresh -->
+            <button type="button"
+                    class="btn btn-outline-light shadow"
+                    title="Refresh">
+                <i class="ti ti-refresh"></i>
+            </button>
+
+            <!-- Filter -->
+            <button type="button"
+                    class="btn btn-outline-light shadow">
+                <i class="ti ti-filter me-1"></i>
+                Filter
+            </button>
+
+            <!-- Sort -->
+            <button type="button"
+                    class="btn btn-outline-light shadow">
+                <i class="ti ti-arrows-sort me-1"></i>
+                Sort
+            </button>
+
+            <!-- Columns -->
+            <button type="button"
+                    class="btn btn-outline-light shadow">
+                <i class="ti ti-columns-3 me-1"></i>
+                Columns
+            </button>
+
+            <!-- More -->
+            <button type="button"
+                    class="btn btn-outline-light shadow">
+                <i class="ti ti-dots"></i>
+            </button>
+
+        </div>
+        </div>
+
+        <div
+    class="leads-view active"
+    id="leadListView"
+>
+
+        <div class="leads-table-wrapper">
+
+    <div class="table-scroll">
+        <table class="table leads-table mb-0">
+
+            <thead>
+                <tr>
+                    <th><input type="checkbox" class="form-check-input"></th>
+                    <th>Full Name</th>
+                    <th>Organization</th>
+                    <th>Status</th>
+                    <th>Email</th>
+                    <th>Mobile No.</th>
+                    <th>Assigned To</th>
+                    <th>Last Modified</th>
+                    <th>Website</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for lead in leads %}
+                <tr class="lead-row"
+    data-status="{{ lead.lead_status }}"
+    data-source="{{ lead.source|default:'' }}"
+    onclick="window.location.href='{% url 'lead_detail' lead.id %}'">
+                    <td>
+                        <input type="checkbox" class="form-check-input">
+                    </td>
+
+                    <td class="lead-name">
+                        {% if lead.salutation %}{{ lead.get_salutation_display }} {% endif %}
+                        {{ lead.first_name }}{% if lead.last_name %} {{ lead.last_name }}{% endif %}
+                    </td>
+
+                    <td class="lead-organization">{{ lead.organization.organization_name|default:"-" }}</td>
+
+                    <td>
+                        <span class="status-dot status-dot-{{ lead.lead_status }}"></span>
+                        <span class="lead-status">{{ lead.get_lead_status_display }}</span>
+                    </td>
+
+                    <td class="lead-email">{{ lead.email|default:"-" }}</td>
+
+                    <td>
+                        <i class="ti ti-phone"></i>
+                        {{ lead.mobile_no|default:"-" }}
+                    </td>
+
+                    <td>{{ lead.lead_owner.full_name|default:"-" }}</td>
+
+                    <td>
+                        {% if lead.updated_at %}
+                            {{ lead.updated_at|timesince }} ago
+                        {% else %}
+                            yesterday
+                        {% endif %}
+                    </td>
+
+                    <td>{% if lead.website %}<a href="{{ lead.website }}" target="_blank">{{ lead.website }}</a>{% else %}-{% endif %}</td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center py-4">
+                        No leads found.
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+    </div>
+
+<!-- =========================
+     KANBAN VIEW
+========================= -->
+
+<div
+    class="leads-view"
+    id="leadKanbanView"
+>
+
+    <div class="kanban-wrapper">
+
+        <div
+            class="kanban-board"
+            id="leadKanbanBoard"
+        >
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     GROUP BY VIEW
+========================= -->
+
+<div
+    class="leads-view"
+    id="leadGroupView"
+>
+
+    <div
+        class="group-wrapper"
+        id="leadGroupWrapper"
+    >
+
+    </div>
+
+</div>
+
+<!-- Create Lead Modal -->
+<div class="modal fade"
+     id="createLeadModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered create-lead-modal">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="modal-header">
+
+                <h4 class="modal-title">
+                    Create Lead
+                </h4>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+
+            <!-- Form -->
+            <form method="POST"
+                  action="{% url 'add_lead' %}"
+                  id="createLeadForm">
+
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <div class="lead-form-grid-3">
+
+                        <!-- Salutation -->
+                        <div class="field-col">
+                            <label class="field-label">Salutation</label>
+                            <select class="field-select" name="salutation">
+                                <option value="">Salutation</option>
+                                {% for value, label in salutation_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="field-col">
+                            <label class="field-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   class="field-input"
+                                   name="first_name"
+                                   placeholder="First Name"
+                                   required>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="field-col">
+                            <label class="field-label">Last Name</label>
+                            <input type="text"
+                                   class="field-input"
+                                   name="last_name"
+                                   placeholder="Last Name">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="field-col">
+                            <label class="field-label">Email</label>
+                            <input type="email"
+                                   class="field-input"
+                                   name="email"
+                                   placeholder="Email">
+                        </div>
+
+                        <!-- Mobile -->
+                        <div class="field-col">
+                            <label class="field-label">Mobile No.</label>
+                            <input type="tel"
+                                   class="field-input"
+                                   name="mobile_no"
+                                   placeholder="Mobile No.">
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="field-col">
+                            <label class="field-label">Gender</label>
+                            <select class="field-select" name="gender">
+                                <option value="">Gender</option>
+                                {% for value, label in gender_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="field-divider"></div>
+
+                    <div class="lead-form-grid-3">
+
+                        <!-- Organization -->
+                        <div class="field-col">
+                            <label class="field-label">Organization</label>
+
+                            <div class="crm-custom-dropdown" id="organizationDropdown">
+
+                                <button type="button" class="crm-dropdown-button">
+                                    <span class="crm-selected-text">Organization</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu">
+
+                                    <div class="crm-dropdown-search">
+                                        <input type="text"
+                                               class="crm-search-input"
+                                               placeholder="Search">
+                                        <i class="ti ti-x crm-search-clear"></i>
+                                    </div>
+
+                                    <div class="crm-dropdown-options">
+                                        {% for organization in organizations %}
+                                            <div class="crm-dropdown-option"
+                                                 data-value="{{ organization.id }}"
+                                                 data-label="{{ organization.organization_name }}">
+                                                {{ organization.organization_name }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="crm-dropdown-footer">
+                                        <div class="crm-create-new" data-type="organization">
+                                            <i class="ti ti-plus"></i> Create New
+                                        </div>
+                                        <div class="crm-clear">
+                                            <i class="ti ti-x"></i> Clear
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <input type="hidden" name="organization" class="crm-dropdown-value">
+
+                            </div>
+                        </div>
+
+                        <!-- Website -->
+                        <div class="field-col">
+                            <label class="field-label">Website</label>
+                            <input type="url"
+                                   class="field-input"
+                                   name="website"
+                                   placeholder="Website">
+                        </div>
+
+                        <!-- Employees -->
+                        <div class="field-col">
+                            <label class="field-label">No. of Employees</label>
+                            <select class="field-select" name="no_of_employees">
+                                <option value="">No. of Employees</option>
+                                {% for value, label in employee_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Territory -->
+                        <div class="field-col">
+                            <label class="field-label">Territory</label>
+
+                            <div class="crm-custom-dropdown" id="territoryDropdown">
+
+                                <button type="button" class="crm-dropdown-button">
+                                    <span class="crm-selected-text">Territory</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu">
+
+                                    <div class="crm-dropdown-search">
+                                        <input type="text"
+                                               class="crm-search-input"
+                                               placeholder="Search">
+                                        <i class="ti ti-x crm-search-clear"></i>
+                                    </div>
+
+                                    <div class="crm-dropdown-options">
+                                        {% for territory in territories %}
+                                            <div class="crm-dropdown-option"
+                                                 data-value="{{ territory.id }}"
+                                                 data-label="{{ territory.territory_name }}">
+                                                {{ territory.territory_name }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="crm-dropdown-footer">
+                                        <div class="crm-create-new" data-type="territory">
+                                            <i class="ti ti-plus"></i> Create New
+                                        </div>
+                                        <div class="crm-clear">
+                                            <i class="ti ti-x"></i> Clear
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <input type="hidden" name="territory" class="crm-dropdown-value">
+
+                            </div>
+                        </div>
+
+                        <!-- Annual Revenue -->
+                        <div class="field-col">
+                            <label class="field-label">Annual Revenue</label>
+                            <input type="number"
+                                   class="field-input"
+                                   name="annual_revenue"
+                                   value="0.00">
+                        </div>
+
+                        <!-- Industry -->
+                        <div class="field-col">
+                            <label class="field-label">Industry</label>
+
+                            <div class="crm-custom-dropdown" id="industryDropdown">
+
+                                <button type="button" class="crm-dropdown-button">
+                                    <span class="crm-selected-text">Industry</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu">
+
+                                    <div class="crm-dropdown-search">
+                                        <input type="text"
+                                               class="crm-search-input"
+                                               placeholder="Search"
+                                               autofocus>
+                                        <i class="ti ti-x crm-search-clear"></i>
+                                    </div>
+
+                                    <div class="crm-dropdown-options">
+                                        {% for industry in industries %}
+                                            <div class="crm-dropdown-option"
+                                                 data-value="{{ industry.id }}"
+                                                 data-label="{{ industry.industry_name }}">
+                                                {{ industry.industry_name }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="crm-dropdown-footer">
+                                        <div class="crm-create-new" data-type="industry">
+                                            <i class="ti ti-plus"></i> Create New
+                                        </div>
+                                        <div class="crm-clear">
+                                            <i class="ti ti-x"></i> Clear
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <input type="hidden" name="industry" class="crm-dropdown-value">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="field-divider"></div>
+
+                    <div class="lead-form-grid-2">
+
+                        <!-- Status -->
+                        <div class="field-col">
+                            <label class="field-label">Status <span class="text-danger">*</span></label>
+
+                            <div class="crm-custom-dropdown status-dropdown" id="statusDropdown">
+
+                                <button type="button" class="crm-dropdown-button status-dropdown-button">
+                                    <span class="status-dropdown-selected">
+                                        <span class="status-swatch" data-status="new"></span>
+                                        <span class="status-dropdown-text">New</span>
+                                    </span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu status-dropdown-menu">
+                                    <div class="status-dropdown-options">
+                                        {% for value, label in lead_status_choices %}
+                                        <div class="status-dropdown-option{% if value == 'new' %} selected{% endif %}"
+                                             data-value="{{ value }}"
+                                             data-label="{{ label }}">
+                                            <span class="status-swatch" data-status="{{ value }}"></span>
+                                            <span class="status-dropdown-option-text">{{ label }}</span>
+                                            <i class="ti ti-check status-check"></i>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="lead_status" class="crm-dropdown-value" value="new" required>
+
+                            </div>
+                        </div>
+
+                        <!-- Lead Owner -->
+                        <div class="field-col">
+                            <label class="field-label">Lead Owner</label>
+
+                            <div class="owner-select-wrap">
+                                <select class="field-select owner-select" name="lead_owner" id="ownerSelect">
+                                    {% for user in users %}
+                                        <option value="{{ user.id }}"
+    {% if request.session.user_type == "user" and request.session.U_id == user.id %}
+        selected
+    {% endif %}>
+    {{ user.full_name }}
+</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Footer -->
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-dark">
+                        Create
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Create Organization Modal -->
+<div class="modal fade"
+     id="createOrganizationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered new-org-modal">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="new-org-header">
+
+                <h4 class="new-org-title">
+                    New Organization
+                </h4>
+
+                <button type="button"
+                        class="new-org-close"
+                        data-bs-dismiss="modal">
+                    <i class="ti ti-x"></i>
+                </button>
+
+            </div>
+
+
+            <!-- Body -->
+            <div class="new-org-body">
+
+                <!-- Organization Name -->
+                <div class="new-org-field full-width">
+
+                    <label>
+                        Organization Name
+                    </label>
+
+                    <input type="text"
+                           class="new-org-input"
+                           id="newOrgName"
+                           placeholder="Organization Name">
+
+                    <div class="field-error"
+                         id="newOrgNameError">
+                        Organization name is required.
+                    </div>
+
+                </div>
+
+
+                <!-- Website + Annual Revenue -->
+                <div class="new-org-grid">
+
+                    <!-- Website -->
+                    <div class="new-org-field">
+
+                        <label>
+                            Website
+                        </label>
+
+                        <input type="url"
+                               class="new-org-input"
+                               id="newOrgWebsite"
+                               placeholder="Website">
+
+                    </div>
+
+
+                    <!-- Annual Revenue -->
+                    <div class="new-org-field">
+
+                        <label>
+                            Annual Revenue
+                        </label>
+
+                        <input type="number"
+                               class="new-org-input"
+                               id="newOrgRevenue"
+                               value="0.00"
+                               step="0.01">
+
+                    </div>
+
+                </div>
+
+
+                <!-- Territory -->
+                <div class="new-org-field full-width">
+
+                    <label>
+                        Territory
+                    </label>
+
+                    <div class="crm-custom-dropdown" id="newOrgTerritoryDropdown">
+
+                        <button type="button" class="crm-dropdown-button new-org-dropdown-button">
+                            <span class="crm-selected-text">Territory</span>
+                            <i class="ti ti-chevron-down"></i>
+                        </button>
+
+                        <div class="crm-dropdown-menu">
+
+                            <div class="crm-dropdown-search">
+                                <input type="text"
+                                       class="crm-search-input"
+                                       placeholder="Search">
+                                <i class="ti ti-x crm-search-clear"></i>
+                            </div>
+
+                            <div class="crm-dropdown-options">
+                                {% for territory in territories %}
+                                    <div class="crm-dropdown-option"
+                                         data-value="{{ territory.id }}"
+                                         data-label="{{ territory.territory_name }}">
+                                        {{ territory.territory_name }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="crm-dropdown-footer">
+                                <div class="crm-create-new" data-type="territory">
+                                    <i class="ti ti-plus"></i> Create New
+                                </div>
+                                <div class="crm-clear">
+                                    <i class="ti ti-x"></i> Clear
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <input type="hidden"
+                               id="newOrgTerritory"
+                               class="crm-dropdown-value">
+
+                    </div>
+
+                </div>
+
+
+                <!-- Employees + Industry -->
+                <div class="new-org-grid">
+
+                    <!-- Employees -->
+                    <div class="new-org-field">
+
+                        <label>
+                            No. of Employees
+                        </label>
+
+                        <select class="new-org-input"
+                                id="newOrgEmployees">
+
+                            <option value="">
+                                No. of Employees
+                            </option>
+
+                            {% for value, label in employee_choices %}
+
+                                <option value="{{ value }}">
+                                    {{ label }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Industry -->
+                    <div class="new-org-field">
+
+                        <label>
+                            Industry
+                        </label>
+
+                        <div class="crm-custom-dropdown" id="newOrgIndustryDropdown">
+
+                            <button type="button" class="crm-dropdown-button new-org-dropdown-button">
+                                <span class="crm-selected-text">Industry</span>
+                                <i class="ti ti-chevron-down"></i>
+                            </button>
+
+                            <div class="crm-dropdown-menu">
+
+                                <div class="crm-dropdown-search">
+                                    <input type="text"
+                                           class="crm-search-input"
+                                           placeholder="Search">
+                                    <i class="ti ti-x crm-search-clear"></i>
+                                </div>
+
+                                <div class="crm-dropdown-options">
+                                    {% for industry in industries %}
+                                        <div class="crm-dropdown-option"
+                                             data-value="{{ industry.id }}"
+                                             data-label="{{ industry.industry_name }}">
+                                            {{ industry.industry_name }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="crm-dropdown-footer">
+                                    <div class="crm-create-new" data-type="industry">
+                                        <i class="ti ti-plus"></i> Create New
+                                    </div>
+                                    <div class="crm-clear">
+                                        <i class="ti ti-x"></i> Clear
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <input type="hidden"
+                                   id="newOrgIndustry"
+                                   class="crm-dropdown-value">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Address -->
+                <div class="new-org-field full-width">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <div class="crm-custom-dropdown" id="newOrgAddressDropdown">
+
+                        <button type="button"
+                                class="crm-dropdown-button new-org-dropdown-button">
+
+                            <span class="crm-selected-text">
+                                Address
+                            </span>
+
+                            <i class="ti ti-chevron-down"></i>
+
+                        </button>
+
+                        <div class="crm-dropdown-menu">
+
+                            <div class="crm-dropdown-search">
+
+                                <input type="text"
+                                       class="crm-search-input"
+                                       placeholder="Search">
+
+                                <i class="ti ti-x crm-search-clear"></i>
+
+                            </div>
+
+                            <div class="crm-dropdown-options">
+
+                                {% for address in addresses %}
+
+                                    <div class="crm-dropdown-option"
+                                         data-value="{{ address.id }}"
+                                         data-label="{{ address.address_title }}">
+
+                                        {{ address.address_title }}
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="crm-dropdown-footer">
+
+                                <div class="crm-create-new"
+                                     data-type="address">
+
+                                    <i class="ti ti-plus"></i>
+                                    Create New
+
+                                </div>
+
+                                <div class="crm-clear">
+
+                                    <i class="ti ti-x"></i>
+                                    Clear
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <input type="hidden"
+                               id="newOrgAddress"
+                               class="crm-dropdown-value">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="new-org-footer">
+
+                <button type="button"
+                        class="new-org-create-btn"
+                        id="createOrgSubmitBtn">
+                    Create
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+     REUSABLE CREATE MODALS
+     These are kept outside the Lead/Organization
+     modals so Bootstrap does not nest modals.
+========================================== -->
+
+{% include "includes/create_industry_modal.html" %}
+{% include "includes/create_territory_modal.html" %}
+{% include "includes/create_address_modal.html" %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================================================
+       GLOBAL
+    ========================================================= */
+
+    let pendingOrgDropdown = null;
+    let pendingIndustryDropdown = null;
+    let pendingTerritoryDropdown = null;
+    let pendingAddressDropdown = null;
+    let pendingParentModal = null;
+
+
+    /* =========================================================
+       LEAD FILTER
+    ========================================================= */
+
+    const nameFilter =
+        document.getElementById("leadNameFilter");
+
+    const emailFilter =
+        document.getElementById("leadEmailFilter");
+
+    const organizationFilter =
+        document.getElementById("leadOrganizationFilter");
+
+
+    function filterLeads() {
+
+        const rows =
+            document.querySelectorAll(".lead-row");
+
+        const name =
+            nameFilter?.value.toLowerCase().trim() || "";
+
+        const email =
+            emailFilter?.value.toLowerCase().trim() || "";
+
+        const organization =
+            organizationFilter?.value.toLowerCase().trim() || "";
+
+
+        const statusElement =
+            document.querySelector(
+                '[data-dropdown="statusFilterDropdown"] .selected-text'
+            );
+
+        const sourceElement =
+            document.querySelector(
+                '[data-dropdown="sourceDropdown"] .selected-text'
+            );
+
+
+        const status =
+            statusElement?.dataset.value || "";
+
+        const source =
+            sourceElement?.dataset.value || "";
+
+
+        rows.forEach(function (row) {
+
+            const rowName =
+                row.querySelector(".lead-name")
+                    ?.textContent
+                    .toLowerCase() || "";
+
+            const rowEmail =
+                row.querySelector(".lead-email")
+                    ?.textContent
+                    .toLowerCase() || "";
+
+            const rowOrganization =
+                row.querySelector(".lead-organization")
+                    ?.textContent
+                    .toLowerCase() || "";
+
+            const rowStatus =
+                row.dataset.status || "";
+
+            const rowSource =
+                row.dataset.source || "";
+
+
+            const matchName =
+                rowName.includes(name);
+
+            const matchEmail =
+                rowEmail.includes(email);
+
+            const matchOrganization =
+                rowOrganization.includes(organization);
+
+            const matchStatus =
+                !status || rowStatus === status;
+
+            const matchSource =
+                !source || rowSource === source;
+
+
+            row.style.display =
+                matchName &&
+                matchEmail &&
+                matchOrganization &&
+                matchStatus &&
+                matchSource
+                    ? ""
+                    : "none";
+
+        });
+
+    }
+
+
+    [nameFilter, emailFilter, organizationFilter]
+        .forEach(function (input) {
+
+            if (input) {
+
+                input.addEventListener(
+                    "input",
+                    filterLeads
+                );
+
+            }
+
+        });
+
+
+    /* =========================================================
+       REFRESH
+    ========================================================= */
+
+    const refreshButton =
+        document.querySelector(
+            '[title="Refresh"]'
+        );
+
+
+    if (refreshButton) {
+
+        refreshButton.addEventListener(
+            "click",
+            function () {
+
+                window.location.reload();
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       TOP FILTER DROPDOWNS
+       STATUS + SOURCE
+    ========================================================= */
+
+    const filterDropdownButtons =
+        document.querySelectorAll(
+            ".lead-dropdown-btn"
+        );
+
+
+    filterDropdownButtons.forEach(
+        function (button) {
+
+            const dropdownId =
+                button.getAttribute(
+                    "data-dropdown"
+                );
+
+
+            const dropdown =
+                document.getElementById(
+                    dropdownId
+                );
+
+
+            if (!dropdown) return;
+
+
+            const selectedText =
+                button.querySelector(
+                    ".selected-text"
+                );
+
+
+            /* OPEN */
+
+            button.addEventListener(
+                "click",
+                function (e) {
+
+                    e.stopPropagation();
+
+
+                    document
+                        .querySelectorAll(
+                            ".lead-dropdown-menu"
+                        )
+                        .forEach(
+                            function (menu) {
+
+                                if (menu !== dropdown) {
+
+                                    menu.classList.remove(
+                                        "show"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    dropdown.classList.toggle(
+                        "show"
+                    );
+
+                }
+            );
+
+
+            /* SELECT */
+
+            dropdown
+                .querySelectorAll(
+                    ".lead-dropdown-option"
+                )
+                .forEach(
+                    function (option) {
+
+                        option.addEventListener(
+                            "click",
+                            function () {
+
+                                selectedText.textContent =
+                                    this.dataset.label;
+
+                                selectedText.dataset.value =
+                                    this.dataset.value;
+
+
+                                dropdown.classList.remove(
+                                    "show"
+                                );
+
+
+                                filterLeads();
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            /* SEARCH */
+
+            const searchInput =
+                dropdown.querySelector(
+                    ".dropdown-search-input"
+                );
+
+
+            if (searchInput) {
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        const search =
+                            this.value
+                                .toLowerCase()
+                                .trim();
+
+
+                        dropdown
+                            .querySelectorAll(
+                                ".lead-dropdown-option"
+                            )
+                            .forEach(
+                                function (option) {
+
+                                    const label =
+                                        (
+                                            option.dataset.label ||
+                                            ""
+                                        )
+                                        .toLowerCase();
+
+
+                                    option.style.display =
+                                        label.includes(search)
+                                            ? ""
+                                            : "none";
+
+                                }
+                            );
+
+                    }
+                );
+
+            }
+
+
+            /* SEARCH CLEAR */
+
+            const searchClear =
+                dropdown.querySelector(
+                    ".dropdown-search-clear"
+                );
+
+
+            if (searchClear) {
+
+                searchClear.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        if (searchInput) {
+
+                            searchInput.value = "";
+
+                        }
+
+
+                        dropdown
+                            .querySelectorAll(
+                                ".lead-dropdown-option"
+                            )
+                            .forEach(
+                                function (option) {
+
+                                    option.style.display = "";
+
+                                }
+                            );
+
+
+                        searchInput?.focus();
+
+                    }
+                );
+
+            }
+
+
+            /* CLEAR */
+
+            const clearButton =
+                dropdown.querySelector(
+                    ".dropdown-clear"
+                );
+
+
+            if (clearButton) {
+
+                clearButton.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        selectedText.textContent =
+                            dropdownId ===
+                            "statusFilterDropdown"
+                                ? "Status"
+                                : "Source";
+
+
+                        selectedText.dataset.value =
+                            "";
+
+
+                        if (searchInput) {
+
+                            searchInput.value = "";
+
+                        }
+
+
+                        dropdown
+                            .querySelectorAll(
+                                ".lead-dropdown-option"
+                            )
+                            .forEach(
+                                function (option) {
+
+                                    option.style.display = "";
+
+                                }
+                            );
+
+
+                        dropdown.classList.remove(
+                            "show"
+                        );
+
+
+                        filterLeads();
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       CUSTOM CRM DROPDOWNS
+       ORGANIZATION / TERRITORY / INDUSTRY
+    ========================================================= */
+
+    const crmDropdowns =
+        document.querySelectorAll(
+            ".crm-custom-dropdown"
+        );
+
+
+    crmDropdowns.forEach(
+        function (dropdown) {
+
+            /* Status handled separately */
+
+            if (
+                dropdown.id ===
+                "statusDropdown"
+            ) {
+
+                return;
+
+            }
+
+
+            const button =
+                dropdown.querySelector(
+                    ".crm-dropdown-button"
+                );
+
+
+            const selectedText =
+                dropdown.querySelector(
+                    ".crm-selected-text"
+                );
+
+
+            const hiddenInput =
+                dropdown.querySelector(
+                    ".crm-dropdown-value"
+                );
+
+
+            const searchInput =
+                dropdown.querySelector(
+                    ".crm-search-input"
+                );
+
+
+            const searchClear =
+                dropdown.querySelector(
+                    ".crm-search-clear"
+                );
+
+
+            const clearButton =
+                dropdown.querySelector(
+                    ".crm-clear"
+                );
+
+
+            const createButton =
+                dropdown.querySelector(
+                    ".crm-create-new"
+                );
+
+
+            if (!button) return;
+
+
+            /* =================================================
+               OPEN
+            ================================================= */
+
+            button.addEventListener(
+                "click",
+                function (e) {
+
+                    e.stopPropagation();
+
+
+                    document
+                        .querySelectorAll(
+                            ".crm-custom-dropdown"
+                        )
+                        .forEach(
+                            function (other) {
+
+                                if (other !== dropdown) {
+
+                                    other.classList.remove(
+                                        "open"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    dropdown.classList.toggle(
+                        "open"
+                    );
+
+
+                    if (
+                        dropdown.classList.contains(
+                            "open"
+                        ) &&
+                        searchInput
+                    ) {
+
+                        setTimeout(
+                            function () {
+
+                                searchInput.focus();
+
+                            },
+                            50
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* =================================================
+               EXISTING OPTIONS
+            ================================================= */
+
+            dropdown
+                .querySelectorAll(
+                    ".crm-dropdown-option"
+                )
+                .forEach(
+                    function (option) {
+
+                        option.addEventListener(
+                            "click",
+                            function (e) {
+
+                                e.stopPropagation();
+
+
+                                selectedText.textContent =
+                                    this.dataset.label;
+
+
+                                hiddenInput.value =
+                                    this.dataset.value;
+
+
+                                dropdown.classList.remove(
+                                    "open"
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+            /* =================================================
+               SEARCH
+            ================================================= */
+
+            if (searchInput) {
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        const search =
+                            this.value
+                                .toLowerCase()
+                                .trim();
+
+
+                        dropdown
+                            .querySelectorAll(
+                                ".crm-dropdown-option"
+                            )
+                            .forEach(
+                                function (option) {
+
+                                    const label =
+                                        (
+                                            option.dataset.label ||
+                                            ""
+                                        )
+                                        .toLowerCase();
+
+
+                                    option.style.display =
+                                        label.includes(search)
+                                            ? ""
+                                            : "none";
+
+                                }
+                            );
+
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               SEARCH CLEAR
+            ================================================= */
+
+            if (searchClear) {
+
+                searchClear.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        if (searchInput) {
+
+                            searchInput.value = "";
+
+                        }
+
+
+                        dropdown
+                            .querySelectorAll(
+                                ".crm-dropdown-option"
+                            )
+                            .forEach(
+                                function (option) {
+
+                                    option.style.display = "";
+
+                                }
+                            );
+
+
+                        searchInput?.focus();
+
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               CLEAR
+            ================================================= */
+
+            if (clearButton) {
+
+                clearButton.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        let defaultText =
+                            "Territory";
+
+
+                        if (
+                            dropdown.id ===
+                            "organizationDropdown"
+                        ) {
+
+                            defaultText =
+                                "Organization";
+
+                        }
+
+
+                        else if (
+                            dropdown.id ===
+                            "industryDropdown" ||
+                            dropdown.id ===
+                            "newOrgIndustryDropdown"
+                        ) {
+
+                            defaultText =
+                                "Industry";
+
+                        }
+
+                        else if (
+                            dropdown.id ===
+                            "newOrgAddressDropdown"
+                        ) {
+
+                            defaultText =
+                                "Address";
+
+                        }
+
+
+                        selectedText.textContent =
+                            defaultText;
+
+
+                        hiddenInput.value =
+                            "";
+
+
+                        if (searchInput) {
+
+                            searchInput.value = "";
+
+                        }
+
+
+                        dropdown
+                            .querySelectorAll(
+                                ".crm-dropdown-option"
+                            )
+                            .forEach(
+                                function (option) {
+
+                                    option.style.display = "";
+
+                                }
+                            );
+
+
+                        dropdown.classList.remove(
+                            "open"
+                        );
+
+                    }
+                );
+
+            }
+
+
+            /* =================================================
+               CREATE NEW
+            ================================================= */
+
+            if (createButton) {
+
+                createButton.addEventListener("click", function (e) {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const type = this.dataset.type;
+
+                    dropdown.classList.remove("open");
+
+                    let modalId = "";
+
+                    if (type === "organization") {
+                        pendingOrgDropdown = dropdown;
+                        modalId = "createOrganizationModal";
+                    }
+                    else if (type === "industry") {
+                        pendingIndustryDropdown = dropdown;
+                        modalId = "createIndustryModal";
+                    }
+                    else if (type === "territory") {
+                        pendingTerritoryDropdown = dropdown;
+                        modalId = "createTerritoryModal";
+                    }
+                    else if (type === "address") {
+                        pendingAddressDropdown = dropdown;
+                        modalId = "createAddressModal";
+                    }
+                    else {
+                        return;
+                    }
+
+                    const childModal = document.getElementById(modalId);
+
+                    if (!childModal) {
+                        alert("Create modal is missing.");
+                        return;
+                    }
+
+                    const parentModal = dropdown.closest(".modal");
+                    pendingParentModal = parentModal || null;
+
+                    /*
+                       IMPORTANT:
+                       Keep the parent modal OPEN.
+                       The child popup must appear ON TOP of the
+                       Create Organization popup, exactly like the design.
+
+                       backdrop:false is important here. The parent's existing
+                       backdrop will dim the page and the organization modal,
+                       while the child modal itself stays bright and clickable.
+                    */
+                    const childInstance = bootstrap.Modal.getOrCreateInstance(childModal, {
+                        backdrop: false,
+                        keyboard: true,
+                        focus: true
+                    });
+
+                    /* Parent stays visible; only open the child above it. */
+                    childModal.style.zIndex = "1065";
+
+                    childInstance.show();
+
+                    /* Keep the parent visible and restore normal child state on close. */
+                    const clearPendingParent = function () {
+                        childModal.removeEventListener("hidden.bs.modal", clearPendingParent);
+                        pendingParentModal = null;
+                    };
+
+                    childModal.addEventListener("hidden.bs.modal", clearPendingParent);
+
+                    /* Focus the correct first field. */
+                    childModal.addEventListener("shown.bs.modal", function focusChild() {
+
+                        childModal.removeEventListener("shown.bs.modal", focusChild);
+
+                        if (type === "industry") {
+                            document.getElementById("newIndustryName")?.focus();
+                        }
+                        else if (type === "territory") {
+                            document.getElementById("newTerritoryName")?.focus();
+                        }
+                        else if (type === "address") {
+                            document
+                                .querySelector('#createAddressForm [name="address_title"]')
+                                ?.focus();
+                        }
+                    });
+
+                });
+
+            }
+
+        }
+    );
+
+    /* =========================================================
+       ADD OPTION TO CUSTOM DROPDOWN
+    ========================================================= */
+
+    function addOptionToDropdown(
+        dropdown,
+        id,
+        name
+    ) {
+
+        if (!dropdown) return;
+
+
+        const optionsContainer =
+            dropdown.querySelector(
+                ".crm-dropdown-options"
+            );
+
+
+        if (!optionsContainer) return;
+
+
+        const option =
+            document.createElement(
+                "div"
+            );
+
+
+        option.className =
+            "crm-dropdown-option";
+
+
+        option.dataset.value =
+            id;
+
+
+        option.dataset.label =
+            name;
+
+
+        option.textContent =
+            name;
+
+
+        optionsContainer.appendChild(
+            option
+        );
+
+
+        const selectedText =
+            dropdown.querySelector(
+                ".crm-selected-text"
+            );
+
+
+        const hiddenInput =
+            dropdown.querySelector(
+                ".crm-dropdown-value"
+            );
+
+
+        if (selectedText) {
+
+            selectedText.textContent =
+                name;
+
+        }
+
+
+        if (hiddenInput) {
+
+            hiddenInput.value =
+                id;
+
+        }
+
+
+        dropdown.classList.remove(
+            "open"
+        );
+
+
+        option.addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+
+                if (selectedText) {
+
+                    selectedText.textContent =
+                        this.dataset.label;
+
+                }
+
+
+                if (hiddenInput) {
+
+                    hiddenInput.value =
+                        this.dataset.value;
+
+                }
+
+
+                dropdown.classList.remove(
+                    "open"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       RESET CUSTOM DROPDOWN
+    ========================================================= */
+
+    function resetCrmDropdown(
+        dropdownId,
+        defaultText
+    ) {
+
+        const dropdown =
+            document.getElementById(dropdownId);
+
+        if (!dropdown) return;
+
+
+        const selectedText =
+            dropdown.querySelector(
+                ".crm-selected-text"
+            );
+
+        const hiddenInput =
+            dropdown.querySelector(
+                ".crm-dropdown-value"
+            );
+
+
+        if (selectedText) {
+
+            selectedText.textContent =
+                defaultText;
+
+        }
+
+
+        if (hiddenInput) {
+
+            hiddenInput.value = "";
+
+        }
+
+
+        dropdown
+            .querySelectorAll(
+                ".crm-dropdown-option"
+            )
+            .forEach(
+                function (option) {
+
+                    option.style.display = "";
+
+                }
+            );
+
+
+        const searchInput =
+            dropdown.querySelector(
+                ".crm-search-input"
+            );
+
+        if (searchInput) {
+
+            searchInput.value = "";
+
+        }
+
+
+        dropdown.classList.remove(
+            "open"
+        );
+
+    }
+
+
+    /* =========================================================
+       CREATE ORGANIZATION
+    ========================================================= */
+
+    const createOrgSubmitBtn =
+        document.getElementById(
+            "createOrgSubmitBtn"
+        );
+
+
+    if (createOrgSubmitBtn) {
+
+        createOrgSubmitBtn.addEventListener(
+            "click",
+            function () {
+
+                const nameInput =
+                    document.getElementById(
+                        "newOrgName"
+                    );
+
+
+                const nameError =
+                    document.getElementById(
+                        "newOrgNameError"
+                    );
+
+
+                const name =
+                    nameInput?.value.trim() || "";
+
+
+                /* VALIDATION */
+
+                if (!name) {
+
+                    nameInput?.classList.add(
+                        "field-input-invalid"
+                    );
+
+                    nameError?.classList.add(
+                        "show"
+                    );
+
+                    nameInput?.focus();
+
+                    return;
+
+                }
+
+
+                nameInput?.classList.remove(
+                    "field-input-invalid"
+                );
+
+                nameError?.classList.remove(
+                    "show"
+                );
+
+
+                /* CSRF */
+
+                const csrfElement =
+                    document.querySelector(
+                        '#createLeadForm [name="csrfmiddlewaretoken"]'
+                    );
+
+
+                if (!csrfElement) {
+
+                    alert(
+                        "CSRF token not found."
+                    );
+
+                    return;
+
+                }
+
+
+                /* FORM DATA */
+
+                const params =
+                    new URLSearchParams();
+
+
+                params.append(
+                    "organization_name",
+                    name
+                );
+
+
+                params.append(
+                    "website",
+                    document.getElementById(
+                        "newOrgWebsite"
+                    )?.value.trim() || ""
+                );
+
+
+                params.append(
+                    "no_of_employees",
+                    document.getElementById(
+                        "newOrgEmployees"
+                    )?.value || ""
+                );
+
+
+                params.append(
+                    "territory",
+                    document.getElementById(
+                        "newOrgTerritory"
+                    )?.value || ""
+                );
+
+
+                params.append(
+                    "annual_revenue",
+                    document.getElementById(
+                        "newOrgRevenue"
+                    )?.value || "0"
+                );
+
+
+                params.append(
+                    "industry",
+                    document.getElementById(
+                        "newOrgIndustry"
+                    )?.value || ""
+                );
+
+
+                params.append(
+                    "address",
+                    document.getElementById(
+                        "newOrgAddress"
+                    )?.value || ""
+                );
+
+
+                /* REQUEST */
+
+                fetch(
+                    "{% url 'add_lead_organization' %}",
+                    {
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/x-www-form-urlencoded",
+
+                            "X-CSRFToken":
+                                csrfElement.value
+
+                        },
+
+                        body:
+                            params.toString()
+
+                    }
+                )
+
+                .then(function (response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "HTTP error: " +
+                            response.status
+                        );
+
+                    }
+
+
+                    return response.json();
+
+                })
+
+                .then(function (data) {
+
+                    if (!data.success) {
+
+                        alert(
+                            data.message ||
+                            "Unable to create organization."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* ADD TO DROPDOWN */
+
+                    if (pendingOrgDropdown) {
+
+                        addOptionToDropdown(
+                            pendingOrgDropdown,
+                            data.id,
+                            data.name
+                        );
+
+
+                        pendingOrgDropdown =
+                            null;
+
+                    }
+
+
+                    /* RESET */
+
+                    document.getElementById(
+                        "newOrgName"
+                    ).value = "";
+
+
+                    document.getElementById(
+                        "newOrgWebsite"
+                    ).value = "";
+
+
+                    document.getElementById(
+                        "newOrgRevenue"
+                    ).value = "0.00";
+
+
+                    document.getElementById(
+                        "newOrgEmployees"
+                    ).value = "";
+
+
+                    resetCrmDropdown(
+                        "newOrgIndustryDropdown",
+                        "Industry"
+                    );
+
+
+                    resetCrmDropdown(
+                        "newOrgTerritoryDropdown",
+                        "Territory"
+                    );
+
+
+                    resetCrmDropdown(
+                        "newOrgAddressDropdown",
+                        "Address"
+                    );
+
+
+                    /* CLOSE */
+
+                    const modalElement =
+                        document.getElementById(
+                            "createOrganizationModal"
+                        );
+
+
+                    if (modalElement) {
+
+                        bootstrap.Modal
+                            .getOrCreateInstance(
+                                modalElement
+                            )
+                            .hide();
+
+                    }
+
+                })
+
+                .catch(function (error) {
+
+                    console.error(
+                        "Create organization error:",
+                        error
+                    );
+
+
+                    alert(
+                        "Something went wrong while creating the organization."
+                    );
+
+                });
+
+            }
+        );
+
+    }
+
+
+        /* =========================================================
+           CREATE INDUSTRY / TERRITORY / ADDRESS
+        ========================================================= */
+
+        function submitChildModal(
+            modalId,
+            formId,
+            pendingName,
+            defaultError
+        ) {
+
+            const form =
+                document.getElementById(formId);
+
+            if (!form) return;
+
+
+            const modalElement =
+                document.getElementById(modalId);
+
+            const formData =
+                new FormData(form);
+
+
+            fetch(
+                form.action,
+                {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    }
+                }
+            )
+            .then(function (response) {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "HTTP error: " +
+                        response.status
+                    );
+
+                }
+
+                return response.json();
+
+            })
+            .then(function (data) {
+
+                if (!data.success) {
+
+                    alert(
+                        data.message ||
+                        defaultError
+                    );
+
+                    return;
+
+                }
+
+
+                const name =
+                    data.name ||
+                    data[pendingName] ||
+                    "";
+
+
+                let targetDropdown = null;
+
+
+                if (modalId === "createIndustryModal") {
+
+                    targetDropdown =
+                        pendingIndustryDropdown;
+
+                }
+
+                else if (
+                    modalId === "createTerritoryModal"
+                ) {
+
+                    targetDropdown =
+                        pendingTerritoryDropdown;
+
+                }
+
+                else if (
+                    modalId === "createAddressModal"
+                ) {
+
+                    targetDropdown =
+                        pendingAddressDropdown;
+
+                }
+
+
+                if (
+                    targetDropdown &&
+                    data.id &&
+                    name
+                ) {
+
+                    addOptionToDropdown(
+                        targetDropdown,
+                        data.id,
+                        name
+                    );
+
+                }
+
+
+                /*
+                 * Clear pending dropdown after successful
+                 * creation.
+                 */
+                if (
+                    modalId === "createIndustryModal"
+                ) {
+
+                    pendingIndustryDropdown =
+                        null;
+
+                }
+
+                else if (
+                    modalId === "createTerritoryModal"
+                ) {
+
+                    pendingTerritoryDropdown =
+                        null;
+
+                }
+
+                else if (
+                    modalId === "createAddressModal"
+                ) {
+
+                    pendingAddressDropdown =
+                        null;
+
+                }
+
+
+                form.reset();
+
+
+                if (modalElement) {
+
+                    bootstrap.Modal
+                        .getOrCreateInstance(
+                            modalElement
+                        )
+                        .hide();
+
+                }
+
+            })
+            .catch(function (error) {
+
+                console.error(
+                    "Create modal error:",
+                    error
+                );
+
+                alert(
+                    "Something went wrong. Please try again."
+                );
+
+            });
+
+        }
+
+
+        /* CREATE INDUSTRY */
+
+        const createIndustrySubmitBtn =
+            document.getElementById(
+                "createIndustrySubmitBtn"
+            );
+
+
+        if (createIndustrySubmitBtn) {
+
+            createIndustrySubmitBtn.addEventListener(
+                "click",
+                function () {
+
+                    const input =
+                        document.getElementById(
+                            "newIndustryName"
+                        );
+
+                    const error =
+                        document.getElementById(
+                            "newIndustryError"
+                        );
+
+
+                    if (
+                        !input ||
+                        !input.value.trim()
+                    ) {
+
+                        input?.classList.add(
+                            "invalid"
+                        );
+
+                        error?.classList.add(
+                            "show"
+                        );
+
+                        input?.focus();
+
+                        return;
+
+                    }
+
+
+                    input.classList.remove(
+                        "invalid"
+                    );
+
+                    error?.classList.remove(
+                        "show"
+                    );
+
+
+                    submitChildModal(
+                        "createIndustryModal",
+                        "createIndustryForm",
+                        "industry_name",
+                        "Unable to create industry."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* CREATE TERRITORY */
+
+        const createTerritorySubmitBtn =
+            document.getElementById(
+                "createTerritorySubmitBtn"
+            );
+
+
+        if (createTerritorySubmitBtn) {
+
+            createTerritorySubmitBtn.addEventListener(
+                "click",
+                function () {
+
+                    const input =
+                        document.getElementById(
+                            "newTerritoryName"
+                        );
+
+                    const error =
+                        document.getElementById(
+                            "newTerritoryError"
+                        );
+
+
+                    if (
+                        !input ||
+                        !input.value.trim()
+                    ) {
+
+                        input?.classList.add(
+                            "invalid"
+                        );
+
+                        error?.classList.add(
+                            "show"
+                        );
+
+                        input?.focus();
+
+                        return;
+
+                    }
+
+
+                    input.classList.remove(
+                        "invalid"
+                    );
+
+                    error?.classList.remove(
+                        "show"
+                    );
+
+
+                    submitChildModal(
+                        "createTerritoryModal",
+                        "createTerritoryForm",
+                        "territory_name",
+                        "Unable to create territory."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* CREATE ADDRESS */
+
+        const createAddressForm =
+            document.getElementById(
+                "createAddressForm"
+            );
+
+
+        if (createAddressForm) {
+
+            createAddressForm.addEventListener(
+                "submit",
+                function (e) {
+
+                    e.preventDefault();
+
+
+                    submitChildModal(
+                        "createAddressModal",
+                        "createAddressForm",
+                        "address_title",
+                        "Unable to create address."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           STATUS DROPDOWN
+        ========================================================= */
+    /* =========================================================
+       STATUS DROPDOWN
+    ========================================================= */
+
+    const statusDropdown =
+        document.getElementById(
+            "statusDropdown"
+        );
+
+
+    if (statusDropdown) {
+
+        const button =
+            statusDropdown.querySelector(
+                ".status-dropdown-button"
+            );
+
+
+        const selectedSwatch =
+            button?.querySelector(
+                ".status-swatch"
+            );
+
+
+        const selectedText =
+            button?.querySelector(
+                ".status-dropdown-text"
+            );
+
+
+        const hiddenInput =
+            statusDropdown.querySelector(
+                ".crm-dropdown-value"
+            );
+
+
+        const options =
+            statusDropdown.querySelectorAll(
+                ".status-dropdown-option"
+            );
+
+
+        if (button) {
+
+            button.addEventListener(
+                "click",
+                function (e) {
+
+                    e.stopPropagation();
+
+
+                    document
+                        .querySelectorAll(
+                            ".crm-custom-dropdown"
+                        )
+                        .forEach(
+                            function (other) {
+
+                                if (
+                                    other !==
+                                    statusDropdown
+                                ) {
+
+                                    other.classList.remove(
+                                        "open"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                    statusDropdown.classList.toggle(
+                        "open"
+                    );
+
+                }
+            );
+
+        }
+
+
+        options.forEach(
+            function (option) {
+
+                option.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+
+                        const value =
+                            this.dataset.value;
+
+
+                        const label =
+                            this.dataset.label;
+
+
+                        if (hiddenInput) {
+
+                            hiddenInput.value =
+                                value;
+
+                        }
+
+
+                        if (selectedText) {
+
+                            selectedText.textContent =
+                                label;
+
+                        }
+
+
+                        if (selectedSwatch) {
+
+                            selectedSwatch.dataset.status =
+                                value;
+
+                        }
+
+
+                        options.forEach(
+                            function (item) {
+
+                                item.classList.remove(
+                                    "selected"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "selected"
+                        );
+
+
+                        statusDropdown.classList.remove(
+                            "open"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       LEAD OWNER AVATAR
+    ========================================================= */
+
+    const avatarColors = [
+
+        "#f97316",
+        "#3b82f6",
+        "#22c55e",
+        "#a855f7",
+        "#ef4444",
+        "#14b8a6",
+        "#eab308",
+        "#6366f1"
+
+    ];
+
+
+    function colorForName(name) {
+
+        let hash = 0;
+
+
+        for (
+            let i = 0;
+            i < name.length;
+            i++
+        ) {
+
+            hash =
+                name.charCodeAt(i) +
+                ((hash << 5) - hash);
+
+        }
+
+
+        return avatarColors[
+            Math.abs(hash) %
+            avatarColors.length
+        ];
+
+    }
+
+
+    const ownerSelect =
+        document.getElementById(
+            "ownerSelect"
+        );
+
+
+    const ownerAvatar =
+        document.getElementById(
+            "ownerSelectAvatar"
+        );
+
+
+    function updateOwnerAvatar() {
+
+        if (
+            !ownerSelect ||
+            !ownerAvatar
+        ) {
+
+            return;
+
+        }
+
+
+        const selectedOption =
+            ownerSelect.options[
+                ownerSelect.selectedIndex
+            ];
+
+
+        const label =
+            selectedOption
+                ? selectedOption.textContent.trim()
+                : "";
+
+
+        if (
+            !label ||
+            !ownerSelect.value
+        ) {
+
+            ownerAvatar.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        ownerAvatar.style.display =
+            "flex";
+
+
+        ownerAvatar.textContent =
+            label.charAt(0).toUpperCase();
+
+
+        ownerAvatar.style.background =
+            colorForName(label);
+
+    }
+
+
+    if (ownerSelect) {
+
+        ownerSelect.addEventListener(
+            "change",
+            updateOwnerAvatar
+        );
+
+
+        updateOwnerAvatar();
+
+    }
+
+
+    /* =========================================================
+       STATUS COLORS
+    ========================================================= */
+
+    const statusColors = {
+
+        "new": "#6b7280",
+
+        "contacted": "#f97316",
+
+        "nurture": "#3b82f6",
+
+        "qualified": "#16a34a",
+
+        "converted": "#0d9488",
+
+        "unqualified": "#ef4444",
+
+        "junk": "#a855f7"
+
+    };
+
+
+    document
+        .querySelectorAll(
+            ".lead-row .status-dot"
+        )
+        .forEach(
+            function (dot) {
+
+                const classes =
+                    Array.from(
+                        dot.classList
+                    );
+
+
+                const statusClass =
+                    classes.find(
+                        function (className) {
+
+                            return (
+                                className.startsWith(
+                                    "status-dot-"
+                                ) &&
+                                className !==
+                                "status-dot"
+                            );
+
+                        }
+                    );
+
+
+                if (statusClass) {
+
+                    const value =
+                        statusClass.replace(
+                            "status-dot-",
+                            ""
+                        );
+
+
+                    dot.style.background =
+                        statusColors[value] ||
+                        "#6b7280";
+
+                }
+
+            }
+        );
+
+
+    /* =========================================================
+       CLOSE DROPDOWNS WHEN CLICKING OUTSIDE
+    ========================================================= */
+
+    document.addEventListener(
+        "click",
+        function () {
+
+            document
+                .querySelectorAll(
+                    ".crm-custom-dropdown"
+                )
+                .forEach(
+                    function (dropdown) {
+
+                        dropdown.classList.remove(
+                            "open"
+                        );
+
+                    }
+                );
+
+
+            document
+                .querySelectorAll(
+                    ".lead-dropdown-menu"
+                )
+                .forEach(
+                    function (dropdown) {
+
+                        dropdown.classList.remove(
+                            "show"
+                        );
+
+                    }
+                );
+
+        }
+    );
+
+
+    /* =========================================================
+       PREVENT ROW CLICK FROM CHECKBOX
+    ========================================================= */
+
+    document
+        .querySelectorAll(
+            ".lead-row input[type='checkbox']"
+        )
+        .forEach(
+            function (checkbox) {
+
+                checkbox.addEventListener(
+                    "click",
+                    function (e) {
+
+                        e.stopPropagation();
+
+                    }
+                );
+
+            }
+        );
+
+
+});
+
+/* =========================================
+   VIEW DROPDOWN
+========================================= */
+
+function toggleViewDropdown() {
+
+    const menu =
+        document.getElementById(
+            "viewDropdownMenu"
+        );
+
+    menu.classList.toggle("show");
+
+}
+
+
+/* GROUP BY */
+
+function groupLeads() {
+
+    alert("Group By clicked");
+
+}
+
+
+</script>
+
+<style>
+
+/* =========================================================
+   CREATE TERRITORY MODAL
+========================================================= */
+
+#createTerritoryModal {
+    z-index: 1070 !important;
+}
+
+#createTerritoryModal .modal-dialog {
+    max-width: 660px;
+    width: 100%;
+    margin: 1.75rem auto;
+}
+
+#createTerritoryModal .modal-content {
+    background: #fff;
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
+}
+
+
+/* HEADER */
+
+#createTerritoryModal .crm-model-header {
+    min-height: 78px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eeeeee;
+}
+
+#createTerritoryModal .crm-model-header h4 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #111827;
+}
+
+
+/* HEADER BUTTONS */
+
+#createTerritoryModal .crm-model-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#createTerritoryModal .crm-icon-btn {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #111827;
+}
+
+#createTerritoryModal .crm-icon-btn:hover {
+    background: #f5f5f5;
+}
+
+
+/* BODY */
+
+#createTerritoryModal .crm-territory-body {
+    padding: 26px 30px 10px;
+}
+
+#createTerritoryModal .crm-territory-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+/* FIELD */
+
+#createTerritoryModal .crm-field {
+    margin-bottom: 0;
+}
+
+#createTerritoryModal .crm-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+
+/* INPUT + SELECT */
+
+#createTerritoryModal .crm-control {
+    width: 100%;
+    height: 42px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: #f3f3f3;
+    color: #374151;
+    font-size: 15px;
+    outline: none;
+}
+
+#createTerritoryModal .crm-control::placeholder {
+    color: #9ca3af;
+}
+
+#createTerritoryModal .crm-control:focus {
+    background: #f0f0f0;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06);
+}
+
+
+/* HR */
+
+#createTerritoryModal hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    opacity: 1;
+}
+
+
+/* CHECKBOX */
+
+#createTerritoryModal .crm-group-field {
+    display: flex;
+    align-items: center;
+    padding-top: 28px;
+}
+
+#createTerritoryModal .crm-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 15px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+#createTerritoryModal .crm-checkbox-label input {
+    width: 19px;
+    height: 19px;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+/* PARENT TERRITORY */
+
+#createTerritoryModal .crm-parent-territory {
+    width: calc(50% - 10px);
+    margin-top: 20px;
+}
+
+
+/* FOOTER */
+
+#createTerritoryModal .crm-model-footer {
+    padding: 25px 30px 30px;
+}
+
+#createTerritoryModal .crm-create-btn {
+    width: 100%;
+    height: 44px;
+    border: 0;
+    border-radius: 8px;
+    background: #171717;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#createTerritoryModal .crm-create-btn:hover {
+    background: #000;
+}
+/* =========================================================
+   CHILD CREATE MODALS
+   Industry / Territory / Address
+========================================================= */
+
+#createIndustryModal,
+#createTerritoryModal,
+#createAddressModal {
+    z-index: 1070 !important;
+}
+
+#createIndustryModal .modal-dialog,
+#createTerritoryModal .modal-dialog,
+#createAddressModal .modal-dialog {
+    position: relative;
+    z-index: 1071 !important;
+}
+
+
+/* =========================
+   MODAL SIZE
+========================= */
+
+.crm-industry-dialog {
+    max-width: 630px;
+}
+
+.crm-territory-dialog {
+    max-width: 660px;
+}
+
+.crm-address-dialog {
+    max-width: 660px;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.crm-child-modal {
+    background: #fff;
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.20);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.crm-child-modal .crm-model-header {
+    min-height: 78px;
+    padding: 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.crm-child-modal .crm-model-header h4 {
+    margin: 0;
+
+    font-size: 25px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+/* =========================
+   HEADER BUTTONS
+========================= */
+
+.crm-child-modal .crm-model-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.crm-child-modal .crm-icon-btn {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+    color: #111827;
+}
+
+.crm-child-modal .crm-icon-btn:hover {
+    background: #f3f3f3;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+.crm-child-body {
+    padding: 25px 30px 5px;
+}
+
+
+/* =========================
+   FIELD
+========================= */
+
+.crm-child-body .crm-field {
+    margin-bottom: 18px;
+}
+
+.crm-child-body .crm-field label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    color: #6b7280;
+}
+
+
+/* =========================
+   INPUT / SELECT
+========================= */
+
+.crm-child-body .crm-control {
+    width: 100%;
+    height: 44px;
+
+    padding: 0 13px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: #f3f3f3;
+
+    color: #374151;
+    font-size: 15px;
+
+    outline: none;
+}
+
+.crm-child-body .crm-control::placeholder {
+    color: #9ca3af;
+}
+
+.crm-child-body .crm-control:focus {
+    background: #eeeeee;
+    box-shadow: none;
+}
+
+
+/* =========================
+   ADDRESS TWO COLUMN
+========================= */
+
+.crm-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.crm-child-modal .crm-model-footer {
+    padding: 22px 30px 30px;
+}
+
+.crm-child-modal .crm-create-btn {
+    width: 100%;
+    height: 44px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: #171717;
+    color: #fff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.crm-child-modal .crm-create-btn:hover {
+    background: #000;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .crm-industry-dialog,
+    .crm-territory-dialog,
+    .crm-address-dialog {
+        width: auto;
+        margin: 10px;
+    }
+
+    .crm-two-column {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+}
+/* =========================================================
+   SMALL CREATE ADDRESS MODAL
+========================================================= */
+
+#createAddressModal {
+    z-index: 1070 !important;
+}
+
+#createAddressModal .modal-dialog {
+    max-width: 600px !important;
+    width: 600px !important;
+    margin: 1.75rem auto;
+    z-index: 1071 !important;
+}
+
+#createAddressModal .crm-child-modal {
+    border: none !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+}
+
+
+/* HEADER */
+
+#createAddressModal .crm-model-header {
+    height: 65px;
+    min-height: 65px;
+
+    padding: 0 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+#createAddressModal .crm-model-header h4 {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 600;
+    color: #111827;
+}
+
+
+/* ICONS */
+
+#createAddressModal .crm-model-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#createAddressModal .crm-icon-btn {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+    color: #111827;
+
+    border-radius: 50%;
+}
+
+
+/* BODY */
+
+#createAddressModal .crm-child-body {
+    padding: 20px 25px 0;
+}
+
+
+/* FIELD */
+
+#createAddressModal .crm-field {
+    margin-bottom: 13px;
+}
+
+#createAddressModal .crm-field label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #6b7280;
+}
+
+
+/* INPUT */
+
+#createAddressModal .crm-control {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 12px;
+
+    border: none !important;
+    border-radius: 8px !important;
+
+    background: #f3f3f3 !important;
+
+    font-size: 14px;
+    color: #374151;
+
+    outline: none;
+}
+
+#createAddressModal .crm-control::placeholder {
+    color: #9ca3af;
+}
+
+
+/* TWO COLUMNS */
+
+#createAddressModal .crm-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+
+/* FOOTER */
+
+#createAddressModal .crm-model-footer {
+    padding: 18px 25px 22px;
+}
+
+
+/* CREATE BUTTON */
+
+#createAddressModal .crm-create-btn {
+    width: 100%;
+    height: 42px;
+
+    border: none !important;
+    border-radius: 8px !important;
+
+    background: #171717 !important;
+    color: #fff !important;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    #createAddressModal .modal-dialog {
+        width: auto !important;
+        max-width: calc(100% - 20px) !important;
+        margin: 10px auto;
+    }
+
+    #createAddressModal .crm-two-column {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    #createTerritoryModal .modal-dialog {
+        margin: 10px;
+        width: auto;
+    }
+
+    #createTerritoryModal .crm-territory-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    #createTerritoryModal .crm-parent-territory {
+        width: 100%;
+    }
+
+    #createTerritoryModal .crm-group-field {
+        padding-top: 0;
+    }
+
+}
+
+
+/* ==========================================
+   NEW TERRITORY MODAL
+========================================== */
+
+.new-territory-modal {
+    max-width: 720px;
+    width: 100%;
+}
+
+
+.new-territory-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.new-territory-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 30px 17px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.new-territory-title {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+.new-territory-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff1f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ef4444;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+/* ==========================================
+   BODY
+========================================== */
+
+.new-territory-body {
+    padding: 20px 30px 5px;
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+.new-territory-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* ==========================================
+   FIELD
+========================================== */
+
+.new-territory-field {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 18px;
+}
+
+
+.new-territory-field label {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: #64748b;
+}
+
+
+.new-territory-field label span {
+    color: #ef4444;
+}
+
+
+/* ==========================================
+   INPUT / SELECT
+========================================== */
+
+.new-territory-input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 11px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: #f1f1f2;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.new-territory-input::placeholder {
+    color: #9ca3af;
+}
+
+
+.new-territory-input:focus {
+    background: #fff;
+    border-color: #d1d5db;
+}
+
+
+/* ==========================================
+   DIVIDER
+========================================== */
+
+.new-territory-divider {
+    height: 1px;
+
+    background: #eeeeee;
+
+    margin: 0 0 20px;
+}
+
+
+/* ==========================================
+   IS GROUP
+========================================== */
+
+.new-territory-checkbox {
+    display: flex;
+    align-items: flex-start;
+
+    padding-top: 29px;
+}
+
+
+.new-territory-checkbox label {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.new-territory-checkbox input {
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   PARENT TERRITORY
+========================================== */
+
+.new-territory-body > .new-territory-field {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.new-territory-footer {
+    padding: 15px 30px 25px;
+}
+
+
+.new-territory-create-btn {
+    width: 100%;
+
+    height: 38px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #171717;
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.new-territory-create-btn:hover {
+    background: #000;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.new-territory-error {
+    display: none;
+
+    margin-top: 4px;
+
+    color: #ef4444;
+
+    font-size: 11px;
+}
+
+
+.new-territory-error.show {
+    display: block;
+}
+
+
+.new-territory-input.invalid {
+    border-color: #ef4444 !important;
+
+    background: #fff5f5 !important;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .new-territory-modal {
+        max-width: calc(100% - 20px);
+    }
+
+
+    .new-territory-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+
+    .new-territory-checkbox {
+        padding-top: 0;
+        margin-bottom: 18px;
+    }
+
+
+    .new-territory-header {
+        padding: 17px 20px 15px;
+    }
+
+
+    .new-territory-body {
+        padding: 17px 20px 5px;
+    }
+
+
+    .new-territory-footer {
+        padding: 12px 20px 20px;
+    }
+
+}
+
+/* ==========================================
+   NEW INDUSTRY MODAL
+========================================== */
+
+.new-industry-modal {
+    max-width: 500px;
+    width: 100%;
+}
+
+
+/* Modal */
+.new-industry-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+
+/* Header */
+.new-industry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 30px 17px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.new-industry-title {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+.new-industry-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff1f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ef4444;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+.new-industry-close:hover {
+    background: #ffe5e5;
+}
+
+
+/* Body */
+.new-industry-body {
+    padding: 20px 30px 5px;
+}
+
+
+/* Field */
+.new-industry-field {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.new-industry-field label {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: #6b7280;
+}
+
+
+/* Input */
+.new-industry-input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 12px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: #f1f1f2;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.new-industry-input::placeholder {
+    color: #9ca3af;
+}
+
+
+.new-industry-input:focus {
+    background: #fff;
+
+    border-color: #d1d5db;
+}
+
+
+/* Footer */
+.new-industry-footer {
+    padding: 15px 30px 25px;
+}
+
+
+.new-industry-create-btn {
+    width: 100%;
+
+    height: 38px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #171717;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.new-industry-create-btn:hover {
+    background: #000;
+}
+
+
+/* Error */
+.new-industry-input.invalid {
+    border-color: #ef4444 !important;
+    background: #fff5f5 !important;
+}
+
+
+.new-industry-error {
+    display: none;
+
+    margin-top: 5px;
+
+    color: #ef4444;
+
+    font-size: 11px;
+}
+
+
+.new-industry-error.show {
+    display: block;
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .new-industry-modal {
+        max-width: calc(100% - 20px);
+    }
+
+    .new-industry-header {
+        padding: 17px 20px 15px;
+    }
+
+    .new-industry-body {
+        padding: 17px 20px 5px;
+    }
+
+    .new-industry-footer {
+        padding: 12px 20px 20px;
+    }
+
+}
+
+/* ==========================================
+   NEW ORGANIZATION MODAL
+========================================== */
+
+/* ==========================================
+   SMALL CREATE ORGANIZATION MODAL
+========================================== */
+
+.new-org-modal {
+    max-width: 620px;
+    width: 100%;
+}
+
+
+/* Modal */
+.new-org-modal .modal-content {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+
+/* Header */
+.new-org-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px 22px 15px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.new-org-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.new-org-close {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: #fff1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+
+/* Body */
+.new-org-body {
+    padding: 17px 22px 2px;
+}
+
+
+/* Fields */
+.new-org-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.new-org-field label {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5b6472;
+}
+
+
+/* Inputs */
+.new-org-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 11px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: #f3f3f4;
+    color: #111827;
+    font-size: 13px;
+    outline: none;
+}
+
+.new-org-input::placeholder {
+    color: #9ca3af;
+}
+
+.new-org-input:focus {
+    background: #fff;
+    border-color: #d1d5db;
+}
+
+.new-org-dropdown-button {
+    height: 38px;
+    background: #f3f3f4;
+    border-radius: 7px;
+    font-size: 13px;
+}
+
+.new-org-dropdown-button:hover {
+    background: #eeeeef;
+}
+
+.new-org-field .crm-custom-dropdown {
+    width: 100%;
+}
+
+
+/* Two columns */
+.new-org-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 13px;
+}
+
+
+/* Full width */
+.new-org-field.full-width {
+    margin-bottom: 13px;
+}
+
+
+/* Footer */
+.new-org-footer {
+    padding: 12px 22px 18px;
+}
+
+
+/* Create button */
+.new-org-create-btn {
+    width: 100%;
+    height: 38px;
+    border: none;
+    border-radius: 7px;
+    background: #171717;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.new-org-create-btn:hover {
+    background: #000;
+}
+
+
+/* Error */
+.new-org-input.field-input-invalid {
+    border-color: #ef4444 !important;
+    background: #fff5f5 !important;
+}
+
+.field-error {
+    display: none;
+    margin-top: 4px;
+    color: #ef4444;
+    font-size: 11px;
+}
+
+.field-error.show {
+    display: block;
+}
+
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .new-org-modal {
+        max-width: calc(100% - 20px);
+    }
+
+    .new-org-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .new-org-header {
+        padding: 15px 18px;
+    }
+
+    .new-org-body {
+        padding: 15px 18px 2px;
+    }
+
+    .new-org-footer {
+        padding: 10px 18px 15px;
+    }
+}
+
+
+/* =========================================
+   LEAD FILTER DROPDOWN (toolbar)
+========================================= */
+
+.lead-toolbar-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 3px;
+}
+
+.lead-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: max-content;
+    min-width: 100%;
+
+    margin-bottom: 20px;
+
+    flex-wrap: nowrap;
+
+    overflow: visible;
+
+    position: relative;
+}
+
+.lead-filter-dropdown {
+    position: relative;
+    width: 120px;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+.lead-toolbar .btn {
+    height: 36px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.lead-dropdown-btn {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.lead-dropdown-btn:hover {
+    background: #f8f8f8;
+}
+
+.lead-dropdown-btn i {
+    font-size: 16px;
+}
+
+.lead-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+
+    width: 270px;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+
+    z-index: 99999;
+
+    display: none;
+
+    overflow: hidden;
+}
+
+.lead-dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-search {
+    position: relative;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.dropdown-search input {
+    height: 34px;
+    padding-right: 35px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.dropdown-search-clear {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown-options {
+    max-height: 215px;
+    overflow-y: auto;
+}
+
+.lead-dropdown-option {
+    padding: 9px 14px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.lead-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.dropdown-clear {
+    height: 43px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    font-size: 13px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.dropdown-clear:hover {
+    background: #f5f5f5;
+}
+
+.lead-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 20px;
+
+    flex-wrap: nowrap;
+
+    overflow: visible;
+
+    padding-bottom: 3px;
+
+    position: relative;
+    z-index: 100;
+}
+
+.lead-toolbar .form-control {
+    width: 150px;
+    min-width: 150px;
+    height: 36px;
+}
+
+.lead-toolbar .btn {
+    height: 36px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    margin-right: 8px;
+    background: #94a3b8;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.leads-table-wrapper {
+    width: 100%;
+    min-width: 0;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-scroll {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.leads-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+}
+
+.page-wrapper .content {
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+
+.leads-table thead th {
+    background: #f5f5f5;
+    padding: 12px 14px;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.leads-table tbody td {
+    padding: 12px 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid #eee;
+}
+
+/* =========================================
+   CREATE LEAD MODAL
+========================================= */
+
+.create-lead-modal {
+    max-width: 980px;
+    width: 100%;
+}
+
+.create-org-modal {
+    max-width: 640px;
+    width: 100%;
+}
+
+.create-org-modal .modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+}
+
+.create-org-modal .modal-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.create-org-modal .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.create-org-modal .modal-body {
+    padding: 22px 28px 6px;
+}
+
+.create-org-modal .modal-footer {
+    padding: 14px 28px 22px;
+    border-top: none;
+    gap: 8px;
+}
+
+.create-org-modal .modal-footer .btn-dark {
+    border-radius: 10px;
+    padding: 9px 26px;
+    font-weight: 500;
+}
+
+.create-org-modal .modal-footer .btn-outline-light {
+    border-radius: 10px;
+}
+
+.field-input-invalid {
+    border-color: #ef4444 !important;
+    background: #fff5f5 !important;
+}
+
+.field-error {
+    display: none;
+    color: #ef4444;
+    font-size: 12.5px;
+    margin-top: 5px;
+}
+
+.field-error.show {
+    display: block;
+}
+
+.create-lead-modal .modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+}
+
+.create-lead-modal .modal-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.create-lead-modal .modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.create-lead-modal .modal-body {
+    padding: 22px 28px 6px;
+}
+
+.create-lead-modal .modal-footer {
+    padding: 14px 28px 22px;
+    border-top: none;
+}
+
+.create-lead-modal .modal-footer .btn-dark {
+    border-radius: 10px;
+    padding: 9px 26px;
+    font-weight: 500;
+}
+
+/* Form grids */
+.lead-form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 20px;
+    row-gap: 18px;
+}
+
+.lead-form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 18px;
+}
+
+.field-divider {
+    height: 1px;
+    background: #f1f1f1;
+    margin: 18px 0;
+}
+
+.field-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.field-label {
+    font-size: 13.5px;
+    color: #4b5563;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.field-input,
+.field-select {
+    height: 42px;
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #111827;
+    background: #f4f4f5;
+}
+
+.field-input::placeholder,
+.field-select:invalid {
+    color: #9ca3af;
+}
+
+.field-input:focus,
+.field-select:focus {
+    outline: none;
+    background: #fff;
+    border-color: #cbd5e1;
+    box-shadow: 0 0 0 3px rgba(148,163,184,.15);
+}
+
+/* Custom industry/territory dropdown */
+.crm-custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.crm-dropdown-button {
+    height: 42px;
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #f4f4f5;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #111827;
+    cursor: pointer;
+}
+
+.crm-dropdown-button:hover {
+    background: #eeeeef;
+}
+
+.crm-dropdown-button i {
+    color: #9ca3af;
+    font-size: 16px;
+}
+
+.crm-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 280px;
+    max-width: 320px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.14);
+    z-index: 2000;
+    display: none;
+    overflow: hidden;
+}
+
+.crm-custom-dropdown.open .crm-dropdown-menu {
+    display: block;
+}
+
+.crm-dropdown-search {
+    position: relative;
+    padding: 8px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.crm-search-input {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f5f5f5;
+    padding: 0 34px 0 12px;
+    font-size: 13px;
+    color: #111827;
+}
+
+.crm-search-input:focus {
+    outline: none;
+    border-color: #cbd5e1;
+}
+
+.crm-search-clear {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    font-size: 14px;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.crm-dropdown-options {
+    max-height: 210px;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.crm-dropdown-option {
+    padding: 9px 16px;
+    font-size: 13.5px;
+    color: #374151;
+    cursor: pointer;
+}
+
+.crm-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.crm-dropdown-footer {
+    border-top: 1px solid #f1f1f1;
+}
+
+.crm-create-new,
+.crm-clear {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-size: 13.5px;
+    color: #374151;
+    cursor: pointer;
+}
+
+.crm-create-new i,
+.crm-clear i {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.crm-create-new:hover,
+.crm-clear:hover {
+    background: #f3f4f6;
+}
+
+.crm-create-new {
+    border-bottom: 1px solid #f1f1f1;
+}
+
+/* Status custom dropdown */
+.status-dropdown-menu {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 6px;
+}
+
+.status-dropdown-options {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.status-dropdown-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #111827;
+    cursor: pointer;
+}
+
+.status-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.status-dropdown-option.selected {
+    background: #ececed;
+}
+
+.status-check {
+    margin-left: auto;
+    font-size: 14px;
+    color: #111827;
+    display: none;
+}
+
+.status-dropdown-option.selected .status-check {
+    display: inline-block;
+}
+
+.status-swatch {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #6b7280;
+}
+
+.status-swatch[data-status="new"] { background: #6b7280; }
+.status-swatch[data-status="contacted"] { background: #f97316; }
+.status-swatch[data-status="nurture"] { background: #3b82f6; }
+.status-swatch[data-status="qualified"] { background: #16a34a; }
+.status-swatch[data-status="converted"] { background: #0d9488; }
+.status-swatch[data-status="unqualified"] { background: #ef4444; }
+.status-swatch[data-status="junk"] { background: #a855f7; }
+
+/* Owner select with avatar */
+.owner-select-wrap {
+    position: relative;
+}
+
+.owner-select-avatar {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    pointer-events: none;
+}
+
+.owner-select-wrap .owner-select {
+    padding-left: 42px;
+}
+
+
+
+/* =========================================
+   LEAD VIEW DROPDOWN
+========================================= */
+
+/* =========================================
+   LEAD VIEW DROPDOWN
+========================================= */
+
+.view-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* MAIN BUTTON */
+
+.view-toggle-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0;
+
+    color: #374151;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    box-shadow: none;
+
+    outline: none;
+}
+
+
+.view-toggle-btn:hover {
+    background: transparent;
+}
+
+
+.view-toggle-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* DROPDOWN MENU */
+
+.view-menu {
+    display: none;
+
+    position: absolute;
+
+    top: 35px;
+    left: 0;
+
+    width: 150px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    padding: 8px 0;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+    z-index: 9999;
+}
+
+
+/* SHOW MENU */
+
+.view-menu.show {
+    display: block;
+}
+
+
+/* MENU ITEMS */
+
+.view-item {
+    width: 100% !important;
+
+    border: none !important;
+
+    background: transparent !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 10px;
+
+    padding: 10px 16px;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-shadow: none !important;
+
+    outline: none !important;
+}
+
+.view-item:hover {
+    background: #f3f4f6;
+}
+
+
+/* DIVIDER */
+
+.view-divider {
+    height: 1px;
+
+    background: #e5e7eb;
+
+    margin: 6px 0;
+}
+
+
+/* ICON */
+
+.view-item i {
+    font-size: 17px;
+}
+
+
+.view-toggle-btn i {
+    font-size: 16px;
+}
+/* LIST BUTTON */
+
+.view-toggle-btn {
+    border: none;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 4px 6px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    color: #374151;
+}
+
+
+/* DROPDOWN MENU */
+
+.view-dropdown-menu {
+    display: none;
+
+    position: absolute;
+
+    top: calc(100% + 8px);
+    left: 0;
+
+    width: 150px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 8px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+
+    z-index: 9999;
+}
+
+
+/* SHOW MENU */
+
+.view-dropdown-menu.show {
+    display: block;
+}
+
+
+/* MENU ITEMS */
+
+.view-dropdown-menu a,
+.view-dropdown-menu button {
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px 10px;
+
+    border: none;
+
+    background: transparent;
+
+    text-decoration: none;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    text-align: left;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+}
+
+
+/* HOVER */
+
+.view-dropdown-menu a:hover,
+.view-dropdown-menu button:hover {
+
+    background: #f3f4f6;
+
+}
+
+
+/* DIVIDER */
+
+.view-dropdown-divider {
+
+    height: 1px;
+
+    background: #e5e7eb;
+
+    margin: 5px 0;
+
+}
+/* =========================================
+   LEAD VIEWS
+========================================= */
+
+/* =========================
+   LEAD VIEWS
+========================= */
+
+.leads-view {
+    display: none;
+    width: 100%;
+}
+
+.leads-view.active {
+    display: block;
+}
+
+
+/* =========================
+   LEAD KANBAN
+========================= */
+
+#leadKanbanView {
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+
+#leadKanbanView.active {
+    display: block;
+}
+
+
+
+
+#leadKanbanBoard {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    width: max-content;
+    min-width: 100%;
+
+    padding-bottom: 20px;
+}
+
+.leads-view.active {
+    display: block;
+}
+
+
+/* =========================================
+   KANBAN
+========================================= */
+
+.kanban-wrapper {
+    width: 100%;
+    margin-top: 0;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+
+.kanban-board {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    width: max-content;
+    min-width: 100%;
+
+    padding-bottom: 20px;
+}
+
+
+.kanban-column {
+    width: 280px;
+    flex-shrink: 0;
+
+    background: #f8f9fa;
+
+    border-radius: 10px;
+
+    padding: 12px;
+}
+
+.kanban-board {
+    display: flex;
+    gap: 16px;
+
+    min-width: max-content;
+
+    padding-bottom: 10px;
+}
+
+
+.kanban-column {
+    width: 280px;
+
+    background: #f8f9fa;
+
+    border-radius: 10px;
+
+    padding: 12px;
+}
+
+
+.kanban-column-title {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+}
+
+
+.kanban-card {
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 8px;
+
+    padding: 12px;
+
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+
+.kanban-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* =========================================================
+   FIX LEAD CREATE MODAL DROPDOWNS
+========================================================= */
+
+#createLeadModal .crm-custom-dropdown {
+    position: relative;
+    z-index: 1000;
+}
+
+#createLeadModal .crm-custom-dropdown.open {
+    z-index: 9999;
+}
+
+#createLeadModal .crm-dropdown-menu {
+    position: absolute;
+    z-index: 99999 !important;
+    overflow: hidden !important;
+    background: #fff;
+}
+
+/* Keep only the options scrollable */
+#createLeadModal .crm-dropdown-options {
+    max-height: 150px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+}
+
+/* Always show Create New + Clear */
+#createLeadModal .crm-dropdown-footer {
+    display: block !important;
+    position: relative;
+    z-index: 100000;
+    background: #fff;
+    border-top: 1px solid #eee;
+}
+
+#createLeadModal .crm-create-new,
+#createLeadModal .crm-clear {
+    display: flex !important;
+    height: 42px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    cursor: pointer;
+    background: #fff;
+}
+
+#createLeadModal .crm-create-new:hover,
+#createLeadModal .crm-clear:hover {
+    background: #f5f5f5;
+}
+#createLeadModal .crm-custom-dropdown.open .crm-dropdown-menu {
+    bottom: calc(100% + 6px);
+    top: auto;
+}
+#createLeadModal .modal-content {
+    overflow: visible !important;
+}
+
+#createLeadModal .modal-body {
+    overflow: visible !important;
+}
+#createLeadModal .create-lead-body {
+    overflow: visible !important;
+}
+
+
+
+/* =========================================
+   GROUP BY
+========================================= */
+
+.group-wrapper {
+    width: 100%;
+}
+
+
+.group-section {
+    margin-bottom: 20px;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+.group-title {
+    padding: 12px 16px;
+
+    background: #f8f9fa;
+
+    font-weight: 600;
+}
+
+
+.group-items {
+    padding: 10px;
+}
+
+
+
+/* =========================================
+   CREATE ORGANIZATION DROPDOWNS - UPWARD
+========================================= */
+
+#newOrgTerritoryDropdown,
+#newOrgIndustryDropdown,
+#newOrgAddressDropdown {
+    position: relative;
+    z-index: 1000;
+}
+
+#newOrgTerritoryDropdown .crm-dropdown-menu,
+#newOrgIndustryDropdown .crm-dropdown-menu,
+#newOrgAddressDropdown .crm-dropdown-menu {
+    position: absolute !important;
+    top: auto !important;
+    bottom: calc(100% + 5px) !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 100% !important;
+    z-index: 99999 !important;
+}
+
+/* Allow dropdown to come outside the modal */
+#createOrganizationModal .new-org-body,
+#createOrganizationModal .modal-content,
+#createOrganizationModal .modal-dialog {
+    overflow: visible !important;
+}
+
+
+
+/* =========================================================
+   CREATE CHILD MODALS - CLEAN BOOTSTRAP LAYER
+   Territory / Industry / Address
+========================================================= */
+
+#createIndustryModal,
+#createTerritoryModal,
+#createAddressModal {
+    z-index: 1065 !important;
+}
+
+#createIndustryModal .modal-dialog,
+#createTerritoryModal .modal-dialog,
+#createAddressModal .modal-dialog {
+    pointer-events: auto !important;
+}
+
+#createIndustryModal .modal-content,
+#createTerritoryModal .modal-content,
+#createAddressModal .modal-content {
+    background: #fff !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+#createIndustryModal .modal-backdrop,
+#createTerritoryModal .modal-backdrop,
+#createAddressModal .modal-backdrop {
+    z-index: 1060 !important;
+}
+
+</style>
+
+<script>
+
+/* =========================================
+   VIEW DROPDOWN
+========================================= */
+
+const leadViewToggleBtn =
+    document.getElementById("leadViewToggleBtn");
+
+const leadViewMenu =
+    document.getElementById("leadViewMenu");
+
+
+if (leadViewToggleBtn) {
+
+    leadViewToggleBtn.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            leadViewMenu.classList.toggle("show");
+
+        }
+    );
+
+}
+
+
+/* Close dropdown */
+
+document.addEventListener(
+    "click",
+    function () {
+
+        if (leadViewMenu) {
+
+            leadViewMenu.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CHANGE VIEW
+========================================= */
+
+function changeLeadView(view) {
+
+    /* Remove active from all views */
+
+    document
+        .querySelectorAll(".leads-view")
+        .forEach(function (item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+    /* LIST */
+
+    if (view === "list") {
+
+        document
+            .getElementById("leadListView")
+            .classList.add("active");
+
+
+        document
+            .getElementById("leadCurrentViewText")
+            .innerText = "List";
+
+    }
+
+
+    /* KANBAN */
+
+    else if (view === "kanban") {
+
+        document
+            .getElementById("leadKanbanView")
+            .classList.add("active");
+
+
+        document
+            .getElementById("leadCurrentViewText")
+            .innerText = "Kanban";
+
+
+        renderLeadKanban();
+
+    }
+
+
+    /* GROUP */
+
+    else if (view === "group") {
+
+        document
+            .getElementById("leadGroupView")
+            .classList.add("active");
+
+
+        document
+            .getElementById("leadCurrentViewText")
+            .innerText = "Group By";
+
+
+        renderLeadGroups();
+
+    }
+
+
+    /* Close menu */
+
+    if (leadViewMenu) {
+
+        leadViewMenu.classList.remove("show");
+
+    }
+
+}
+
+
+/* =========================================
+   CREATE VIEW
+========================================= */
+
+function createLeadView() {
+
+    const viewName =
+        prompt("Enter view name");
+
+
+    if (!viewName) {
+
+        return;
+
+    }
+
+
+    alert(
+        'View "' +
+        viewName.trim() +
+        '" created successfully.'
+    );
+
+
+    if (leadViewMenu) {
+
+        leadViewMenu.classList.remove("show");
+
+    }
+
+}
+
+
+/* =========================================
+   KANBAN
+========================================= */
+
+function renderLeadKanban() {
+
+    const board =
+        document.getElementById(
+            "leadKanbanBoard"
+        );
+
+
+    if (!board) {
+
+        return;
+
+    }
+
+
+    /* Prevent duplicate render */
+
+    if (board.dataset.loaded === "true") {
+
+        return;
+
+    }
+
+
+    board.innerHTML = "";
+
+
+    const rows =
+        document.querySelectorAll(
+            ".lead-row"
+        );
+
+
+    const groups = {};
+
+
+    rows.forEach(function (row) {
+
+        const status =
+            row.dataset.status || "other";
+
+
+        const statusLabel =
+            row.querySelector(
+                ".lead-status"
+            )?.innerText || "Other";
+
+
+        if (!groups[status]) {
+
+            groups[status] = {
+
+                label: statusLabel,
+
+                items: []
+
+            };
+
+        }
+
+
+        groups[status].items.push(row);
+
+    });
+
+
+    Object.keys(groups).forEach(
+        function (status) {
+
+            const column =
+                document.createElement("div");
+
+
+            column.className =
+                "kanban-column";
+
+
+            const title =
+                document.createElement("div");
+
+
+            title.className =
+                "kanban-column-title";
+
+
+            title.innerText =
+                groups[status].label;
+
+
+            column.appendChild(title);
+
+
+            groups[status].items.forEach(
+                function (row) {
+
+                    const card =
+                        document.createElement("div");
+
+
+                    card.className =
+                        "kanban-card";
+
+
+                    const name =
+                        row.querySelector(
+                            ".lead-name"
+                        )?.innerText || "-";
+
+
+                    const organization =
+                        row.querySelector(
+                            ".lead-organization"
+                        )?.innerText || "-";
+
+
+                    const email =
+                        row.querySelector(
+                            ".lead-email"
+                        )?.innerText || "-";
+
+
+                    card.innerHTML = `
+
+                        <strong>
+                            ${name}
+                        </strong>
+
+                        <div class="mt-2">
+
+                            ${organization}
+
+                        </div>
+
+                        <small class="text-muted">
+
+                            ${email}
+
+                        </small>
+
+                    `;
+
+
+                    card.addEventListener(
+                        "click",
+                        function () {
+
+                            const url =
+                                row.getAttribute(
+                                    "onclick"
+                                );
+
+
+                            if (url) {
+
+                                const match =
+                                    url.match(
+                                        /'([^']+)'/
+                                    );
+
+
+                                if (match) {
+
+                                    window.location.href =
+                                        match[1];
+
+                                }
+
+                            }
+
+                        }
+                    );
+
+
+                    column.appendChild(card);
+
+                }
+            );
+
+
+            board.appendChild(column);
+
+        }
+    );
+
+
+    board.dataset.loaded = "true";
+
+}
+
+
+/* =========================================
+   GROUP BY
+========================================= */
+
+function renderLeadGroups() {
+
+    const wrapper =
+        document.getElementById(
+            "leadGroupWrapper"
+        );
+
+
+    if (!wrapper) {
+
+        return;
+
+    }
+
+
+    wrapper.innerHTML = "";
+
+
+    const rows =
+        document.querySelectorAll(
+            ".lead-row"
+        );
+
+
+    const groups = {};
+
+
+    rows.forEach(function (row) {
+
+        const status =
+            row.dataset.status || "other";
+
+
+        const label =
+            row.querySelector(
+                ".lead-status"
+            )?.innerText || "Other";
+
+
+        if (!groups[status]) {
+
+            groups[status] = {
+
+                label: label,
+
+                items: []
+
+            };
+
+        }
+
+
+        groups[status].items.push(row);
+
+    });
+
+
+    Object.keys(groups).forEach(
+        function (status) {
+
+            const section =
+                document.createElement("div");
+
+
+            section.className =
+                "group-section";
+
+
+            const title =
+                document.createElement("div");
+
+
+            title.className =
+                "group-title";
+
+
+            title.innerText =
+                groups[status].label +
+                " (" +
+                groups[status].items.length +
+                ")";
+
+
+            section.appendChild(title);
+
+
+            const items =
+                document.createElement("div");
+
+
+            items.className =
+                "group-items";
+
+
+            groups[status].items.forEach(
+                function (row) {
+
+                    const clone =
+                        row.cloneNode(true);
+
+
+                    clone.onclick =
+                        row.onclick;
+
+
+                    items.appendChild(clone);
+
+                }
+            );
+
+
+            section.appendChild(items);
+
+
+            wrapper.appendChild(section);
+
+        }
+    );
+
+}
+
+</script>
+
+{% endblock %}
+

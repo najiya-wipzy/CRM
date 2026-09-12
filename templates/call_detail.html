@@ -1,0 +1,281 @@
+<div class="call-detail-modal">
+
+    <!-- HEADER -->
+    <div class="call-detail-header">
+
+        <h4 class="call-detail-title">
+            Call Details
+        </h4>
+
+        <div class="call-detail-actions">
+
+            <button
+                type="button"
+                class="call-detail-action"
+                title="More">
+                <i class="ti ti-dots"></i>
+            </button>
+
+            <button
+                type="button"
+                class="call-detail-action"
+                title="Edit">
+                <i class="ti ti-edit"></i>
+            </button>
+
+            <button
+                type="button"
+                class="call-detail-action call-detail-close"
+                title="Close">
+                <i class="ti ti-x"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- BODY -->
+    <div class="call-detail-body">
+
+
+        <!-- CALL TYPE -->
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+
+                {% if call.call_type == "incoming" %}
+                    <i class="ti ti-phone-incoming"></i>
+                {% else %}
+                    <i class="ti ti-phone-outgoing"></i>
+                {% endif %}
+
+            </div>
+
+            <div class="call-detail-text">
+                {{ call.get_call_type_display }} Call
+            </div>
+
+        </div>
+
+
+        <!-- PEOPLE -->
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+                <i class="ti ti-address-book"></i>
+            </div>
+
+            <div class="call-persons">
+
+                {% if call.call_type == "incoming" %}
+
+                    <!-- INCOMING -->
+                    <span class="call-avatar">
+                        {% if call.from_number %}
+                            {{ call.from_number|first|upper }}
+                        {% else %}
+                            U
+                        {% endif %}
+                    </span>
+
+                    <span class="call-detail-text">
+                        {% if call.lead %}
+                            {{ call.lead.first_name }}
+                            {{ call.lead.last_name }}
+                        {% elif call.deal %}
+                            {{ call.deal.first_name }}
+                            {{ call.deal.last_name }}
+                        {% else %}
+                            Unknown
+                        {% endif %}
+                    </span>
+
+                    <span class="call-arrow">
+                        →
+                    </span>
+
+                    <!-- RECEIVED BY -->
+                    <span class="call-avatar">
+
+                        {% if call.call_received_by %}
+                            {{ call.call_received_by.full_name|first|upper }}
+                        {% else %}
+                            U
+                        {% endif %}
+
+                    </span>
+
+                    <span class="call-detail-text">
+
+                        {% if call.call_received_by %}
+                            {{ call.call_received_by.full_name }}
+                        {% else %}
+                            Unknown
+                        {% endif %}
+
+                    </span>
+
+
+                {% else %}
+
+                    <!-- OUTGOING -->
+
+                    <span class="call-avatar">
+
+                        {% if call.caller %}
+                            {{ call.caller.full_name|first|upper }}
+                        {% else %}
+                            U
+                        {% endif %}
+
+                    </span>
+
+                    <span class="call-detail-text">
+
+                        {% if call.caller %}
+                            {{ call.caller.full_name }}
+                        {% else %}
+                            Unknown
+                        {% endif %}
+
+                    </span>
+
+                    <span class="call-arrow">
+                        →
+                    </span>
+
+                    <!-- TO NUMBER -->
+
+                    <span class="call-avatar">
+
+                        {% if call.to_number %}
+                            {{ call.to_number|first }}
+                        {% else %}
+                            U
+                        {% endif %}
+
+                    </span>
+
+                    <span class="call-detail-text">
+                        {{ call.to_number }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- LEAD / DEAL -->
+        {% if call.lead or call.deal %}
+
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+
+                {% if call.deal %}
+                    <i class="ti ti-bolt"></i>
+                {% else %}
+                    <i class="ti ti-users"></i>
+                {% endif %}
+
+            </div>
+
+
+            <div class="call-detail-text call-deal">
+
+                {% if call.lead %}
+
+                    <a href="{% url 'lead_detail' call.lead.id %}">
+                        {{ call.lead.first_name }}
+                        {{ call.lead.last_name }}
+                    </a>
+
+                    <i class="ti ti-arrow-up-right call-external"></i>
+
+
+                {% elif call.deal %}
+
+                    <a href="{% url 'deal_detail' call.deal.id %}">
+                        {{ call.deal.first_name }}
+                        {{ call.deal.last_name }}
+                    </a>
+
+                    <i class="ti ti-arrow-up-right call-external"></i>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- PHONE -->
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+                <i class="ti ti-phone"></i>
+            </div>
+
+            <div class="call-detail-text call-phone">
+
+                {% if call.call_type == "incoming" %}
+                    {{ call.from_number }}
+                {% else %}
+                    {{ call.to_number }}
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- DATE -->
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+                <i class="ti ti-calendar"></i>
+            </div>
+
+            <div class="call-detail-text">
+                {{ call.created_at|date:"D, M j, Y g:i a" }}
+            </div>
+
+        </div>
+
+
+        <!-- DURATION -->
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+                <i class="ti ti-clock"></i>
+            </div>
+
+            <div class="call-detail-text">
+                {{ call.duration }}s
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+        <div class="call-detail-row">
+
+            <div class="call-detail-icon">
+                <i class="ti ti-circle-check"></i>
+            </div>
+
+            <div class="call-detail-text call-status">
+                {{ call.get_call_status_display }}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

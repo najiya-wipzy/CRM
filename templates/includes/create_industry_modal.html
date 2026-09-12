@@ -1,0 +1,82 @@
+{% load static %}
+
+<div class="modal fade"
+     id="createIndustryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered crm-industry-dialog">
+
+        <div class="modal-content crm-child-modal">
+
+            <!-- HEADER -->
+            <div class="crm-model-header">
+
+                <h4>New Industry</h4>
+
+                <div class="crm-model-actions">
+
+                    <button type="button"
+                            class="crm-icon-btn">
+                        <i class="ti ti-edit"></i>
+                    </button>
+
+                    <button type="button"
+                            class="crm-icon-btn"
+                            data-bs-dismiss="modal">
+                        <i class="ti ti-x"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM -->
+            <form method="POST"
+                  action="{% url 'add_industry' %}"
+                  id="createIndustryForm">
+
+                {% csrf_token %}
+
+                <div class="crm-child-body">
+
+                    <div class="crm-field">
+
+                        <label>
+                            Industry
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="text"
+                               name="name"
+                               id="newIndustryName"
+                               class="crm-control"
+                               placeholder="Industry"
+                               required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+                <div class="crm-model-footer">
+
+                    <button type="button"
+                            id="createIndustrySubmitBtn"
+                            class="crm-create-btn">
+
+                        Create
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

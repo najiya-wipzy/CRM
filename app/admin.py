@@ -1,0 +1,20 @@
+from django.contrib import admin
+from .models import *
+
+admin.site.register(Branch_db)
+admin.site.register(Users_db)
+admin.site.register(Address_db)
+admin.site.register(Industry_db)
+admin.site.register(Territory_db)
+admin.site.register(Organization_db)
+admin.site.register(Lead_db)
+admin.site.register(Deal_db)
+admin.site.register(Contact_db)
+admin.site.register(Note_db)
+admin.site.register(Task_db)
+admin.site.register(CallLog_db)
+admin.site.register(Product_db)
+admin.site.register(DealProduct_db)
+admin.site.register(Attachment_db)
+admin.site.register(Comment_db)
+admin.site.register(Email_db)

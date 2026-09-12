@@ -1,0 +1,961 @@
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+
+<div class="settings-page">
+
+    <!-- =========================================
+         SETTINGS SIDEBAR
+    ========================================== -->
+
+<aside class="settings-sidebar">
+
+    <div class="settings-scroll">
+
+        <!-- USER CONFIGURATION -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                User Configuration
+            </div>
+
+            <a href="{% url 'settings' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                <i class="ti ti-user-circle"></i>
+                <span>Profile</span>
+            </a>
+
+            <a href="{% url 'preferences' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'preferences' %}active{% endif %}">
+                <i class="ti ti-adjustments"></i>
+                <span>Preferences</span>
+            </a>
+
+        </div>
+
+
+        <!-- SYSTEM CONFIGURATION -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                System Configuration
+            </div>
+
+            <a href="{% url 'general' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'general' %}active{% endif %}">
+                <i class="ti ti-settings"></i>
+                <span>General</span>
+            </a>
+
+            <a href="{% url 'settings_dashboard' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'settings_dashboard' %}active{% endif %}">
+                <i class="ti ti-layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'defaults' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'defaults' %}active{% endif %}">
+                <i class="ti ti-settings-automation"></i>
+                <span>Defaults</span>
+            </a>
+
+            <a href="{% url 'brand' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'brand' %}active{% endif %}">
+                <i class="ti ti-brand-tabler"></i>
+                <span>Brand</span>
+            </a>
+
+        </div>
+
+
+        <!-- USER MANAGEMENT -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                User Management
+            </div>
+
+            <a href="{% url 'users' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'users' %}active{% endif %}">
+                <i class="ti ti-users"></i>
+                <span>Users</span>
+            </a>
+
+            <a href="{% url 'invite_user' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'invite_user' %}active{% endif %}">
+                <i class="ti ti-user-plus"></i>
+                <span>Invite User</span>
+            </a>
+
+            <a href="{% url 'sales_hierarchy' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'sales_hierarchy' %}active{% endif %}">
+                <i class="ti ti-hierarchy-3"></i>
+                <span>Sales Hierarchy</span>
+            </a>
+
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                Email
+            </div>
+
+            <a href="{% url 'accounts' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}">
+                <i class="ti ti-mail"></i>
+                <span>Accounts</span>
+            </a>
+
+            <a href="{% url 'templates' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'templates' %}active{% endif %}">
+                <i class="ti ti-file-text"></i>
+                <span>Templates</span>
+            </a>
+
+        </div>
+
+
+        <!-- AUTOMATION & RULES -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                Automation &amp; Rules
+            </div>
+
+            <a href="{% url 'assignment_rules' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'assignment_rules' %}active{% endif %}">
+                <i class="ti ti-git-branch"></i>
+                <span>Assignment Rules</span>
+            </a>
+
+            <a href="{% url 'sla_policies' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'sla_policies' %}active{% endif %}">
+                <i class="ti ti-shield-check"></i>
+                <span>SLA Policies</span>
+            </a>
+
+            <a href="{% url 'forms' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'forms' %}active{% endif %}">
+                <i class="ti ti-forms"></i>
+                <span>Forms</span>
+            </a>
+
+        </div>
+
+
+        <!-- CUSTOMIZATION -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                Customization
+            </div>
+
+            <a href="{% url 'home_actions' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'home_actions' %}active{% endif %}">
+                <i class="ti ti-home"></i>
+                <span>Home Actions</span>
+            </a>
+
+        </div>
+
+
+        <!-- INTEGRATIONS -->
+        <div class="settings-section">
+
+            <div class="settings-section-title">
+                Integrations
+            </div>
+
+            <a href="{% url 'telephony' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'telephony' %}active{% endif %}">
+                <i class="ti ti-phone"></i>
+                <span>Telephony</span>
+            </a>
+
+            <a href="{% url 'erpnext' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'erpnext' %}active{% endif %}">
+                <i class="ti ti-building-community"></i>
+                <span>ERPNext</span>
+            </a>
+
+            <a href="{% url 'lead_syncing' %}"
+               class="settings-menu-item {% if request.resolver_match.url_name == 'lead_syncing' %}active{% endif %}">
+                <i class="ti ti-refresh"></i>
+                <span>Lead Syncing</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</aside>
+
+    <!-- =========================================
+         SETTINGS CONTENT
+    ========================================== -->
+
+    <main class="settings-content">
+
+        <div class="settings-card">
+
+            <!-- HEADER -->
+            <div class="settings-content-header">
+
+                <h2>Profile</h2>
+
+                <p>
+                    Manage your profile &amp; login information.
+                </p>
+
+            </div>
+
+
+            <!-- EMPTY PROFILE STATE -->
+            <div class="profile-section">
+
+                <div class="profile-user">
+
+                    <div class="profile-avatar">
+                        {{ crm_user.full_name|first|upper }}
+                    </div>
+
+                    <div class="profile-user-info">
+
+                        <div class="profile-name-row">
+
+                            <h3>
+                                {{ crm_user.full_name }}
+                            </h3>
+
+                            <a href="#"
+                               class="profile-edit-btn"
+                               title="Edit Profile">
+                                <i class="ti ti-edit"></i>
+                            </a>
+
+                        </div>
+
+                        <p>
+                            {{ crm_user.email }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="account-section">
+
+                    <h3 class="account-title">
+                        Account Info &amp; Security
+                    </h3>
+
+
+                    <div class="account-row">
+
+                        <div class="account-info">
+
+                            <h4>
+                                Emails &amp; Signature
+                            </h4>
+
+                            <p>
+                                Manage your account emails and email signature for communication.
+                            </p>
+
+                        </div>
+
+                        <button type="button"
+                                class="account-action">
+                            Configure
+                        </button>
+
+                    </div>
+
+
+                    <div class="account-row">
+
+                        <div class="account-info">
+
+                            <h4>
+                                Password
+                            </h4>
+
+                            <p>
+                                Change your account password for security.
+                            </p>
+
+                        </div>
+
+                        <button type="button">Change Password</button>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<style>
+
+/* =========================================
+   GLOBAL SETTINGS LAYOUT
+========================================= */
+
+.settings-page {
+    width: 100%;
+    height: calc(100vh - 80px);
+    min-height: 600px;
+
+    display: flex;
+    align-items: stretch;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: #f8fafc;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   SETTINGS SIDEBAR
+========================================= */
+
+.settings-sidebar {
+
+    width: 260px;
+    min-width: 260px;
+
+    height: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+    border-right: none;
+
+    border-radius: 12px 0 0 12px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+}
+
+
+/* =========================================
+   SIDEBAR SCROLL
+========================================= */
+
+.settings-scroll {
+
+    width: 100%;
+    height: 100%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 14px 10px 20px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* Scrollbar */
+
+.settings-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.settings-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: #d0d5dd;
+    border-radius: 10px;
+}
+
+.settings-scroll::-webkit-scrollbar-thumb:hover {
+    background: #98a2b3;
+}
+
+
+/* =========================================
+   SETTINGS SECTION
+========================================= */
+
+.settings-section {
+
+    width: 100%;
+
+    margin-bottom: 22px;
+
+}
+
+
+/* =========================================
+   SECTION TITLE
+========================================= */
+
+.settings-section-title {
+
+    padding: 0 10px;
+
+    margin-bottom: 8px;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    line-height: 18px;
+
+}
+
+
+/* =========================================
+   SETTINGS MENU ITEM
+========================================= */
+
+.settings-menu-item {
+
+    width: 100%;
+
+    min-height: 38px;
+
+    padding: 0 10px;
+
+    margin-bottom: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    box-sizing: border-box;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    color: #475467;
+
+    font-size: 14px;
+
+    font-weight: 400;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.settings-menu-item i {
+
+    width: 18px;
+
+    min-width: 18px;
+
+    font-size: 17px;
+
+    color: #667085;
+
+    text-align: center;
+
+}
+
+
+.settings-menu-item span {
+    white-space: nowrap;
+}
+
+
+/* Hover */
+
+.settings-menu-item:hover {
+
+    background: #f2f4f7;
+
+    color: #344054;
+
+}
+
+
+.settings-menu-item:hover i {
+    color: #475467;
+}
+
+
+/* Active */
+
+.settings-menu-item.active {
+
+    background: #f2f4f7;
+
+    color: #344054;
+
+    font-weight: 500;
+
+    border: 1px solid #eaecf0;
+
+}
+
+
+.settings-menu-item.active i {
+    color: #475467;
+}
+
+
+/* =========================================
+   SETTINGS CONTENT
+========================================= */
+
+.settings-content {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 100%;
+
+    display: flex;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================
+   SETTINGS CARD
+========================================= */
+
+.settings-card {
+
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 100%;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 0 12px 12px 0;
+
+    box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+
+
+/* =========================================
+   CONTENT HEADER
+========================================= */
+
+.settings-content-header {
+
+    margin-bottom: 34px;
+
+}
+
+
+.settings-content-header h2 {
+
+    margin: 0 0 7px;
+
+    color: #344054;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    line-height: 30px;
+
+}
+
+
+.settings-content-header p {
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 22px;
+
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+.profile-section {
+    width: 100%;
+}
+
+
+/* =========================================
+   USER
+========================================= */
+
+.profile-user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 48px;
+}
+
+
+.profile-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #f2f4f7;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #667085;
+    font-size: 18px;
+    font-weight: 500;
+
+    flex-shrink: 0;
+}
+
+
+.profile-user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.profile-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.profile-name-row h3 {
+    margin: 0;
+
+    color: #1d2939;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+
+.profile-user-info p {
+    margin: 2px 0 0;
+
+    color: #667085;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+
+/* EDIT */
+
+.profile-edit-btn {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #475467;
+    text-decoration: none;
+}
+
+
+.profile-edit-btn i {
+    font-size: 17px;
+}
+
+
+.profile-edit-btn:hover {
+    color: #1d2939;
+}
+
+
+/* =========================================
+   ACCOUNT INFO
+========================================= */
+
+.account-section {
+    width: 100%;
+}
+
+
+.account-title {
+    margin: 0 0 26px;
+
+    color: #1d2939;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+
+/* =========================================
+   ACCOUNT ROW
+========================================= */
+
+.account-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+    margin-bottom: 28px;
+}
+
+
+.account-info {
+    min-width: 0;
+}
+
+
+.account-info h4 {
+    margin: 0 0 4px;
+
+    color: #1d2939;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+
+.account-info p {
+    margin: 0;
+
+    color: #667085;
+    font-size: 14px;
+    line-height: 22px;
+}
+
+
+/* =========================================
+   ACTION BUTTON
+========================================= */
+
+.account-action {
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #f2f4f7;
+    color: #1d2939;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+.account-action:hover {
+    background: #eaecf0;
+    color: #1d2939;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .settings-sidebar {
+
+        width: 230px;
+
+        min-width: 230px;
+
+    }
+
+}
+
+
+@media (max-width: 992px) {
+
+    .settings-page {
+
+        padding: 15px;
+
+    }
+
+    .settings-sidebar {
+
+        width: 220px;
+
+        min-width: 220px;
+
+    }
+
+    .settings-card {
+
+        padding: 25px;
+
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .settings-page {
+
+        height: auto;
+
+        min-height: calc(100vh - 80px);
+
+        flex-direction: column;
+
+        overflow: visible;
+
+    }
+
+
+    .settings-sidebar {
+
+        width: 100%;
+
+        min-width: 100%;
+
+        height: 350px;
+
+        min-height: 350px;
+
+        border: 1px solid #e4e7ec;
+
+        border-bottom: none;
+
+        border-radius: 12px 12px 0 0;
+
+    }
+
+
+    .settings-content {
+
+        width: 100%;
+
+        height: auto;
+
+        min-height: auto;
+
+    }
+
+
+    .settings-card {
+
+        min-height: 500px;
+
+        height: auto;
+
+        border-radius: 0 0 12px 12px;
+
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .profile-user {
+        margin-bottom: 35px;
+    }
+
+    .profile-avatar {
+        width: 58px;
+        height: 58px;
+    }
+
+    .profile-name-row h3 {
+        font-size: 18px;
+    }
+
+    .account-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .account-action {
+        align-self: flex-start;
+    }
+
+    .settings-page {
+
+        padding: 10px;
+
+    }
+
+
+    .settings-card {
+
+        padding: 20px;
+
+    }
+
+
+    .settings-content-header h2 {
+
+        font-size: 20px;
+
+    }
+
+
+    .profile-empty h3 {
+
+        font-size: 18px;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

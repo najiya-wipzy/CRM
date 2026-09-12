@@ -1,0 +1,1103 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+        <div class="settings-page">
+
+            <!-- =====================================
+                 SETTINGS SIDEBAR
+            ====================================== -->
+            <div class="settings-sidebar">
+
+                <div class="settings-scroll">
+
+                    <!-- SYSTEM CONFIGURATION -->
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            System Configuration
+                        </div>
+
+                        <a href="{% url 'general' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'general' %}active{% endif %}">
+                            <i class="ti ti-settings"></i>
+                            <span>General</span>
+                        </a>
+
+                        <a href="{% url 'settings_dashboard' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'settings_dashboard' %}active{% endif %}">
+                            <i class="ti ti-layout-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <a href="{% url 'defaults' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'defaults' %}active{% endif %}">
+                            <i class="ti ti-settings-automation"></i>
+                            <span>Defaults</span>
+                        </a>
+
+                        <a href="{% url 'brand' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'brand' %}active{% endif %}">
+                            <i class="ti ti-brand-tabler"></i>
+                            <span>Brand</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- USER MANAGEMENT -->
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            User Management
+                        </div>
+
+                        <a href="{% url 'users' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'users' %}active{% endif %}">
+                            <i class="ti ti-user"></i>
+                            <span>Users</span>
+                        </a>
+
+                        <a href="{% url 'invite_user' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'invite_user' %}active{% endif %}">
+                            <i class="ti ti-user-plus"></i>
+                            <span>Invite User</span>
+                        </a>
+
+                        <a href="{% url 'sales_hierarchy' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'sales_hierarchy' %}active{% endif %}">
+                            <i class="ti ti-hierarchy-3"></i>
+                            <span>Sales Hierarchy</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Email
+                        </div>
+
+                        <a href="{% url 'accounts' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}">
+                            <i class="ti ti-mail"></i>
+                            <span>Accounts</span>
+                        </a>
+
+                        <a href="{% url 'templates' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'templates' %}active{% endif %}">
+                            <i class="ti ti-file-text"></i>
+                            <span>Templates</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- AUTOMATION & RULES -->
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Automation &amp; Rules
+                        </div>
+
+                        <a href="{% url 'assignment_rules' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'assignment_rules' %}active{% endif %}">
+                            <i class="ti ti-git-branch"></i>
+                            <span>Assignment Rules</span>
+                        </a>
+
+                        <a href="{% url 'sla_policies' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'sla_policies' %}active{% endif %}">
+                            <i class="ti ti-shield-check"></i>
+                            <span>SLA Policies</span>
+                        </a>
+
+                        <a href="{% url 'forms' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'forms' %}active{% endif %}">
+                            <i class="ti ti-forms"></i>
+                            <span>Forms</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- CUSTOMIZATION -->
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Customization
+                        </div>
+
+                        <a href="{% url 'home_actions' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'home_actions' %}active{% endif %}">
+                            <i class="ti ti-home"></i>
+                            <span>Home Actions</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- INTEGRATIONS -->
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Integrations
+                        </div>
+
+                        <a href="{% url 'telephony' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'telephony' %}active{% endif %}">
+                            <i class="ti ti-phone"></i>
+                            <span>Telephony</span>
+                        </a>
+
+                        <a href="{% url 'erpnext' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'erpnext' %}active{% endif %}">
+                            <i class="ti ti-building-community"></i>
+                            <span>ERPNext</span>
+                        </a>
+
+                        <a href="{% url 'lead_syncing' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'lead_syncing' %}active{% endif %}">
+                            <i class="ti ti-refresh"></i>
+                            <span>Lead Syncing</span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 CONTENT
+            ====================================== -->
+            <div class="settings-content">
+
+                <div class="settings-card">
+
+                    <!-- HEADER -->
+                    <div class="home-actions-header">
+
+                        <div>
+                            <h2>Home Actions</h2>
+                            <p>
+                                Configure actions that appear on the home dropdown
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         TABLE
+                    ====================================== -->
+                    <div class="home-actions-table-wrapper">
+
+                        <table class="home-actions-table">
+
+                            <thead>
+                                <tr>
+
+                                    <th class="check-column">
+                                        <input type="checkbox"
+                                               id="selectAll">
+                                    </th>
+
+                                    <th class="number-column">
+                                        Number
+                                    </th>
+
+                                    <th>
+                                        Label
+                                    </th>
+
+                                    <th>
+                                        Type
+                                    </th>
+
+                                    <th>
+                                        Route
+                                    </th>
+
+                                    <th class="hidden-column">
+                                        Hidden
+                                    </th>
+
+                                    <th class="action-column">
+                                        <i class="ti ti-settings"></i>
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+
+                            <tbody id="actionsBody">
+
+                                <!-- ROW 1 -->
+                                <tr>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="row-check">
+                                    </td>
+
+                                    <td class="number-cell">
+                                        1
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="Apps"
+                                               class="table-input">
+                                    </td>
+
+                                    <td>
+                                        <select class="table-select">
+                                            <option value="route" selected>
+                                                Route
+                                            </option>
+                                            <option value="separator">
+                                                Separator
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="#"
+                                               class="route-input">
+                                    </td>
+
+                                    <td class="hidden-cell">
+                                        <input type="checkbox"
+                                               class="hidden-check">
+                                    </td>
+
+                                    <td class="edit-cell">
+                                        <button type="button"
+                                                class="edit-btn">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- ROW 2 -->
+                                <tr>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="row-check">
+                                    </td>
+
+                                    <td class="number-cell">
+                                        2
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="Settings"
+                                               class="table-input">
+                                    </td>
+
+                                    <td>
+                                        <select class="table-select">
+                                            <option value="route" selected>
+                                                Route
+                                            </option>
+                                            <option value="separator">
+                                                Separator
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="#"
+                                               class="route-input">
+                                    </td>
+
+                                    <td class="hidden-cell">
+                                        <input type="checkbox"
+                                               class="hidden-check">
+                                    </td>
+
+                                    <td class="edit-cell">
+                                        <button type="button"
+                                                class="edit-btn">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- ROW 3 -->
+                                <tr>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="row-check">
+                                    </td>
+
+                                    <td class="number-cell">
+                                        3
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="Login to Frappe Cloud"
+                                               class="table-input">
+                                    </td>
+
+                                    <td>
+                                        <select class="table-select">
+                                            <option value="route" selected>
+                                                Route
+                                            </option>
+                                            <option value="separator">
+                                                Separator
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="#"
+                                               class="route-input">
+                                    </td>
+
+                                    <td class="hidden-cell">
+                                        <input type="checkbox"
+                                               class="hidden-check">
+                                    </td>
+
+                                    <td class="edit-cell">
+                                        <button type="button"
+                                                class="edit-btn">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- ROW 4 -->
+                                <tr>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="row-check">
+                                    </td>
+
+                                    <td class="number-cell">
+                                        4
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="About"
+                                               class="table-input">
+                                    </td>
+
+                                    <td>
+                                        <select class="table-select">
+                                            <option value="route" selected>
+                                                Route
+                                            </option>
+                                            <option value="separator">
+                                                Separator
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="#"
+                                               class="route-input">
+                                    </td>
+
+                                    <td class="hidden-cell">
+                                        <input type="checkbox"
+                                               class="hidden-check">
+                                    </td>
+
+                                    <td class="edit-cell">
+                                        <button type="button"
+                                                class="edit-btn">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- ROW 5 -->
+                                <tr>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="row-check">
+                                    </td>
+
+                                    <td class="number-cell">
+                                        5
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value=""
+                                               class="table-input">
+                                    </td>
+
+                                    <td>
+                                        <select class="table-select">
+                                            <option value="route">
+                                                Route
+                                            </option>
+                                            <option value="separator" selected>
+                                                Separator
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value=""
+                                               class="route-input">
+                                    </td>
+
+                                    <td class="hidden-cell">
+                                        <input type="checkbox"
+                                               class="hidden-check">
+                                    </td>
+
+                                    <td class="edit-cell">
+                                        <button type="button"
+                                                class="edit-btn">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+
+                                <!-- ROW 6 -->
+                                <tr>
+
+                                    <td>
+                                        <input type="checkbox"
+                                               class="row-check">
+                                    </td>
+
+                                    <td class="number-cell">
+                                        6
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="Log out"
+                                               class="table-input">
+                                    </td>
+
+                                    <td>
+                                        <select class="table-select">
+                                            <option value="route" selected>
+                                                Route
+                                            </option>
+                                            <option value="separator">
+                                                Separator
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <td>
+                                        <input type="text"
+                                               value="#"
+                                               class="route-input">
+                                    </td>
+
+                                    <td class="hidden-cell">
+                                        <input type="checkbox"
+                                               class="hidden-check">
+                                    </td>
+
+                                    <td class="edit-cell">
+                                        <button type="button"
+                                                class="edit-btn">
+                                            <i class="ti ti-edit"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <!-- ADD ROW -->
+                    <button type="button"
+                            class="add-row-btn"
+                            id="addRowBtn">
+
+                        Add Row
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+
+/* =====================================
+   SETTINGS PAGE
+===================================== */
+
+.settings-page {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    padding: 20px;
+    background: #f8fafc;
+    box-sizing: border-box;
+}
+
+
+/* =====================================
+   SIDEBAR
+===================================== */
+
+.settings-sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: calc(100vh - 120px);
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    overflow: hidden;
+}
+
+
+.settings-scroll {
+    height: 100%;
+    overflow-y: auto;
+    padding: 14px 10px;
+    box-sizing: border-box;
+}
+
+
+.settings-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: #d0d5dd;
+    border-radius: 10px;
+}
+
+
+/* =====================================
+   SETTINGS SECTION
+===================================== */
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+
+.settings-section-title {
+    padding: 0 10px;
+    margin-bottom: 8px;
+    color: #667085;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* =====================================
+   MENU
+===================================== */
+
+.settings-menu-item {
+    width: 100%;
+    min-height: 38px;
+    padding: 0 10px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    border-radius: 7px;
+    text-decoration: none;
+    color: #475467;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+
+.settings-menu-item i {
+    font-size: 17px;
+    color: #667085;
+}
+
+
+.settings-menu-item:hover {
+    background: #f2f4f7;
+}
+
+
+.settings-menu-item.active {
+    background: #f2f4f7;
+    color: #344054;
+    font-weight: 500;
+    border: 1px solid #eaecf0;
+}
+
+
+/* =====================================
+   CONTENT
+===================================== */
+
+.settings-content {
+    flex: 1;
+    min-width: 0;
+}
+
+
+.settings-card {
+    width: 100%;
+    min-height: calc(100vh - 120px);
+    padding: 28px 30px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 0 12px 12px 0;
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+.home-actions-header {
+    margin-bottom: 22px;
+}
+
+
+.home-actions-header h2 {
+    margin: 0 0 5px;
+    color: #344054;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.home-actions-header p {
+    margin: 0;
+    color: #667085;
+    font-size: 14px;
+}
+
+
+/* =====================================
+   TABLE WRAPPER
+===================================== */
+
+.home-actions-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid #dfe3e8;
+    border-radius: 9px;
+}
+
+
+/* =====================================
+   TABLE
+===================================== */
+
+.home-actions-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+}
+
+
+.home-actions-table th {
+    height: 38px;
+    padding: 0 8px;
+    text-align: left;
+    background: #f9fafb;
+    color: #667085;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid #dfe3e8;
+    border-right: 1px solid #eaecf0;
+}
+
+
+.home-actions-table td {
+    height: 35px;
+    padding: 0 8px;
+    border-bottom: 1px solid #eaecf0;
+    border-right: 1px solid #eaecf0;
+    color: #475467;
+    font-size: 14px;
+}
+
+
+.home-actions-table tr:last-child td {
+    border-bottom: none;
+}
+
+
+.home-actions-table th:last-child,
+.home-actions-table td:last-child {
+    border-right: none;
+}
+
+
+/* =====================================
+   COLUMN WIDTH
+===================================== */
+
+.check-column {
+    width: 35px;
+    text-align: center !important;
+}
+
+
+.number-column {
+    width: 60px;
+}
+
+
+.hidden-column {
+    width: 110px;
+}
+
+
+.action-column {
+    width: 35px;
+    text-align: center !important;
+}
+
+
+/* =====================================
+   CHECKBOX
+===================================== */
+
+.home-actions-table input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: #475467;
+    cursor: pointer;
+}
+
+
+/* =====================================
+   NUMBER
+===================================== */
+
+.number-cell {
+    text-align: center;
+    color: #475467;
+}
+
+
+/* =====================================
+   INPUTS
+===================================== */
+
+.table-input,
+.route-input {
+    width: 100%;
+    height: 33px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #344054;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+
+.table-input:focus,
+.route-input:focus {
+    background: #f9fafb;
+}
+
+
+/* =====================================
+   SELECT
+===================================== */
+
+.table-select {
+    width: 100%;
+    height: 33px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #475467;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+
+/* =====================================
+   HIDDEN
+===================================== */
+
+.hidden-cell {
+    text-align: center;
+}
+
+
+/* =====================================
+   EDIT BUTTON
+===================================== */
+
+.edit-cell {
+    text-align: center;
+}
+
+
+.edit-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: #667085;
+    cursor: pointer;
+}
+
+
+.edit-btn:hover {
+    background: #f2f4f7;
+    color: #344054;
+}
+
+
+.edit-btn i {
+    font-size: 17px;
+}
+
+
+/* =====================================
+   ADD ROW
+===================================== */
+
+.add-row-btn {
+    margin-top: 9px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 6px;
+    background: #f2f4f7;
+    color: #475467;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+
+.add-row-btn:hover {
+    background: #eaecf0;
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 992px) {
+
+    .settings-sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .settings-card {
+        padding: 25px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .settings-page {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .settings-sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        max-height: 350px;
+        border-radius: 12px 12px 0 0;
+        border-right: 1px solid #e4e7ec;
+        border-bottom: none;
+    }
+
+    .settings-card {
+        min-height: auto;
+        border-radius: 0 0 12px 12px;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .settings-card {
+        padding: 18px;
+    }
+
+}
+
+</style>
+
+
+<script>
+
+/* =====================================
+   ADD ROW
+===================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const addRowBtn = document.getElementById("addRowBtn");
+    const actionsBody = document.getElementById("actionsBody");
+    const selectAll = document.getElementById("selectAll");
+
+
+    /* ADD NEW ROW */
+
+    addRowBtn.addEventListener("click", function () {
+
+        const rowCount =
+            actionsBody.querySelectorAll("tr").length + 1;
+
+
+        const newRow = document.createElement("tr");
+
+
+        newRow.innerHTML = `
+
+            <td>
+                <input type="checkbox"
+                       class="row-check">
+            </td>
+
+
+            <td class="number-cell">
+                ${rowCount}
+            </td>
+
+
+            <td>
+                <input type="text"
+                       value=""
+                       placeholder="Label"
+                       class="table-input">
+            </td>
+
+
+            <td>
+                <select class="table-select">
+                    <option value="route" selected>
+                        Route
+                    </option>
+
+                    <option value="separator">
+                        Separator
+                    </option>
+                </select>
+            </td>
+
+
+            <td>
+                <input type="text"
+                       value="#"
+                       class="route-input">
+            </td>
+
+
+            <td class="hidden-cell">
+                <input type="checkbox"
+                       class="hidden-check">
+            </td>
+
+
+            <td class="edit-cell">
+
+                <button type="button"
+                        class="edit-btn"
+                        title="Edit">
+
+                    <i class="ti ti-edit"></i>
+
+                </button>
+
+            </td>
+
+        `;
+
+
+        actionsBody.appendChild(newRow);
+
+    });
+
+
+    /* SELECT ALL */
+
+    selectAll.addEventListener("change", function () {
+
+        const checkboxes =
+            document.querySelectorAll(".row-check");
+
+
+        checkboxes.forEach(function (checkbox) {
+
+            checkbox.checked = selectAll.checked;
+
+        });
+
+    });
+
+
+});
+
+</script>
+
+{% endblock %}

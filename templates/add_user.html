@@ -1,0 +1,619 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+        <div class="add-user-page">
+
+            <div class="add-user-card">
+
+                <!-- HEADER -->
+                <div class="add-user-header">
+
+                    <div class="header-icon">
+                        <i class="ti ti-user-plus"></i>
+                    </div>
+
+                    <div>
+                        <h2>Create New User</h2>
+                        <p>
+                            Create a new CRM user and assign their role.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- FORM -->
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <!-- FULL NAME -->
+                    <div class="form-group">
+
+                        <label for="full_name">
+                            Full Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="ti ti-user"></i>
+
+                            <input
+                                type="text"
+                                id="full_name"
+                                name="full_name"
+                                placeholder="Enter full name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="ti ti-mail"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter email address"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- USERNAME -->
+                    <div class="form-group">
+
+                        <label for="username">
+                            Username
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="ti ti-at"></i>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter username"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="ti ti-lock"></i>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter password"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ROLE -->
+                    <div class="form-group">
+
+                        <label for="role">
+                            Role
+                        </label>
+
+                        <div class="input-wrapper select-wrapper">
+
+                            <i class="ti ti-shield"></i>
+
+                            <select
+                                id="role"
+                                name="role"
+                                required
+                            >
+
+                                <option value="">
+                                    Select role
+                                </option>
+
+                                <option value="sales">
+                                    Sales
+                                </option>
+
+                                <option value="manager">
+                                    Manager
+                                </option>
+
+                                <option value="admin">
+                                    Admin
+                                </option>
+
+                            </select>
+
+                            <i class="ti ti-chevron-down select-arrow"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BRANCH INFO -->
+                    <div class="branch-info">
+
+                        <i class="ti ti-building"></i>
+
+                        <div>
+
+                            <strong>Branch</strong>
+
+                            <span>
+                                {{ branch.username }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+                    <div class="form-actions">
+
+                        <a
+                            href="{% url 'users' %}"
+                            class="cancel-btn"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="create-btn"
+                        >
+                            <i class="ti ti-user-plus"></i>
+                            Create User
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+.add-user-page {
+    width: 100%;
+    min-height: calc(100vh - 100px);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 35px 20px;
+
+    background: #f8fafc;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.add-user-card {
+    width: 100%;
+    max-width: 650px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+    border-radius: 12px;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.add-user-header {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding-bottom: 25px;
+
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+
+.header-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #f2f4f7;
+
+    color: #344054;
+
+    flex-shrink: 0;
+}
+
+
+.header-icon i {
+    font-size: 21px;
+}
+
+
+.add-user-header h2 {
+    margin: 0 0 5px;
+
+    color: #344054;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.add-user-header p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+    margin-bottom: 19px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.input-wrapper > i:first-child {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #667085;
+
+    font-size: 17px;
+
+    pointer-events: none;
+}
+
+
+.input-wrapper input,
+.input-wrapper select {
+    width: 100%;
+    height: 43px;
+
+    padding: 0 13px 0 40px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    font-size: 13px;
+
+    outline: none;
+
+    box-sizing: border-box;
+
+    transition: all 0.2s ease;
+}
+
+
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+    border-color: #667085;
+
+    box-shadow: 0 0 0 3px rgba(102, 112, 133, 0.10);
+}
+
+
+.input-wrapper input::placeholder {
+    color: #98a2b3;
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.select-wrapper select {
+    appearance: none;
+    -webkit-appearance: none;
+
+    cursor: pointer;
+}
+
+
+.select-arrow {
+    position: absolute;
+
+    right: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #667085;
+
+    font-size: 16px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   BRANCH INFO
+========================================= */
+
+.branch-info {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px 13px;
+
+    margin-top: 5px;
+    margin-bottom: 25px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 8px;
+
+    background: #f9fafb;
+}
+
+
+.branch-info > i {
+    font-size: 19px;
+
+    color: #667085;
+}
+
+
+.branch-info div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.branch-info strong {
+    color: #475467;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.branch-info span {
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.form-actions {
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 10px;
+
+    padding-top: 5px;
+}
+
+
+/* CANCEL */
+
+.cancel-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 75px;
+
+    height: 40px;
+
+    padding: 0 15px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #475467;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    box-sizing: border-box;
+}
+
+
+.cancel-btn:hover {
+    background: #f9fafb;
+
+    color: #344054;
+}
+
+
+/* CREATE */
+
+.create-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    height: 40px;
+
+    padding: 0 16px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #344054;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.create-btn:hover {
+    background: #1d2939;
+}
+
+
+.create-btn i {
+    font-size: 16px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .add-user-page {
+        padding: 20px 12px;
+    }
+
+
+    .add-user-card {
+        padding: 22px 18px;
+    }
+
+
+    .add-user-header {
+        align-items: flex-start;
+    }
+
+
+    .form-actions {
+        flex-direction: column-reverse;
+
+        width: 100%;
+    }
+
+
+    .cancel-btn,
+    .create-btn {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,2071 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+    <div class="content">
+
+        <div class="settings-page">
+
+
+            <!-- =========================================
+                 SETTINGS SIDEBAR
+            ========================================== -->
+
+            <div class="settings-sidebar">
+
+                <div class="settings-scroll">
+
+
+                    <!-- USER CONFIGURATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            User Configuration
+                        </div>
+
+
+                        <a
+                            href="{% url 'settings' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-user-circle"></i>
+
+                            <span>Profile</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'preferences' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'preferences' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-adjustments"></i>
+
+                            <span>Preferences</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- SYSTEM CONFIGURATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            System Configuration
+                        </div>
+
+
+                        <a
+                            href="{% url 'general' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'general' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-settings"></i>
+
+                            <span>General</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'settings_dashboard' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'settings_dashboard' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-layout-dashboard"></i>
+
+                            <span>Dashboard</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'defaults' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'defaults' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-settings-automation"></i>
+
+                            <span>Defaults</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'brand' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'brand' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-brand-tabler"></i>
+
+                            <span>Brand</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- USER MANAGEMENT -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            User Management
+                        </div>
+
+
+                        <a
+                            href="{% url 'users' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'users' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-user"></i>
+
+                            <span>Users</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'invite_user' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'invite_user' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-user-plus"></i>
+
+                            <span>Invite User</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'sales_hierarchy' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'sales_hierarchy' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-hierarchy-3"></i>
+
+                            <span>Sales Hierarchy</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Email
+                        </div>
+
+
+                        <a
+                            href="{% url 'accounts' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-mail"></i>
+
+                            <span>Accounts</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'templates' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'templates' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-file-text"></i>
+
+                            <span>Templates</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- AUTOMATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Automation &amp; Rules
+                        </div>
+
+
+                        <a
+                            href="{% url 'assignment_rules' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'assignment_rules' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-git-branch"></i>
+
+                            <span>Assignment Rules</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'sla_policies' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'sla_policies' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-shield-check"></i>
+
+                            <span>SLA Policies</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'forms' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'forms' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-forms"></i>
+
+                            <span>Forms</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- CUSTOMIZATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Customization
+                        </div>
+
+
+                        <a
+                            href="{% url 'home_actions' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'home_actions' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-home"></i>
+
+                            <span>Home Actions</span>
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- INTEGRATIONS -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Integrations
+                        </div>
+
+
+                        <a
+                            href="{% url 'telephony' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'telephony' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-phone"></i>
+
+                            <span>Telephony</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'erpnext' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'erpnext' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-building-community"></i>
+
+                            <span>ERPNext</span>
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'lead_syncing' %}"
+                            class="settings-menu-item {% if request.resolver_match.url_name == 'lead_syncing' %}active{% endif %}"
+                        >
+
+                            <i class="ti ti-refresh"></i>
+
+                            <span>Lead Syncing</span>
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 USERS CONTENT
+            ========================================== -->
+
+            <div class="settings-content">
+
+                <div class="settings-card">
+
+
+                    <!-- HEADER -->
+
+                    <div class="settings-header">
+
+                        <div>
+
+                            <h2>Users</h2>
+
+                            <p>
+                                Manage CRM users by adding or inviting them,
+                                and assign roles to control their access and permissions.
+                            </p>
+
+                        </div>
+
+
+                        <!-- NEW USER DROPDOWN -->
+                        <div class="new-user-dropdown" id="newUserDropdown">
+
+                            <button type="button"
+                                    class="new-user-btn"
+                                    id="newUserBtn">
+                                <i class="ti ti-plus"></i>
+                                <span>New</span>
+                                <i class="ti ti-chevron-down dropdown-arrow"></i>
+                            </button>
+
+                            <div class="new-user-menu" id="newUserMenu">
+
+                                <a href="#"
+                                   class="new-user-menu-item"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#createUserModal">
+                                    <i class="ti ti-user-plus"></i>
+                                    <div>
+                                        <span class="menu-title">Add New User</span>
+                                        <span class="menu-description">Create a new CRM user</span>
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'invite_user' %}"
+                                   class="new-user-menu-item">
+                                    <i class="ti ti-mail-forward"></i>
+                                    <div>
+                                        <span class="menu-title">Invite New User</span>
+                                        <span class="menu-description">Send an invitation to a new user</span>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- =========================================
+                         USERS LIST
+                    ========================================== -->
+
+                    {% if users %}
+
+                        <div class="users-list">
+
+                            {% for user in users %}
+
+                                <div class="user-row">
+
+                                    <div class="user-avatar">
+                                        {{ user.full_name|slice:":1"|upper }}
+                                    </div>
+
+                                    <div class="user-info">
+
+                                        <div class="user-name">
+                                            {{ user.full_name }}
+                                        </div>
+
+                                        <div class="user-email">
+                                            {{ user.email }}
+                                        </div>
+
+                                        <div class="user-username">
+                                            {{ user.username }}
+                                        </div>
+
+                                    </div>
+
+                                    <div class="user-actions">
+
+                                        <span class="user-role">
+                                            <i class="ti ti-shield"></i>
+                                            {{ user.role|title }}
+                                        </span>
+
+<!--                                        <span class="user-status {% if user.status == 'active' %}active{% else %}inactive{% endif %}">-->
+<!--                                            {{ user.status|title }}-->
+<!--                                        </span>-->
+
+                                        <button
+                                            type="button"
+                                            class="user-more-btn"
+                                            title="More options"
+                                        >
+                                            <i class="ti ti-dots"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="users-empty">
+
+                            <div class="users-empty-icon">
+                                <i class="ti ti-users"></i>
+                            </div>
+
+                            <h3>No Users Yet</h3>
+
+                            <p>
+                                No users have been added to your CRM yet.
+                                Create or invite a user to get started.
+                            </p>
+
+                            <div class="empty-user-actions">
+
+                                <a href="#"
+                                   class="empty-add-user-btn"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#createUserModal">
+                                    <i class="ti ti-user-plus"></i>
+                                    Create New User
+                                </a>
+
+                                <a
+                                    href="{% url 'invite_user' %}"
+                                    class="empty-invite-user-btn"
+                                >
+                                    <i class="ti ti-mail-forward"></i>
+                                    Invite New User
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Create New User Modal -->
+<div class="modal fade" id="createUserModal" tabindex="-1"
+     aria-labelledby="createUserModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered create-user-dialog">
+
+        <div class="modal-content create-user-modal">
+
+            <div class="create-user-header">
+                <div>
+                    <h4 id="createUserModalLabel">
+                        <i class="ti ti-user-plus"></i>
+                        Create New User
+                    </h4>
+                    <p>Create a new CRM user and assign their role.</p>
+                </div>
+
+                <button type="button"
+                        class="create-user-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+
+            <form method="POST" action="{% url 'add_user' %}">
+                {% csrf_token %}
+
+                <div class="create-user-body">
+                    <div class="user-form-grid">
+
+                        <div class="user-form-group">
+                            <label>Full Name</label>
+                            <div class="user-input">
+                                <i class="ti ti-user"></i>
+                                <input type="text" name="full_name"
+                                       placeholder="Enter full name" required>
+                            </div>
+                        </div>
+
+                        <div class="user-form-group">
+                            <label>Email</label>
+                            <div class="user-input">
+                                <i class="ti ti-mail"></i>
+                                <input type="email" name="email"
+                                       placeholder="Enter email address" required>
+                            </div>
+                        </div>
+
+                        <div class="user-form-group">
+                            <label>Username</label>
+                            <div class="user-input">
+                                <i class="ti ti-at"></i>
+                                <input type="text" name="username"
+                                       placeholder="Enter username" required>
+                            </div>
+                        </div>
+
+                        <div class="user-form-group">
+                            <label>Password</label>
+                            <div class="user-input">
+                                <i class="ti ti-lock"></i>
+                                <input type="password" name="password"
+                                       placeholder="Enter password" required>
+                            </div>
+                        </div>
+
+                        <div class="user-form-group full-width">
+                            <label>Role</label>
+                            <div class="user-input">
+                                <i class="ti ti-shield"></i>
+                                <select name="role" required>
+                                    <option value="" selected disabled>Select role</option>
+                                    {% for value, label in role_choices %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i class="ti ti-chevron-down select-arrow"></i>
+                            </div>
+                        </div>
+
+                        <div class="user-branch full-width">
+                            <i class="ti ti-building"></i>
+                            <div>
+                                <span>Branch</span>
+                                <strong>{{ branch }}</strong>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="create-user-footer">
+<!--                    <button type="button"-->
+<!--                            class="user-cancel-btn"-->
+<!--                            data-bs-dismiss="modal">-->
+<!--                        Cancel-->
+<!--                    </button>-->
+
+                    <button type="submit" class="user-create-btn">
+                        <i class="ti ti-user-plus"></i>
+                        Create User
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- =========================================
+     STYLES
+========================================= -->
+
+<style>
+
+
+/* =========================================
+   SETTINGS PAGE
+========================================= */
+
+.settings-page {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+
+    padding: 20px;
+
+    background: #f8fafc;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   SETTINGS SIDEBAR
+========================================= */
+
+.settings-sidebar {
+    width: 260px;
+    min-width: 260px;
+
+    height: calc(100vh - 120px);
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+    border-right: none;
+
+    border-radius: 12px 0 0 12px;
+
+    overflow: hidden;
+}
+
+
+.settings-scroll {
+    width: 100%;
+    height: 100%;
+
+    overflow-y: auto;
+
+    padding: 14px 10px 25px;
+
+    box-sizing: border-box;
+}
+
+
+/* SCROLLBAR */
+
+.settings-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.settings-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: #cfd4dc;
+
+    border-radius: 10px;
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb:hover {
+    background: #98a2b3;
+}
+
+
+/* =========================================
+   SETTINGS SECTION
+========================================= */
+
+.settings-section {
+    margin-bottom: 21px;
+}
+
+
+.settings-section-title {
+    padding: 0 10px;
+
+    margin-bottom: 8px;
+
+    color: #667085;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    letter-spacing: 0.1px;
+}
+
+
+/* =========================================
+   MENU ITEM
+========================================= */
+
+.settings-menu-item {
+    width: 100%;
+    min-height: 38px;
+
+    padding: 0 10px;
+
+    margin-bottom: 3px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    color: #475467;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    box-sizing: border-box;
+
+    transition: all 0.2s ease;
+}
+
+
+.settings-menu-item i {
+    font-size: 17px;
+
+    color: #667085;
+
+    flex-shrink: 0;
+}
+
+
+.settings-menu-item:hover {
+    background: #f2f4f7;
+
+    color: #344054;
+}
+
+
+.settings-menu-item:hover i {
+    color: #475467;
+}
+
+
+/* ACTIVE */
+
+.settings-menu-item.active {
+    background: #f2f4f7;
+
+    color: #344054;
+
+    font-weight: 500;
+
+    border: 1px solid #eaecf0;
+}
+
+
+.settings-menu-item.active i {
+    color: #475467;
+}
+
+
+/* =========================================
+   SETTINGS CONTENT
+========================================= */
+
+.settings-content {
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: calc(100vh - 120px);
+}
+
+
+/* =========================================
+   SETTINGS CARD
+========================================= */
+
+.settings-card {
+    width: 100%;
+
+    min-height: calc(100vh - 120px);
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 0 12px 12px 0;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.settings-header {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+}
+
+
+.settings-header h2 {
+    margin: 0 0 7px;
+
+    color: #344054;
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+
+.settings-header p {
+    max-width: 680px;
+
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   NEW USER DROPDOWN
+========================================= */
+
+.new-user-dropdown {
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+
+.new-user-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-width: 90px;
+
+    padding: 9px 13px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #344054;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.new-user-btn:hover {
+    background: #1d2939;
+}
+
+
+.new-user-btn i {
+    font-size: 16px;
+}
+
+
+.dropdown-arrow {
+    font-size: 14px !important;
+
+    transition: transform 0.2s ease;
+}
+
+
+.new-user-dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* MENU */
+
+.new-user-menu {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 260px;
+
+    display: none;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 10px;
+
+    box-shadow: 0 12px 25px rgba(16, 24, 40, 0.12);
+
+    z-index: 100;
+}
+
+
+.new-user-dropdown.open .new-user-menu {
+    display: block;
+}
+
+
+.new-user-menu-item {
+    width: 100%;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 11px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #344054;
+
+    text-align: left;
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.new-user-menu-item:hover {
+    background: #f9fafb;
+}
+
+
+.new-user-menu-item > i {
+    margin-top: 2px;
+
+    color: #667085;
+
+    font-size: 19px;
+}
+
+
+.menu-title {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.menu-description {
+    display: block;
+
+    color: #667085;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   USERS LIST
+========================================= */
+
+.users-list {
+    width: 100%;
+
+    max-width: 850px;
+}
+
+
+.user-row {
+    width: 100%;
+
+    min-height: 66px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #eaecf0;
+
+    box-sizing: border-box;
+}
+
+
+.user-row:last-child {
+    border-bottom: none;
+}
+
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 13px;
+
+    border-radius: 50%;
+
+    background: #f2f4f7;
+
+    color: #475467;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.user-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.user-name {
+    margin-bottom: 3px;
+
+    color: #344054;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.user-email {
+    overflow: hidden;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.user-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.user-role {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    border-radius: 7px;
+
+    background: #f9fafb;
+
+    color: #475467;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+.user-role i {
+    font-size: 15px;
+}
+
+
+.user-more-btn {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #667085;
+
+    cursor: pointer;
+}
+
+
+.user-more-btn:hover {
+    background: #f2f4f7;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.users-empty {
+    width: 100%;
+
+    min-height: 380px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+}
+
+
+.users-empty-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 17px;
+
+    border-radius: 50%;
+
+    background: #f2f4f7;
+}
+
+
+.users-empty-icon i {
+    font-size: 27px;
+}
+
+
+.users-empty h3 {
+    margin: 0 0 8px;
+
+    color: #344054;
+
+    font-size: 17px;
+}
+
+
+.users-empty p {
+    max-width: 390px;
+
+    margin: 0 0 20px;
+
+    color: #667085;
+
+    font-size: 14px;
+}
+
+
+.empty-user-actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+
+.empty-add-user-btn {
+    text-decoration: none;
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 10px 15px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #f2f4f7;
+
+    color: #344054;
+
+    cursor: pointer;
+}
+
+
+.empty-invite-user-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 10px 15px;
+
+    border-radius: 7px;
+
+    background: #344054;
+
+    color: #ffffff;
+
+    text-decoration: none;
+}
+
+
+/* =========================================
+   ADD EXISTING USER MODAL
+========================================= */
+
+.existing-user-modal {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 9999;
+
+    box-sizing: border-box;
+}
+
+
+.existing-user-modal.show {
+    display: flex;
+}
+
+
+/* OVERLAY */
+
+.existing-user-modal-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(16, 24, 40, 0.68);
+}
+
+
+/* MODAL CONTENT */
+
+.existing-user-modal-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 460px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow: 0 24px 60px rgba(16, 24, 40, 0.28);
+
+    overflow: hidden;
+
+    z-index: 1;
+
+    animation: modalAppear 0.2s ease;
+}
+
+
+@keyframes modalAppear {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+.existing-user-modal-content form {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================================
+   MODAL HEADER
+========================================= */
+
+.existing-user-modal-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 22px 20px 12px;
+}
+
+
+.existing-user-modal-header h3 {
+    margin: 0;
+
+    color: #344054;
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+
+/* CLOSE BUTTON */
+
+.modal-close-btn {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #667085;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.modal-close-btn i {
+    font-size: 19px;
+}
+
+
+.modal-close-btn:hover {
+    background: #f2f4f7;
+
+    color: #344054;
+}
+
+
+/* =========================================
+   MODAL BODY
+========================================= */
+
+.existing-user-modal-body {
+    padding: 10px 20px 22px;
+}
+
+
+/* =========================================
+   INFO BOX
+========================================= */
+
+.existing-user-info-box {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    padding: 11px 12px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+}
+
+
+.existing-user-info-box i {
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    color: #667085;
+
+    font-size: 15px;
+}
+
+
+.existing-user-info-box p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.modal-form-group {
+    margin-bottom: 18px;
+}
+
+
+.modal-form-group:last-child {
+    margin-bottom: 0;
+}
+
+
+.modal-form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #475467;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   SELECT WRAPPER
+========================================= */
+
+.modal-select-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.modal-select {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 38px 0 12px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    font-size: 13px;
+
+    outline: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition: all 0.2s ease;
+}
+
+
+.modal-select:focus {
+    border-color: #667085;
+
+    box-shadow: 0 0 0 3px rgba(102, 112, 133, 0.10);
+}
+
+
+.modal-select:invalid {
+    color: #98a2b3;
+}
+
+
+.modal-select option {
+    color: #344054;
+
+    background: #ffffff;
+}
+
+
+.modal-select-wrapper > i {
+    position: absolute;
+
+    top: 50%;
+    right: 12px;
+
+    transform: translateY(-50%);
+
+    color: #667085;
+
+    font-size: 16px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   ROLE DESCRIPTION
+========================================= */
+
+.role-description {
+    margin: 7px 0 0;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   MODAL FOOTER
+========================================= */
+
+.existing-user-modal-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 0 20px 20px;
+}
+
+
+/* CANCEL */
+
+.modal-cancel-btn {
+    padding: 9px 15px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #475467;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+
+.modal-cancel-btn:hover {
+    background: #f2f4f7;
+}
+
+
+/* ADD BUTTON */
+
+.modal-add-btn {
+    min-width: 45px;
+
+    padding: 9px 16px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #344054;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.modal-add-btn:hover:not(:disabled) {
+    background: #1d2939;
+}
+
+
+.modal-add-btn:disabled {
+    background: #eaecf0;
+
+    color: #98a2b3;
+
+    cursor: not-allowed;
+}
+
+
+.user-username {
+    margin-top: 2px;
+    color: #98a2b3;
+    font-size: 12px;
+}
+
+.user-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 7px;
+    background: #f9fafb;
+    color: #667085;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.user-status.active {
+    color: #027a48;
+    background: #ecfdf3;
+}
+
+.user-status.inactive {
+    color: #b42318;
+    background: #fef3f2;
+}
+
+
+/* =========================================
+   CREATE USER MODAL
+========================================= */
+
+.create-user-dialog {
+    max-width: 620px;
+    width: calc(100% - 30px);
+}
+
+.create-user-modal {
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(16, 24, 40, 0.20);
+}
+
+.create-user-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.create-user-header h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 4px;
+    color: #344054;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.create-user-header h4 i { font-size: 18px; }
+
+.create-user-header p {
+    margin: 0;
+    color: #667085;
+    font-size: 12px;
+}
+
+.create-user-close {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #667085;
+    cursor: pointer;
+}
+
+.create-user-close:hover { background: #f2f4f7; }
+
+.create-user-body { padding: 18px 20px; }
+
+.user-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.user-form-group { min-width: 0; }
+.user-form-group.full-width { grid-column: 1 / -1; }
+
+.user-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #475467;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.user-input { position: relative; width: 100%; }
+
+.user-input > i:first-child {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #98a2b3;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.user-input input,
+.user-input select {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px 0 34px;
+    border: 1px solid #d0d5dd;
+    border-radius: 7px;
+    background: #fff;
+    color: #344054;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.user-input input:focus,
+.user-input select:focus {
+    border-color: #98a2b3;
+    box-shadow: 0 0 0 3px rgba(152, 162, 179, .12);
+}
+
+.user-input select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 34px;
+    cursor: pointer;
+}
+
+.user-input .select-arrow {
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #667085;
+    font-size: 15px;
+    pointer-events: none;
+}
+
+.user-branch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 8px 11px;
+    border: 1px solid #eaecf0;
+    border-radius: 8px;
+    background: #f9fafb;
+    box-sizing: border-box;
+}
+
+.user-branch > i { color: #667085; font-size: 18px; }
+.user-branch div { display: flex; flex-direction: column; gap: 1px; }
+.user-branch span { color: #667085; font-size: 10px; }
+.user-branch strong { color: #344054; font-size: 12px; font-weight: 500; }
+
+.create-user-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 20px;
+    border-top: 1px solid #eaecf0;
+}
+
+.user-cancel-btn,
+.user-create-btn {
+    height: 34px;
+    padding: 0 13px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.user-cancel-btn {
+    border: 1px solid #d0d5dd;
+    background: #fff;
+    color: #475467;
+}
+
+.user-create-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    background: #000;
+    color: #fff;
+}
+
+.user-create-btn:hover { background: #000; color: #fff; }
+
+@media (max-width: 600px) {
+    .create-user-dialog { width: calc(100% - 20px); }
+    .user-form-grid { grid-template-columns: 1fr; }
+    .user-form-group.full-width { grid-column: auto; }
+}
+
+/* =========================================
+   TABLET
+
+========================================= */
+
+@media (max-width: 992px) {
+
+    .settings-sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+
+    .settings-card {
+        padding: 25px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .settings-page {
+        flex-direction: column;
+
+        padding: 15px;
+    }
+
+
+    .settings-sidebar {
+        width: 100%;
+        min-width: 100%;
+
+        height: auto;
+        max-height: 350px;
+
+        border-radius: 12px 12px 0 0;
+
+        border-right: 1px solid #e4e7ec;
+    }
+
+
+    .settings-content {
+        width: 100%;
+    }
+
+
+    .settings-card {
+        min-height: 500px;
+
+        border-radius: 0 0 12px 12px;
+
+        padding: 25px;
+    }
+
+
+    .existing-user-modal-content {
+        max-width: 100%;
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .settings-page {
+        padding: 10px;
+    }
+
+
+    .settings-card {
+        padding: 20px;
+    }
+
+
+    .settings-header {
+        flex-direction: column;
+    }
+
+
+    .new-user-dropdown {
+        width: 100%;
+    }
+
+
+    .new-user-btn {
+        width: 100%;
+    }
+
+
+    .new-user-menu {
+        width: 100%;
+    }
+
+
+    .user-row {
+        align-items: flex-start;
+    }
+
+
+    .user-actions {
+        flex-direction: column;
+
+        align-items: flex-end;
+    }
+
+
+    .empty-user-actions {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+
+    .empty-add-user-btn,
+    .empty-invite-user-btn {
+        width: 100%;
+    }
+
+
+    .existing-user-modal {
+        padding: 12px;
+    }
+
+
+    .existing-user-modal-header {
+        padding: 18px 16px 10px;
+    }
+
+
+    .existing-user-modal-body {
+        padding: 10px 16px 20px;
+    }
+
+
+    .existing-user-modal-footer {
+        padding: 0 16px 16px;
+    }
+
+}
+
+
+</style>
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================= -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const newUserBtn = document.getElementById("newUserBtn");
+    const newUserDropdown = document.getElementById("newUserDropdown");
+
+    if (!newUserBtn || !newUserDropdown) return;
+
+    newUserBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+        newUserDropdown.classList.toggle("open");
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!newUserDropdown.contains(event.target)) {
+            newUserDropdown.classList.remove("open");
+        }
+    });
+
+    const addNewUserLink = newUserDropdown.querySelector(
+        '[data-bs-target="#createUserModal"]'
+    );
+
+    if (addNewUserLink) {
+        addNewUserLink.addEventListener("click", function () {
+            newUserDropdown.classList.remove("open");
+        });
+    }
+
+});
+</script>
+
+{% endblock %}

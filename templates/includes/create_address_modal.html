@@ -1,0 +1,203 @@
+{% load static %}
+
+<div class="modal fade"
+     id="createAddressModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered crm-address-dialog">
+
+        <div class="modal-content crm-child-modal">
+
+            <div class="crm-model-header">
+
+                <h4>New Address</h4>
+
+                <div class="crm-model-actions">
+
+                    <button type="button"
+                            class="crm-icon-btn">
+                        <i class="ti ti-edit"></i>
+                    </button>
+
+                    <button type="button"
+                            class="crm-icon-btn"
+                            data-bs-dismiss="modal">
+                        <i class="ti ti-x"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <form method="POST"
+                  action="{% url 'add_address' %}"
+                  id="createAddressForm">
+
+                {% csrf_token %}
+
+                <div class="crm-child-body">
+
+                    <div class="crm-field">
+
+                        <label>
+                            Address Title
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="text"
+                               name="address_title"
+                               class="crm-control"
+                               placeholder="Address Title"
+                               required>
+
+                    </div>
+
+
+                    <div class="crm-field">
+
+                        <label>
+                            Address Type
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select name="address_type"
+                                class="crm-control crm-select"
+                                required>
+
+                            <option value="">
+                                Address Type
+                            </option>
+
+                            {% for value, label in address_type_choices %}
+
+                                <option value="{{ value }}">
+                                    {{ label }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="crm-field">
+
+                        <label>
+                            Address Line 1
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <input type="text"
+                               name="address_line1"
+                               class="crm-control"
+                               placeholder="Address Line 1"
+                               required>
+
+                    </div>
+
+
+                    <div class="crm-field">
+
+                        <label>
+                            Address Line 2
+                        </label>
+
+                        <input type="text"
+                               name="address_line2"
+                               class="crm-control"
+                               placeholder="Address Line 2">
+
+                    </div>
+
+
+                    <div class="crm-two-column">
+
+                        <div class="crm-field">
+
+                            <label>
+                                Country
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input type="text"
+                                   name="country"
+                                   class="crm-control"
+                                   placeholder="Country"
+                                   required>
+
+                        </div>
+
+
+                        <div class="crm-field">
+
+                            <label>
+                                State/Province
+                            </label>
+
+                            <input type="text"
+                                   name="state_province"
+                                   class="crm-control"
+                                   placeholder="State/Province">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="crm-two-column">
+
+                        <div class="crm-field">
+
+                            <label>
+                                City/Town
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input type="text"
+                                   name="city_town"
+                                   class="crm-control"
+                                   placeholder="City/Town"
+                                   required>
+
+                        </div>
+
+
+                        <div class="crm-field">
+
+                            <label>
+                                Postal Code
+                            </label>
+
+                            <input type="text"
+                                   name="postal_code"
+                                   class="crm-control"
+                                   placeholder="Postal Code">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="crm-model-footer">
+
+                    <button type="submit"
+                            class="crm-create-btn">
+
+                        Create
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

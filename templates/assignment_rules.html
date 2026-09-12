@@ -1,0 +1,2787 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+    <div class="content">
+
+        <div class="settings-page">
+
+
+            <!-- =====================================
+                 SETTINGS SIDEBAR
+            ====================================== -->
+
+            <div class="settings-sidebar">
+
+                <div class="settings-scroll">
+
+
+                    <!-- USER CONFIGURATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            User Configuration
+                        </div>
+
+                        <a href="{% url 'settings' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                            <i class="ti ti-user-circle"></i>
+                            <span>Profile</span>
+                        </a>
+
+                        <a href="{% url 'preferences' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'preferences' %}active{% endif %}">
+                            <i class="ti ti-adjustments"></i>
+                            <span>Preferences</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- SYSTEM CONFIGURATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            System Configuration
+                        </div>
+
+                        <a href="{% url 'general' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'general' %}active{% endif %}">
+                            <i class="ti ti-settings"></i>
+                            <span>General</span>
+                        </a>
+
+                        <a href="{% url 'settings_dashboard' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'settings_dashboard' %}active{% endif %}">
+                            <i class="ti ti-layout-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <a href="{% url 'defaults' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'defaults' %}active{% endif %}">
+                            <i class="ti ti-settings-automation"></i>
+                            <span>Defaults</span>
+                        </a>
+
+                        <a href="{% url 'brand' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'brand' %}active{% endif %}">
+                            <i class="ti ti-brand-tabler"></i>
+                            <span>Brand</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- USER MANAGEMENT -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            User Management
+                        </div>
+
+                        <a href="{% url 'users' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'users' %}active{% endif %}">
+                            <i class="ti ti-user"></i>
+                            <span>Users</span>
+                        </a>
+
+                        <a href="{% url 'invite_user' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'invite_user' %}active{% endif %}">
+                            <i class="ti ti-user-plus"></i>
+                            <span>Invite User</span>
+                        </a>
+
+                        <a href="{% url 'sales_hierarchy' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'sales_hierarchy' %}active{% endif %}">
+                            <i class="ti ti-hierarchy-3"></i>
+                            <span>Sales Hierarchy</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Email
+                        </div>
+
+                        <a href="{% url 'accounts' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}">
+                            <i class="ti ti-mail"></i>
+                            <span>Accounts</span>
+                        </a>
+
+                        <a href="{% url 'templates' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'templates' %}active{% endif %}">
+                            <i class="ti ti-file-text"></i>
+                            <span>Templates</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- AUTOMATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Automation &amp; Rules
+                        </div>
+
+                        <a href="{% url 'assignment_rules' %}"
+                           class="settings-menu-item active">
+                            <i class="ti ti-git-branch"></i>
+                            <span>Assignment Rules</span>
+                        </a>
+
+                        <a href="{% url 'sla_policies' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'sla_policies' %}active{% endif %}">
+                            <i class="ti ti-shield-check"></i>
+                            <span>SLA Policies</span>
+                        </a>
+
+                        <a href="{% url 'forms' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'forms' %}active{% endif %}">
+                            <i class="ti ti-forms"></i>
+                            <span>Forms</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- CUSTOMIZATION -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Customization
+                        </div>
+
+                        <a href="{% url 'home_actions' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'home_actions' %}active{% endif %}">
+                            <i class="ti ti-home"></i>
+                            <span>Home Actions</span>
+                        </a>
+
+                    </div>
+
+
+                    <!-- INTEGRATIONS -->
+
+                    <div class="settings-section">
+
+                        <div class="settings-section-title">
+                            Integrations
+                        </div>
+
+                        <a href="{% url 'telephony' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'telephony' %}active{% endif %}">
+                            <i class="ti ti-phone"></i>
+                            <span>Telephony</span>
+                        </a>
+
+                        <a href="{% url 'erpnext' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'erpnext' %}active{% endif %}">
+                            <i class="ti ti-building-community"></i>
+                            <span>ERPNext</span>
+                        </a>
+
+                        <a href="{% url 'lead_syncing' %}"
+                           class="settings-menu-item {% if request.resolver_match.url_name == 'lead_syncing' %}active{% endif %}">
+                            <i class="ti ti-refresh"></i>
+                            <span>Lead Syncing</span>
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 MAIN CONTENT
+            ====================================== -->
+
+            <div class="settings-content">
+
+                <div class="settings-card">
+
+
+                    <!-- HEADER -->
+
+                    <div class="settings-content-header">
+
+                        <div class="header-text">
+
+                            <h2>Assignment Rules</h2>
+
+                            <p>
+                                Auto-assign leads and deals to the right sales user
+                                based on predefined conditions.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="new-rule-btn"
+                            id="openAssignmentModal">
+
+                            <i class="ti ti-plus"></i>
+
+                            New
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div
+                        class="assignment-empty-state"
+                        id="emptyAssignments">
+
+                        <div class="assignment-empty-icon">
+
+                            <i class="ti ti-git-branch"></i>
+
+                        </div>
+
+                        <h3>No Assignment Rules Found</h3>
+
+                        <p>
+                            Add one to get started.
+                        </p>
+
+                    </div>
+
+
+                    <!-- ASSIGNMENT RULE LIST -->
+
+                    <div
+                        class="assignment-list"
+                        id="assignmentList">
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =====================================
+     ASSIGNMENT MODAL
+====================================== -->
+
+<div
+    class="assignment-modal-overlay"
+    id="assignmentModal">
+
+
+    <div class="assignment-modal">
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="assignment-modal-header">
+
+            <div>
+
+                <h3>New Assignment Rule</h3>
+
+                <p>
+                    Configure how leads or deals are automatically assigned.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="assignment-close-btn"
+                id="closeAssignmentModal">
+
+                <i class="ti ti-x"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="assignmentForm">
+
+
+            <!-- BASIC INFORMATION -->
+
+            <div class="assignment-grid">
+
+
+                <div class="assignment-form-group">
+
+                    <label>
+                        Name
+                        <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ruleName"
+                        placeholder="Assignment rule name"
+                        required>
+
+                </div>
+
+
+                <div class="assignment-form-group">
+
+                    <label>
+                        Priority
+                    </label>
+
+                    <select id="rulePriority">
+
+                        <option value="Low-Medium">
+                            Low-Medium
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Critical">
+                            Critical
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="assignment-form-group">
+
+                    <label>
+                        Description
+                        <span>*</span>
+                    </label>
+
+                    <textarea
+                        id="ruleDescription"
+                        placeholder="Description"
+                        required></textarea>
+
+                </div>
+
+
+                <div class="assignment-form-group">
+
+                    <label>
+                        Apply On
+                    </label>
+
+                    <select id="applyOn">
+
+                        <option value="Lead">
+                            Lead
+                        </option>
+
+                        <option value="Deal">
+                            Deal
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =====================================
+                 ASSIGNMENT CONDITION
+            ====================================== -->
+
+            <div class="rule-section">
+
+                <h4>
+                    Assignment Condition
+                </h4>
+
+                <p>
+                    Choose which records are affected by this assignment rule.
+                </p>
+
+
+                <div
+                    class="condition-list"
+                    id="assignmentConditionList">
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="add-condition-btn"
+                    id="addAssignmentCondition">
+
+                    <i class="ti ti-plus"></i>
+
+                    Add a Condition
+
+                </button>
+
+            </div>
+
+
+            <!-- =====================================
+                 UNASSIGNMENT CONDITION
+            ====================================== -->
+
+            <div class="rule-section">
+
+                <h4>
+                    Unassignment Condition
+                </h4>
+
+                <p>
+                    Choose which records are affected by this un-assignment rule.
+                </p>
+
+
+                <div
+                    class="condition-list"
+                    id="unassignmentConditionList">
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="add-condition-btn"
+                    id="addUnassignmentCondition">
+
+                    <i class="ti ti-plus"></i>
+
+                    Add a Condition
+
+                </button>
+
+            </div>
+
+
+            <!-- =====================================
+                 ASSIGNMENT SCHEDULE
+            ====================================== -->
+
+            <div class="rule-section">
+
+                <h4>
+                    Assignment Schedule
+                </h4>
+
+                <p>
+                    Choose the days of the week when this rule should be active.
+                </p>
+
+
+                <div class="schedule-box">
+
+
+                    <div class="schedule-header">
+
+                        <span>
+                            Days
+                        </span>
+
+                        <span>
+                            Active
+                        </span>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Monday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Monday"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Tuesday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Tuesday"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Wednesday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Wednesday"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Thursday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Thursday"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Friday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Friday"
+                                checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Saturday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Saturday">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="schedule-row">
+
+                        <span>
+                            Sunday
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                name="days"
+                                value="Sunday">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================
+                 ASSIGNEE RULES
+            ====================================== -->
+
+            <div class="rule-section">
+
+                <h4>
+                    Assignee Rules
+                </h4>
+
+                <p>
+                    Choose how leads are assigned among salespeople.
+                </p>
+
+
+                <div class="assignee-routing-row">
+
+                    <div>
+
+                        <strong>
+                            Lead routing
+                        </strong>
+
+                        <small>
+                            Choose how leads are assigned among the selected assignees.
+                        </small>
+
+                    </div>
+
+
+                    <select id="leadRouting">
+
+                        <option value="Auto-rotate">
+                            Auto-rotate
+                        </option>
+
+                        <option value="Round-robin">
+                            Round-robin
+                        </option>
+
+                        <option value="Manual">
+                            Manual
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ASSIGNEES -->
+
+                <div class="assignee-title-row">
+
+                    <div>
+
+                        <strong>
+                            Assignees
+                        </strong>
+
+                        <small>
+                            Select the assignees for leads.
+                        </small>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="add-assignee-btn"
+                        id="addAssignee">
+
+                        <i class="ti ti-plus"></i>
+
+                        Add Assignee
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="assignee-list"
+                    id="assigneeList">
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =====================================
+                 FOOTER
+            ====================================== -->
+
+            <div class="assignment-modal-footer">
+
+
+                <button
+                    type="button"
+                    class="assignment-cancel-btn"
+                    id="cancelAssignmentModal">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="assignment-save-btn">
+
+                    <i class="ti ti-device-floppy"></i>
+
+                    Save Rule
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+     ADD ASSIGNEE MODAL
+====================================== -->
+
+<div
+    class="small-modal-overlay"
+    id="assigneeModal">
+
+
+    <div class="small-modal">
+
+
+        <div class="small-modal-header">
+
+            <h3>
+                Add Assignee
+            </h3>
+
+
+            <button
+                type="button"
+                id="closeAssigneeModal">
+
+                <i class="ti ti-x"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="assignment-form-group">
+
+            <label>
+                Select User
+            </label>
+
+
+            <select id="assigneeName">
+
+                <option value="">
+                    Select user
+                </option>
+
+                <option value="Sales User 1">
+                    Sales User 1
+                </option>
+
+                <option value="Sales User 2">
+                    Sales User 2
+                </option>
+
+                <option value="Sales Manager">
+                    Sales Manager
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="small-modal-footer">
+
+            <button
+                type="button"
+                class="assignment-cancel-btn"
+                id="cancelAssigneeModal">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="button"
+                class="assignment-save-btn"
+                id="saveAssignee">
+
+                Add Assignee
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* =====================================
+   PAGE
+====================================== */
+
+.settings-page {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+
+    padding: 20px;
+
+    background: #f8fafc;
+}
+
+
+/* =====================================
+   SIDEBAR
+====================================== */
+
+.settings-sidebar {
+    width: 260px;
+    min-width: 260px;
+
+    height: calc(100vh - 120px);
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+    border-right: none;
+
+    border-radius: 12px 0 0 12px;
+
+    overflow: hidden;
+}
+
+
+.settings-scroll {
+    height: 100%;
+
+    overflow-y: auto;
+
+    padding: 14px 10px;
+}
+
+
+.settings-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.settings-scroll::-webkit-scrollbar-thumb {
+    background: #d0d5dd;
+
+    border-radius: 10px;
+}
+
+
+/* =====================================
+   SIDEBAR SECTION
+====================================== */
+
+.settings-section {
+    margin-bottom: 20px;
+}
+
+
+.settings-section-title {
+    padding: 0 10px;
+
+    margin-bottom: 7px;
+
+    color: #667085;
+
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+
+/* =====================================
+   MENU
+====================================== */
+
+.settings-menu-item {
+    width: 100%;
+
+    min-height: 38px;
+
+    padding: 0 10px;
+
+    margin-bottom: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    color: #475467;
+
+    font-size: 14px;
+}
+
+
+.settings-menu-item i {
+    font-size: 17px;
+
+    color: #667085;
+}
+
+
+.settings-menu-item:hover {
+    background: #f2f4f7;
+}
+
+
+.settings-menu-item.active {
+    background: #f2f4f7;
+
+    color: #344054;
+
+    font-weight: 500;
+
+    border: 1px solid #eaecf0;
+}
+
+
+/* =====================================
+   CONTENT
+====================================== */
+
+.settings-content {
+    flex: 1;
+
+    min-width: 0;
+
+    min-height: calc(100vh - 120px);
+}
+
+
+.settings-card {
+    width: 100%;
+
+    min-height: calc(100vh - 120px);
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e7ec;
+
+    border-radius: 0 12px 12px 0;
+}
+
+
+/* =====================================
+   HEADER
+====================================== */
+
+.settings-content-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 30px;
+}
+
+
+.header-text {
+    max-width: 600px;
+}
+
+
+.header-text h2 {
+    margin: 0 0 7px;
+
+    color: #344054;
+
+    font-size: 21px;
+
+    font-weight: 600;
+}
+
+
+.header-text p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================
+   NEW BUTTON
+====================================== */
+
+.new-rule-btn {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 9px 15px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.new-rule-btn:hover {
+    background: #f9fafb;
+
+    border-color: #98a2b3;
+}
+
+
+/* =====================================
+   EMPTY STATE
+====================================== */
+
+.assignment-empty-state {
+    min-height: 430px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+.assignment-empty-icon {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 12px;
+
+    background: #f2f4f7;
+
+    color: #667085;
+}
+
+
+.assignment-empty-icon i {
+    font-size: 27px;
+}
+
+
+.assignment-empty-state h3 {
+    margin: 0 0 6px;
+
+    color: #344054;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+.assignment-empty-state p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+/* =====================================
+   ASSIGNMENT LIST
+====================================== */
+
+.assignment-list {
+    display: none;
+
+    margin-top: 30px;
+}
+
+
+.assignment-item {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 18px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+}
+
+
+.assignment-item-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.assignment-item-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f2f4f7;
+
+    color: #475467;
+}
+
+
+.assignment-item-icon i {
+    font-size: 22px;
+}
+
+
+.assignment-item-info {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.assignment-item-info strong {
+    color: #344054;
+
+    font-size: 14px;
+}
+
+
+.assignment-item-info span {
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+.assignment-item-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.delete-rule-btn {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #fef3f2;
+
+    color: #d92d20;
+
+    cursor: pointer;
+}
+
+
+/* =====================================
+   MAIN MODAL OVERLAY
+====================================== */
+
+.assignment-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(16, 24, 40, 0.35);
+
+    z-index: 9999;
+}
+
+
+/* =====================================
+   MAIN MODAL
+====================================== */
+
+.assignment-modal {
+    width: 100%;
+
+    max-width: 900px;
+
+    max-height: calc(100vh - 50px);
+
+    overflow-y: auto;
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow: 0 25px 60px rgba(16, 24, 40, 0.18);
+}
+
+
+.assignment-modal::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.assignment-modal::-webkit-scrollbar-thumb {
+    background: #d0d5dd;
+
+    border-radius: 10px;
+}
+
+
+/* =====================================
+   MODAL HEADER
+====================================== */
+
+.assignment-modal-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-bottom: 20px;
+
+    margin-bottom: 24px;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+
+.assignment-modal-header h3 {
+    margin: 0 0 6px;
+
+    color: #344054;
+
+    font-size: 20px;
+
+    font-weight: 600;
+}
+
+
+.assignment-modal-header p {
+    margin: 0;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+.assignment-close-btn {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #f2f4f7;
+
+    color: #667085;
+
+    cursor: pointer;
+}
+
+
+/* =====================================
+   FORM GRID
+====================================== */
+
+.assignment-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* =====================================
+   FORM GROUP
+====================================== */
+
+.assignment-form-group {
+    margin-bottom: 18px;
+}
+
+
+.assignment-form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #344054;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.assignment-form-group label span {
+    color: #d92d20;
+}
+
+
+.assignment-form-group input,
+.assignment-form-group select,
+.assignment-form-group textarea {
+    width: 100%;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    font-size: 14px;
+}
+
+
+.assignment-form-group input,
+.assignment-form-group select {
+    height: 43px;
+
+    padding: 0 12px;
+}
+
+
+.assignment-form-group textarea {
+    min-height: 100px;
+
+    padding: 12px;
+
+    resize: vertical;
+}
+
+
+.assignment-form-group input:focus,
+.assignment-form-group select:focus,
+.assignment-form-group textarea:focus {
+    border-color: #667085;
+
+    box-shadow: 0 0 0 3px rgba(102, 112, 133, 0.10);
+}
+
+
+/* =====================================
+   RULE SECTION
+====================================== */
+
+.rule-section {
+    margin-top: 30px;
+}
+
+
+.rule-section h4 {
+    margin: 0 0 5px;
+
+    color: #344054;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+.rule-section > p {
+    margin: 0 0 16px;
+
+    color: #667085;
+
+    font-size: 13px;
+}
+
+
+/* =====================================
+   CONDITIONS
+====================================== */
+
+.condition-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+
+.condition-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr 40px;
+
+    gap: 10px;
+}
+
+
+.condition-row select,
+.condition-row input {
+    height: 42px;
+
+    padding: 0 10px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    outline: none;
+}
+
+
+.remove-condition-btn {
+    border: none;
+
+    border-radius: 8px;
+
+    background: #fef3f2;
+
+    color: #d92d20;
+
+    cursor: pointer;
+}
+
+
+.add-condition-btn {
+    width: 100%;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    border: 1px dashed #d0d5dd;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+.add-condition-btn:hover {
+    background: #f9fafb;
+}
+
+
+/* =====================================
+   SCHEDULE
+====================================== */
+
+.schedule-box {
+    border: 1px solid #eaecf0;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+.schedule-header,
+.schedule-row {
+    display: grid;
+
+    grid-template-columns: 1fr 150px;
+
+    align-items: center;
+
+    padding: 13px 20px;
+}
+
+
+.schedule-header {
+    background: #f9fafb;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.schedule-row {
+    border-top: 1px solid #f2f4f7;
+
+    color: #475467;
+
+    font-size: 14px;
+}
+
+
+/* =====================================
+   SWITCH
+====================================== */
+
+.switch {
+    position: relative;
+
+    width: 40px;
+
+    height: 22px;
+}
+
+
+.switch input {
+    opacity: 0;
+
+    width: 0;
+    height: 0;
+}
+
+
+.slider {
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 20px;
+
+    background: #d0d5dd;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.slider::before {
+    content: "";
+
+    position: absolute;
+
+    width: 16px;
+    height: 16px;
+
+    left: 3px;
+    top: 3px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    transition: 0.2s;
+}
+
+
+.switch input:checked + .slider {
+    background: #475467;
+}
+
+
+.switch input:checked + .slider::before {
+    transform: translateX(18px);
+}
+
+
+/* =====================================
+   ASSIGNEE RULES
+====================================== */
+
+.assignee-routing-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid #eaecf0;
+}
+
+
+.assignee-routing-row div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.assignee-routing-row strong,
+.assignee-title-row strong {
+    color: #344054;
+
+    font-size: 14px;
+}
+
+
+.assignee-routing-row small,
+.assignee-title-row small {
+    color: #667085;
+
+    font-size: 12px;
+}
+
+
+.assignee-routing-row select {
+    width: 170px;
+
+    height: 42px;
+
+    padding: 0 10px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+}
+
+
+/* =====================================
+   ASSIGNEE
+====================================== */
+
+.assignee-title-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 20px 0;
+}
+
+
+.assignee-title-row > div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.add-assignee-btn {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 8px 13px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #344054;
+
+    cursor: pointer;
+}
+
+
+.assignee-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.assignee-item {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 12px;
+
+    border: 1px solid #eaecf0;
+
+    border-radius: 8px;
+}
+
+
+.assignee-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.assignee-avatar {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f2f4f7;
+
+    color: #475467;
+}
+
+
+.remove-assignee-btn {
+    border: none;
+
+    background: transparent;
+
+    color: #d92d20;
+
+    cursor: pointer;
+}
+
+
+/* =====================================
+   MODAL FOOTER
+====================================== */
+
+.assignment-modal-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 35px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eaecf0;
+}
+
+
+.assignment-cancel-btn {
+    padding: 10px 17px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #475467;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+.assignment-save-btn {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 10px 17px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #344054;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.assignment-save-btn:hover {
+    background: #1d2939;
+}
+
+
+/* =====================================
+   SMALL MODAL
+====================================== */
+
+.small-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(16, 24, 40, 0.35);
+
+    z-index: 10000;
+}
+
+
+.small-modal {
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 24px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow: 0 20px 50px rgba(16, 24, 40, 0.20);
+}
+
+
+.small-modal-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+
+.small-modal-header h3 {
+    margin: 0;
+
+    color: #344054;
+
+    font-size: 18px;
+}
+
+
+.small-modal-header button {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #f2f4f7;
+
+    cursor: pointer;
+}
+
+
+.small-modal-footer {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+/* =====================================
+   RESPONSIVE
+====================================== */
+
+@media (max-width: 992px) {
+
+    .settings-sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .settings-page {
+        flex-direction: column;
+
+        padding: 15px;
+    }
+
+
+    .settings-sidebar {
+        width: 100%;
+
+        min-width: 100%;
+
+        height: auto;
+
+        max-height: 350px;
+
+        border-radius: 12px 12px 0 0;
+
+        border-right: 1px solid #e4e7ec;
+    }
+
+
+    .settings-card {
+        border-radius: 0 0 12px 12px;
+    }
+
+
+    .assignment-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .condition-row {
+        grid-template-columns: 1fr;
+    }
+
+
+    .remove-condition-btn {
+        height: 40px;
+    }
+
+
+    .assignment-modal {
+        padding: 20px;
+    }
+
+
+}
+
+
+@media (max-width: 520px) {
+
+    .settings-content-header {
+        flex-direction: column;
+    }
+
+
+    .new-rule-btn {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    .assignment-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+
+    .assignment-modal-footer button {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    .assignee-routing-row,
+    .assignee-title-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .assignee-routing-row select {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================
+       MAIN ELEMENTS
+    ====================================== */
+
+    const assignmentModal =
+        document.getElementById("assignmentModal");
+
+    const openAssignmentModal =
+        document.getElementById("openAssignmentModal");
+
+    const closeAssignmentModal =
+        document.getElementById("closeAssignmentModal");
+
+    const cancelAssignmentModal =
+        document.getElementById("cancelAssignmentModal");
+
+    const assignmentForm =
+        document.getElementById("assignmentForm");
+
+    const emptyAssignments =
+        document.getElementById("emptyAssignments");
+
+    const assignmentList =
+        document.getElementById("assignmentList");
+
+
+    /* =====================================
+       OPEN MAIN MODAL
+    ====================================== */
+
+    openAssignmentModal.addEventListener("click", function () {
+
+        assignmentModal.style.display = "flex";
+
+        document.body.style.overflow = "hidden";
+
+    });
+
+
+    /* =====================================
+       CLOSE MAIN MODAL FUNCTION
+    ====================================== */
+
+    function closeMainAssignmentModal() {
+
+        assignmentModal.style.display = "none";
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    closeAssignmentModal.addEventListener(
+        "click",
+        closeMainAssignmentModal
+    );
+
+
+    cancelAssignmentModal.addEventListener(
+        "click",
+        closeMainAssignmentModal
+    );
+
+
+    /* =====================================
+       CLICK OUTSIDE MAIN MODAL
+    ====================================== */
+
+    assignmentModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === assignmentModal) {
+
+                closeMainAssignmentModal();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================
+       ESC KEY
+    ====================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                closeMainAssignmentModal();
+
+                closeAssigneePopup();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================
+       ADD CONDITION FUNCTION
+    ====================================== */
+
+    function createConditionRow() {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "condition-row";
+
+
+        row.innerHTML = `
+
+            <select>
+
+                <option value="Lead Source">
+                    Lead Source
+                </option>
+
+                <option value="Status">
+                    Status
+                </option>
+
+                <option value="Country">
+                    Country
+                </option>
+
+                <option value="Industry">
+                    Industry
+                </option>
+
+            </select>
+
+
+            <select>
+
+                <option value="equals">
+                    Equals
+                </option>
+
+                <option value="not_equals">
+                    Does not equal
+                </option>
+
+                <option value="contains">
+                    Contains
+                </option>
+
+            </select>
+
+
+            <input
+                type="text"
+                placeholder="Value">
+
+
+            <button
+                type="button"
+                class="remove-condition-btn">
+
+                <i class="ti ti-trash"></i>
+
+            </button>
+
+        `;
+
+
+        const removeButton =
+            row.querySelector(
+                ".remove-condition-btn"
+            );
+
+
+        removeButton.addEventListener(
+            "click",
+            function () {
+
+                row.remove();
+
+            }
+        );
+
+
+        return row;
+
+    }
+
+
+    /* =====================================
+       ADD ASSIGNMENT CONDITION
+    ====================================== */
+
+    const assignmentConditionList =
+        document.getElementById(
+            "assignmentConditionList"
+        );
+
+
+    document
+        .getElementById(
+            "addAssignmentCondition"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                assignmentConditionList.appendChild(
+                    createConditionRow()
+                );
+
+            }
+        );
+
+
+    /* =====================================
+       ADD UNASSIGNMENT CONDITION
+    ====================================== */
+
+    const unassignmentConditionList =
+        document.getElementById(
+            "unassignmentConditionList"
+        );
+
+
+    document
+        .getElementById(
+            "addUnassignmentCondition"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                unassignmentConditionList.appendChild(
+                    createConditionRow()
+                );
+
+            }
+        );
+
+
+    /* =====================================
+       ASSIGNEE MODAL
+    ====================================== */
+
+    const assigneeModal =
+        document.getElementById(
+            "assigneeModal"
+        );
+
+
+    const addAssignee =
+        document.getElementById(
+            "addAssignee"
+        );
+
+
+    const closeAssigneeModal =
+        document.getElementById(
+            "closeAssigneeModal"
+        );
+
+
+    const cancelAssigneeModal =
+        document.getElementById(
+            "cancelAssigneeModal"
+        );
+
+
+    const saveAssignee =
+        document.getElementById(
+            "saveAssignee"
+        );
+
+
+    const assigneeName =
+        document.getElementById(
+            "assigneeName"
+        );
+
+
+    const assigneeList =
+        document.getElementById(
+            "assigneeList"
+        );
+
+
+    /* OPEN ASSIGNEE MODAL */
+
+    addAssignee.addEventListener(
+        "click",
+        function () {
+
+            assigneeModal.style.display =
+                "flex";
+
+        }
+    );
+
+
+    /* CLOSE ASSIGNEE MODAL */
+
+    function closeAssigneePopup() {
+
+        assigneeModal.style.display =
+            "none";
+
+        assigneeName.value = "";
+
+    }
+
+
+    closeAssigneeModal.addEventListener(
+        "click",
+        closeAssigneePopup
+    );
+
+
+    cancelAssigneeModal.addEventListener(
+        "click",
+        closeAssigneePopup
+    );
+
+
+    assigneeModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (event.target === assigneeModal) {
+
+                closeAssigneePopup();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================
+       SAVE ASSIGNEE
+    ====================================== */
+
+    saveAssignee.addEventListener(
+        "click",
+        function () {
+
+            const user =
+                assigneeName.value;
+
+
+            if (!user) {
+
+                alert(
+                    "Please select a user"
+                );
+
+                return;
+
+            }
+
+
+            const assigneeItem =
+                document.createElement("div");
+
+
+            assigneeItem.className =
+                "assignee-item";
+
+
+            assigneeItem.innerHTML = `
+
+                <div class="assignee-left">
+
+                    <div class="assignee-avatar">
+
+                        <i class="ti ti-user"></i>
+
+                    </div>
+
+
+                    <strong>
+                        ${user}
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="remove-assignee-btn">
+
+                    <i class="ti ti-x"></i>
+
+                </button>
+
+            `;
+
+
+            const removeAssignee =
+                assigneeItem.querySelector(
+                    ".remove-assignee-btn"
+                );
+
+
+            removeAssignee.addEventListener(
+                "click",
+                function () {
+
+                    assigneeItem.remove();
+
+                }
+            );
+
+
+            assigneeList.appendChild(
+                assigneeItem
+            );
+
+
+            closeAssigneePopup();
+
+        }
+    );
+
+
+    /* =====================================
+       SAVE ASSIGNMENT RULE
+    ====================================== */
+
+    assignmentForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const ruleName =
+                document.getElementById(
+                    "ruleName"
+                ).value;
+
+
+            const ruleDescription =
+                document.getElementById(
+                    "ruleDescription"
+                ).value;
+
+
+            const rulePriority =
+                document.getElementById(
+                    "rulePriority"
+                ).value;
+
+
+            const applyOn =
+                document.getElementById(
+                    "applyOn"
+                ).value;
+
+
+            /* HIDE EMPTY STATE */
+
+            emptyAssignments.style.display =
+                "none";
+
+
+            assignmentList.style.display =
+                "block";
+
+
+            /* CREATE RULE */
+
+            const assignmentItem =
+                document.createElement("div");
+
+
+            assignmentItem.className =
+                "assignment-item";
+
+
+            assignmentItem.innerHTML = `
+
+                <div class="assignment-item-left">
+
+                    <div class="assignment-item-icon">
+
+                        <i class="ti ti-git-branch"></i>
+
+                    </div>
+
+
+                    <div class="assignment-item-info">
+
+                        <strong>
+                            ${ruleName}
+                        </strong>
+
+
+                        <span>
+                            ${ruleDescription}
+                        </span>
+
+
+                        <span>
+                            ${applyOn} • ${rulePriority}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="assignment-item-actions">
+
+                    <button
+                        type="button"
+                        class="delete-rule-btn">
+
+                        <i class="ti ti-trash"></i>
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            assignmentList.appendChild(
+                assignmentItem
+            );
+
+
+            /* DELETE RULE */
+
+            const deleteRuleButton =
+                assignmentItem.querySelector(
+                    ".delete-rule-btn"
+                );
+
+
+            deleteRuleButton.addEventListener(
+                "click",
+                function () {
+
+                    assignmentItem.remove();
+
+
+                    if (
+                        assignmentList.children.length === 0
+                    ) {
+
+                        assignmentList.style.display =
+                            "none";
+
+
+                        emptyAssignments.style.display =
+                            "flex";
+
+                    }
+
+                }
+            );
+
+
+            /* RESET FORM */
+
+            assignmentForm.reset();
+
+
+            /* REMOVE CONDITIONS */
+
+            assignmentConditionList.innerHTML =
+                "";
+
+
+            unassignmentConditionList.innerHTML =
+                "";
+
+
+            /* REMOVE ASSIGNEES */
+
+            assigneeList.innerHTML =
+                "";
+
+
+            /* CLOSE MODAL */
+
+            closeMainAssignmentModal();
+
+        }
+    );
+
+
+});
+
+</script>
+
+{% endblock %}

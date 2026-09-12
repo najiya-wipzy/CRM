@@ -1,0 +1,3837 @@
+```
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="page-wrapper">
+<div class="content">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="d-flex align-items-center justify-content-between gap-2 mb-4">
+
+        <div class="d-flex align-items-center gap-2">
+
+            <h4 class="mb-0 fw-normal">Deals</h4>
+
+            <span class="text-muted">/</span>
+
+            <span class="fw-medium">
+                <i class="ti ti-list me-1"></i>
+                List
+                <i class="ti ti-chevron-down ms-1"></i>
+            </span>
+
+        </div>
+
+
+        <button type="button"
+                class="btn btn-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#createDealModal">
+
+            <i class="ti ti-plus me-1"></i>
+            Create
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="deal-toolbar">
+
+        <!-- Organization -->
+
+        <!-- ORGANIZATION DROPDOWN -->
+<div class="deal-filter-dropdown">
+
+    <button type="button"
+            class="deal-dropdown-btn"
+            data-dropdown="dealFilterOrganizationDropdown">
+
+        <span class="selected-text">
+            Organization
+        </span>
+
+        <i class="ti ti-chevron-down"></i>
+
+    </button>
+
+
+    <div class="deal-dropdown-menu"
+         id="dealFilterOrganizationDropdown">
+
+        <!-- SEARCH -->
+
+        <div class="dropdown-search">
+
+            <input type="text"
+                   class="form-control dropdown-search-input"
+                   placeholder="Search">
+
+            <i class="ti ti-x dropdown-search-clear"></i>
+
+        </div>
+
+
+        <!-- OPTIONS -->
+
+        <div class="dropdown-options">
+
+            {% for organization in organizations %}
+
+                <div class="deal-dropdown-option"
+                     data-value="{{ organization.id }}"
+                     data-label="{{ organization.organization_name }}">
+
+                    {{ organization.organization_name }}
+
+                </div>
+
+            {% empty %}
+
+                <div class="deal-dropdown-option disabled">
+                    No organizations found
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- CLEAR -->
+
+        <div class="dropdown-clear">
+
+            <i class="ti ti-x"></i>
+
+            <span>Clear</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- Status -->
+
+        <!-- STATUS DROPDOWN -->
+
+<div class="deal-filter-dropdown">
+
+    <button type="button"
+            class="deal-dropdown-btn"
+            data-dropdown="dealFilterStatusDropdown">
+
+        <span class="selected-text">
+            Status
+        </span>
+
+        <i class="ti ti-chevron-down"></i>
+
+    </button>
+
+
+    <div class="deal-dropdown-menu"
+         id="dealFilterStatusDropdown">
+
+        <!-- SEARCH -->
+
+        <div class="dropdown-search">
+
+            <input type="text"
+                   class="form-control dropdown-search-input"
+                   placeholder="Search">
+
+            <i class="ti ti-x dropdown-search-clear"></i>
+
+        </div>
+
+
+        <!-- OPTIONS -->
+
+        <div class="dropdown-options">
+
+            {% for value, label in deal_status_choices %}
+
+                <div class="deal-dropdown-option"
+                     data-value="{{ value }}"
+                     data-label="{{ label }}">
+
+                    {{ label }}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- CLEAR -->
+
+        <div class="dropdown-clear">
+
+            <i class="ti ti-x"></i>
+
+            <span>Clear</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- Probability -->
+
+        <input type="number"
+               id="probabilityFilter"
+               class="deal-input"
+               placeholder="Probability"
+               min="0"
+               max="100">
+
+
+        <!-- Email -->
+
+        <input type="text"
+               id="emailFilter"
+               class="deal-input"
+               placeholder="Primary email">
+
+
+        <button type="button"
+                class="toolbar-btn"
+                onclick="window.location.reload()">
+
+            <i class="ti ti-refresh"></i>
+
+        </button>
+
+
+        <button type="button"
+                class="toolbar-btn"
+                id="filterButton">
+
+            <i class="ti ti-filter"></i>
+            Filter
+
+        </button>
+
+
+        <button type="button"
+                class="toolbar-btn">
+
+            <i class="ti ti-arrows-sort"></i>
+            Sort
+
+        </button>
+
+
+        <button type="button"
+                class="toolbar-btn">
+
+            <i class="ti ti-columns-3"></i>
+            Columns
+
+        </button>
+
+
+        <button type="button"
+                class="toolbar-btn more-btn">
+
+            <i class="ti ti-dots"></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         DEAL TABLE
+    ====================================================== -->
+
+    <div class="deals-table-wrapper">
+
+        <div class="deals-table-area">
+
+            <table class="table deals-table mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            <input type="checkbox"
+                                   id="selectAllDeals"
+                                   class="form-check-input">
+                        </th>
+
+                        <th>Organization</th>
+
+                        <th>Annual Revenue</th>
+
+                        <th>Status</th>
+
+                        <th>Email</th>
+
+                        <th>Mobile No.</th>
+
+                        <th>Assigned To</th>
+
+                        <th>Last Modified</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for deal in deals %}
+
+                    <tr class="deal-row"
+
+                        data-organization="{{ deal.organization.id|default:'' }}"
+
+                        data-status="{{ deal.deal_status }}"
+
+                        data-probability="{{ deal.probability }}"
+
+                        data-email="{{ deal.primary_email|default:'' }}"
+                        onclick="if (!event.target.closest('input, a, button')) window.location.href='{% url 'deal_detail' deal.id %}'">
+
+
+                        <td>
+
+                            <input type="checkbox"
+                                   class="form-check-input deal-checkbox">
+
+                        </td>
+
+
+                        <!-- Organization -->
+
+                        <td>
+
+                            {% if deal.organization %}
+
+                                <span class="deal-avatar">
+                                    {{ deal.organization.organization_name|first|upper }}
+                                </span>
+
+                                <a href="{% url 'deal_detail' deal.id %}"
+                                   class="deal-link">
+
+                                    {{ deal.organization.organization_name }}
+
+                                </a>
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Revenue -->
+
+                        <td>
+
+                            ₹ {{ deal.annual_revenue|default:"0.00" }}
+
+                        </td>
+
+
+                        <!-- Status -->
+
+                        <td>
+
+                            <span class="status-wrapper">
+
+                                <span class="status-dot"></span>
+
+                                {{ deal.get_deal_status_display }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- Email -->
+
+                        <td>
+
+                            {{ deal.primary_email|default:"-" }}
+
+                        </td>
+
+
+                        <!-- Mobile -->
+
+                        <td>
+
+                            {% if deal.primary_mobile_no %}
+
+                                <i class="ti ti-phone me-1"></i>
+
+                                {{ deal.primary_mobile_no }}
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Owner -->
+
+                        <td>
+
+                            {% if deal.deal_owner %}
+
+                                <span class="deal-avatar">
+                                    {{ deal.deal_owner.full_name|first|upper }}
+                                </span>
+
+                                {{ deal.deal_owner.full_name }}
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Last Modified -->
+
+                        <td>
+
+                            {% if deal.updated_at %}
+
+                                {{ deal.updated_at|timesince }} ago
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr id="dealFilterEmptyRow">
+
+                        <td colspan="8"
+                            class="text-center py-4">
+
+                            No deals found.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                {% if deals %}
+                    <tr id="dealFilterEmptyRow" style="display:none;">
+                        <td colspan="8" class="text-center py-4">
+                            No deals match the selected filters.
+                        </td>
+                    </tr>
+                {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+<!-- =========================================================
+     CREATE DEAL MODAL
+========================================================= -->
+
+<!-- =========================================================
+     CREATE DEAL MODAL
+========================================================= -->
+
+<div class="modal fade"
+     id="createDealModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered create-deal-modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Create Deal</h4>
+
+                <div class="modal-header-actions">
+                    <button type="button"
+                            class="edit-layout-btn"
+                            title="Edit Fields Layout">
+                        <i class="ti ti-edit"></i>
+                    </button>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+
+            <form method="POST"
+                  action="{% url 'add_deal' %}"
+                  id="createDealForm">
+
+                {% csrf_token %}
+
+                <div class="modal-body">
+
+                    <!-- TOGGLES -->
+                    <div class="deal-switch-row">
+
+                        <label>
+                            Choose Existing Organization
+                            <input type="checkbox"
+                                   id="chooseExistingOrganization"
+                                   checked>
+                            <span class="deal-switch"></span>
+                        </label>
+
+                        <label>
+                            Choose Existing Contact
+                            <input type="checkbox"
+                                   id="chooseExistingContact">
+                            <span class="deal-switch"></span>
+                        </label>
+
+                    </div>
+
+                    <div class="field-divider"></div>
+
+                    <!-- =================================================
+                         EXISTING ORGANIZATION
+                    ================================================== -->
+                    <div id="existingOrganizationSection">
+
+                        <div class="field-col deal-single-field">
+                            <label class="field-label">Organization</label>
+
+                            <div class="crm-custom-dropdown"
+                                 id="dealOrganizationDropdown">
+
+                                <button type="button"
+                                        class="crm-dropdown-button">
+                                    <span class="crm-selected-text">Organization</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu">
+                                    <div class="crm-dropdown-search">
+                                        <input type="text"
+                                               class="crm-search-input"
+                                               placeholder="Search">
+                                        <i class="ti ti-x crm-search-clear"></i>
+                                    </div>
+
+                                    <div class="crm-dropdown-options">
+                                        {% for organization in organizations %}
+                                        <div class="crm-dropdown-option"
+                                             data-value="{{ organization.id }}"
+                                             data-label="{{ organization.organization_name }}"
+                                             data-website="{{ organization.website|default:'' }}"
+                                             data-revenue="{{ organization.annual_revenue|default:'0.00' }}"
+                                             data-industry="{{ organization.industry.id|default:'' }}"
+                                             data-territory="{{ organization.territory.id|default:'' }}"
+                                             data-employees="{{ organization.no_of_employees|default:'' }}">
+                                            {{ organization.organization_name }}
+                                        </div>
+                                        {% empty %}
+                                        <div class="crm-dropdown-option disabled">No organizations found</div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="crm-dropdown-footer">
+                                        <div class="crm-create-new" data-type="organization">
+                                            <i class="ti ti-plus"></i> Create New
+                                        </div>
+                                        <div class="crm-clear">
+                                            <i class="ti ti-x"></i> Clear
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden"
+                                       name="organization"
+                                       class="crm-dropdown-value">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- =================================================
+                         MANUAL ORGANIZATION DETAILS
+                         Used when organization is OFF and contact is ON.
+                    ================================================== -->
+                    <div id="manualOrganizationSection" style="display:none;">
+
+                        <div class="deal-form-grid-3">
+
+                            <div class="field-col">
+                                <label class="field-label">Organization Name</label>
+                                <input type="text"
+                                       class="field-input"
+                                       name="organization_name"
+                                       id="dealOrganizationName"
+                                       placeholder="Organization Name">
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Website</label>
+                                <input type="url"
+                                       class="field-input"
+                                       name="website"
+                                       id="dealWebsite"
+                                       placeholder="Website">
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">No. of Employees</label>
+                                <div class="crm-custom-dropdown"
+                                     id="dealEmployeesDropdown">
+                                    <button type="button" class="crm-dropdown-button">
+                                        <span class="crm-selected-text">No. of Employees</span>
+                                        <i class="ti ti-chevron-down"></i>
+                                    </button>
+                                    <div class="crm-dropdown-menu employee-dropdown-menu">
+                                        <div class="crm-dropdown-options">
+                                            {% for value, label in employee_choices %}
+                                            <div class="employee-dropdown-option"
+                                                 data-value="{{ value }}"
+                                                 data-label="{{ label }}">
+                                                <span>{{ label }}</span>
+                                                <i class="ti ti-check employee-check"></i>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="no_of_employees" class="crm-dropdown-value">
+                                </div>
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Territory</label>
+                                <div class="crm-custom-dropdown" id="dealTerritoryDropdown">
+                                    <button type="button" class="crm-dropdown-button">
+                                        <span class="crm-selected-text">Territory</span>
+                                        <i class="ti ti-chevron-down"></i>
+                                    </button>
+                                    <div class="crm-dropdown-menu">
+                                        <div class="crm-dropdown-search">
+                                            <input type="text" class="crm-search-input" placeholder="Search">
+                                            <i class="ti ti-x crm-search-clear"></i>
+                                        </div>
+                                        <div class="crm-dropdown-options">
+                                            {% for territory in territories %}
+                                            <div class="crm-dropdown-option"
+                                                 data-value="{{ territory.id }}"
+                                                 data-label="{{ territory.territory_name }}">
+                                                {{ territory.territory_name }}
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="crm-dropdown-footer">
+                                            <div class="crm-create-new" data-type="territory">
+                                                <i class="ti ti-plus"></i> Create New
+                                            </div>
+                                            <div class="crm-clear"><i class="ti ti-x"></i> Clear</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="territory" class="crm-dropdown-value">
+                                </div>
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Annual Revenue</label>
+                                <div class="revenue-input">
+                                    <span>₹</span>
+                                    <input type="text"
+                                           class="field-input"
+                                           name="annual_revenue"
+                                           id="dealRevenue"
+                                           value="0.00"
+                                           placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Industry</label>
+                                <div class="crm-custom-dropdown" id="dealIndustryDropdown">
+                                    <button type="button" class="crm-dropdown-button">
+                                        <span class="crm-selected-text">Industry</span>
+                                        <i class="ti ti-chevron-down"></i>
+                                    </button>
+                                    <div class="crm-dropdown-menu">
+                                        <div class="crm-dropdown-search">
+                                            <input type="text" class="crm-search-input" placeholder="Search">
+                                            <i class="ti ti-x crm-search-clear"></i>
+                                        </div>
+                                        <div class="crm-dropdown-options">
+                                            {% for industry in industries %}
+                                            <div class="crm-dropdown-option"
+                                                 data-value="{{ industry.id }}"
+                                                 data-label="{{ industry.industry_name }}">
+                                                {{ industry.industry_name }}
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="crm-dropdown-footer">
+                                            <div class="crm-create-new" data-type="industry">
+                                                <i class="ti ti-plus"></i> Create New
+                                            </div>
+                                            <div class="crm-clear"><i class="ti ti-x"></i> Clear</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="industry" class="crm-dropdown-value">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- =================================================
+                         EXISTING CONTACT / LEAD
+                    ================================================== -->
+                    <div id="existingContactSection" style="display:none;">
+
+                        <div class="field-col deal-single-field">
+                            <label class="field-label">Contact</label>
+
+                            <div class="crm-custom-dropdown" id="dealLeadDropdown">
+                                <button type="button" class="crm-dropdown-button">
+                                    <span class="crm-selected-text">Contact</span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu">
+                                    <div class="crm-dropdown-search">
+                                        <input type="text" class="crm-search-input" placeholder="Search">
+                                        <i class="ti ti-x crm-search-clear"></i>
+                                    </div>
+
+                                    <div class="crm-dropdown-options">
+                                        {% for lead in leads %}
+                                        <div class="crm-dropdown-option"
+                                             data-value="{{ lead.id }}"
+                                             data-label="{{ lead.first_name }} {{ lead.last_name|default:'' }}"
+                                             data-salutation="{{ lead.salutation|default:'' }}"
+                                             data-first-name="{{ lead.first_name|default:'' }}"
+                                             data-last-name="{{ lead.last_name|default:'' }}"
+                                             data-email="{{ lead.email|default:'' }}"
+                                             data-mobile="{{ lead.mobile_no|default:'' }}"
+                                             data-gender="{{ lead.gender|default:'' }}"
+                                             data-organization="{{ lead.organization.id|default:'' }}">
+                                            {{ lead.first_name }} {{ lead.last_name|default:'' }}
+                                        </div>
+                                        {% empty %}
+                                        <div class="crm-dropdown-option disabled">No contacts found</div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="crm-dropdown-footer">
+                                        <div class="crm-clear"><i class="ti ti-x"></i> Clear</div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="lead" class="crm-dropdown-value">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- =================================================
+                         PERSON DETAILS
+                         Shown when organization is ON and contact is OFF.
+                    ================================================== -->
+                    <div id="personDetailsSection">
+
+                        <div class="field-divider"></div>
+
+                        <div class="deal-form-grid-3">
+
+                            <div class="field-col">
+                                <label class="field-label">Salutation</label>
+                                <select class="field-select" name="salutation" id="dealSalutation">
+                                    <option value="">Salutation</option>
+                                    {% for value, label in salutation_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">First name</label>
+                                <input type="text" class="field-input" name="first_name" id="dealFirstName" placeholder="First name">
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Last name</label>
+                                <input type="text" class="field-input" name="last_name" id="dealLastName" placeholder="Last name">
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Primary email</label>
+                                <input type="email" class="field-input" name="primary_email" id="dealPrimaryEmail" placeholder="Primary email">
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Primary mobile no</label>
+                                <input type="tel" class="field-input" name="primary_mobile_no" id="dealPrimaryMobile" placeholder="Primary mobile no">
+                            </div>
+
+                            <div class="field-col">
+                                <label class="field-label">Gender</label>
+                                <select class="field-select" name="gender" id="dealGender">
+                                    <option value="">Gender</option>
+                                    {% for value, label in gender_choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="field-divider"></div>
+
+                    <!-- STATUS + OWNER -->
+                    <div class="deal-form-grid-2">
+
+                        <div class="field-col">
+                            <label class="field-label">
+                                Status <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="crm-custom-dropdown status-dropdown" id="dealStatusDropdown">
+                                <button type="button" class="crm-dropdown-button status-dropdown-button">
+                                    <span class="status-dropdown-selected">
+                                        <span class="status-swatch" data-status="qualification"></span>
+                                        <span class="status-dropdown-text">Qualification</span>
+                                    </span>
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+
+                                <div class="crm-dropdown-menu status-dropdown-menu">
+                                    <div class="status-dropdown-options">
+                                        {% for value, label in deal_status_choices %}
+                                        <div class="status-dropdown-option {% if value == 'qualification' %}selected{% endif %}"
+                                             data-value="{{ value }}"
+                                             data-label="{{ label }}">
+                                            <span class="status-swatch" data-status="{{ value }}"></span>
+                                            <span>{{ label }}</span>
+                                            <i class="ti ti-check status-check"></i>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <input type="hidden"
+                                       name="deal_status"
+                                       class="crm-dropdown-value"
+                                       value="qualification"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="field-col">
+                            <label class="field-label">Deal Owner</label>
+                            <div class="owner-select-wrap">
+                                <span class="owner-select-avatar" id="dealOwnerAvatar"></span>
+                                <select class="field-select owner-select" name="deal_owner" id="dealOwnerSelect">
+                                    {% for user in users %}
+                                    <option value="{{ user.id }}"
+                                        {% if user.user_id == request.user.id %}selected{% endif %}>
+                                        {{ user.full_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Create</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================================
+     CSS
+========================================================= -->
+
+<style>
+
+/* =========================================================
+   DEAL CREATE MODAL
+========================================================= */
+
+.create-deal-modal {
+    max-width: 980px;
+    width: 100%;
+}
+
+.create-deal-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+}
+
+.create-deal-modal .modal-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.create-deal-modal .modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.edit-layout-btn {
+    border: none;
+    background: transparent;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.create-deal-modal .modal-body {
+    padding: 22px 28px 6px;
+}
+
+.create-deal-modal .modal-footer {
+    padding: 14px 28px 22px;
+    border-top: none;
+}
+
+.create-deal-modal .modal-footer .btn-dark {
+    border-radius: 10px;
+    padding: 9px 26px;
+}
+
+
+/* =========================================================
+   SWITCH
+========================================================= */
+
+.deal-switch-row {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    margin-bottom: 18px;
+}
+
+.deal-switch-row label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #6b7280;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.deal-switch-row input {
+    display: none;
+}
+
+.deal-switch {
+    width: 32px;
+    height: 19px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    position: relative;
+}
+
+.deal-switch::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 2px;
+    top: 2px;
+    background: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.deal-switch-row input:checked + .deal-switch {
+    background: #111827;
+}
+
+.deal-switch-row input:checked + .deal-switch::after {
+    transform: translateX(13px);
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.deal-form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 20px;
+    row-gap: 18px;
+}
+
+.deal-form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+}
+
+.field-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.field-label {
+    font-size: 13.5px;
+    color: #6b7280;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.field-input,
+.field-select {
+    height: 42px;
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #111827;
+    background: #f4f4f5;
+}
+
+.field-input::placeholder {
+    color: #9ca3af;
+}
+
+.field-input:focus,
+.field-select:focus {
+    outline: none;
+    background: #fff;
+    border-color: #cbd5e1;
+}
+
+.field-divider {
+    height: 1px;
+    background: #f1f1f1;
+    margin: 18px 0;
+}
+
+
+/* =========================================================
+   CUSTOM DROPDOWNS
+========================================================= */
+
+.crm-custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.crm-dropdown-button {
+    height: 42px;
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #f4f4f5;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #111827;
+    cursor: pointer;
+}
+
+.crm-dropdown-button:hover {
+    background: #eeeeef;
+}
+
+.crm-dropdown-button i {
+    color: #9ca3af;
+    font-size: 16px;
+}
+
+.crm-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 280px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.14);
+    z-index: 9999;
+    display: none;
+    overflow: hidden;
+}
+
+.crm-custom-dropdown.open .crm-dropdown-menu {
+    display: block;
+}
+
+.crm-dropdown-search {
+    position: relative;
+    padding: 8px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.crm-search-input {
+    width: 100%;
+    height: 34px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f5f5f5;
+    padding: 0 34px 0 12px;
+    font-size: 13px;
+}
+
+.crm-search-input:focus {
+    outline: none;
+}
+
+.crm-search-clear {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    cursor: pointer;
+}
+
+.crm-dropdown-options {
+    max-height: 210px;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.crm-dropdown-option {
+    padding: 9px 16px;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.crm-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.crm-dropdown-footer {
+    border-top: 1px solid #f1f1f1;
+}
+
+.crm-create-new,
+.crm-clear {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.crm-create-new:hover,
+.crm-clear:hover {
+    background: #f3f4f6;
+}
+
+.crm-create-new {
+    border-bottom: 1px solid #f1f1f1;
+}
+
+
+/* =========================================================
+   EMPLOYEE DROPDOWN
+========================================================= */
+
+.employee-dropdown-menu {
+    width: 220px;
+}
+
+.employee-dropdown-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 2px 4px;
+}
+
+.employee-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.employee-dropdown-option.selected {
+    background: #ececed;
+}
+
+.employee-check {
+    display: none;
+}
+
+.employee-dropdown-option.selected .employee-check {
+    display: block;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-dropdown-menu {
+    width: 100%;
+    padding: 6px;
+}
+
+.status-dropdown-options {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.status-dropdown-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dropdown-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.status-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.status-dropdown-option.selected {
+    background: #ececed;
+}
+
+.status-check {
+    margin-left: auto;
+    display: none;
+}
+
+.status-dropdown-option.selected .status-check {
+    display: block;
+}
+
+.status-swatch {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #6b7280;
+}
+
+
+/* Deal status colours */
+
+.status-swatch[data-status="qualification"] {
+    background: #6b7280;
+}
+
+.status-swatch[data-status="demo_making"] {
+    background: #f97316;
+}
+
+.status-swatch[data-status="proposal_quotation"] {
+    background: #3b82f6;
+}
+
+.status-swatch[data-status="negotiation"] {
+    background: #eab308;
+}
+
+.status-swatch[data-status="ready_to_close"] {
+    background: #a855f7;
+}
+
+.status-swatch[data-status="won"] {
+    background: #16a34a;
+}
+
+.status-swatch[data-status="lost"] {
+    background: #ef4444;
+}
+
+
+/* =========================================================
+   OWNER
+========================================================= */
+
+.owner-select-wrap {
+    position: relative;
+}
+
+.owner-select-avatar {
+    position: absolute;
+    left: 6px;
+    top: 7px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    display: none;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.owner-select-wrap .owner-select {
+    padding-left: 42px;
+}
+
+.deal-toolbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+    width:max-content;
+    min-width:100%;
+    white-space:nowrap;
+    overflow:visible;
+}
+
+.deal-filter,
+.deal-input{
+    height:36px;
+    border:1px solid #e5e7eb;
+    background:#f5f5f5;
+    border-radius:9px;
+    padding:0 12px;
+    font-size:15px;
+    color:#555;
+    flex-shrink:0;
+}
+
+.deal-filter{
+    width:180px;
+}
+
+.deal-input{
+    width:235px;
+}
+
+.toolbar-btn{
+    height:36px;
+    border:0;
+    background:#f3f3f3;
+    border-radius:9px;
+    padding:0 14px;
+    font-size:15px;
+    white-space:nowrap;
+    flex-shrink:0;
+}
+
+.toolbar-btn i{
+    margin-right:5px;
+}
+
+.more-btn{
+    width:40px;
+    padding:0;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.deals-table-wrapper{
+    width:100%;
+    background:#fff;
+    border:1px solid #dee2e6;
+    border-radius:9px;
+    overflow:hidden;
+}
+
+.deals-table-area{
+    width:100%;
+    overflow-x:auto;
+}
+
+.deals-table{
+    width:1400px;
+    min-width:1400px;
+    margin:0;
+}
+
+.deals-table thead th{
+    background:#f5f5f5;
+    padding:12px 14px;
+    white-space:nowrap;
+    font-weight:500;
+    color:#555;
+}
+
+.deals-table tbody td{
+    padding:12px 14px;
+    white-space:nowrap;
+    border-bottom:1px solid #eee;
+    vertical-align:middle;
+}
+
+.deal-link{
+    color:#222;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.deal-link:hover{
+    text-decoration:underline;
+}
+
+.deal-avatar{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#f2f2f2;
+    margin-right:7px;
+    font-size:12px;
+}
+
+.status-wrapper{
+    display:inline-flex;
+    align-items:center;
+}
+
+.status-dot{
+    display:inline-block;
+    width:9px;
+    height:9px;
+    margin-right:8px;
+    background:#555;
+    border-radius:50%;
+}
+
+
+/* =====================================================
+   CREATE DEAL MODAL
+===================================================== */
+
+.create-deal-modal{
+    max-width:960px !important;
+    width:calc(100% - 30px) !important;
+    margin:30px auto;
+}
+
+.create-deal-modal .modal-content{
+    border:none;
+    border-radius:16px;
+    overflow:hidden;
+}
+
+.create-deal-modal .modal-header{
+    height:72px;
+    padding:0 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #f1f1f1;
+}
+
+.create-deal-modal .modal-title{
+    margin:0;
+    font-size:24px;
+    font-weight:600;
+}
+
+.deal-header-actions{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.edit-fields-btn{
+    border:none;
+    background:transparent;
+    font-size:20px;
+    padding:4px;
+}
+
+.create-deal-modal .modal-body{
+    padding:22px 28px 5px;
+}
+
+
+/* =====================================================
+   SWITCHES
+===================================================== */
+
+.deal-switches{
+    display:flex;
+    align-items:center;
+    gap:45px;
+    padding-bottom:14px;
+}
+
+.switch-group{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.switch-group label{
+    margin:0;
+    color:#777;
+    font-size:15px;
+}
+
+.switch-group .form-check{
+    margin:0;
+    padding:0;
+}
+
+.switch-group .form-check-input{
+    width:32px;
+    height:18px;
+    margin:0;
+}
+
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.deal-grid-3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:0 18px;
+}
+
+.deal-grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.deal-field{
+    margin-bottom:17px;
+    min-width:0;
+}
+
+.deal-field label{
+    display:block;
+    margin-bottom:7px;
+    font-size:15px;
+    color:#777;
+}
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+.deal-control{
+    width:100%;
+    height:36px;
+    border:none;
+    outline:none;
+    background:#f2f2f2;
+    border-radius:9px;
+    padding:0 12px;
+    font-size:15px;
+    color:#555;
+}
+
+.deal-control:focus{
+    background:#eeeeee;
+    box-shadow:none;
+}
+
+
+/* =====================================================
+   REVENUE
+===================================================== */
+
+.revenue-input{
+    position:relative;
+}
+
+.revenue-input span{
+    position:absolute;
+    left:8px;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:2;
+    color:#444;
+}
+
+.revenue-input .deal-control{
+    padding-left:30px;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-select{
+    position:relative;
+}
+
+.status-select .status-dot{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:2;
+}
+
+.status-select .deal-control{
+    padding-left:38px;
+}
+
+
+/* =====================================================
+   OWNER
+===================================================== */
+
+.owner-select{
+    position:relative;
+}
+
+.owner-avatar{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:2;
+
+    width:26px;
+    height:26px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+    background:#e9e9e9;
+    color:#555;
+    font-size:13px;
+}
+
+.owner-select .deal-control{
+    padding-left:48px;
+}
+
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.create-deal-modal hr{
+    margin:2px 0 17px;
+    border:0;
+    border-top:1px solid #e5e5e5;
+    opacity:1;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.create-deal-modal .modal-footer{
+    padding:8px 28px 18px;
+    border-top:none;
+}
+
+.create-deal-modal .modal-footer .btn-dark{
+    background:#111;
+    border:none;
+    border-radius:8px;
+    padding:7px 14px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px){
+
+    .create-deal-modal{
+        width:calc(100% - 20px) !important;
+        max-width:none !important;
+    }
+
+    .create-deal-modal .modal-body{
+        padding:20px;
+    }
+
+    .deal-grid-3{
+        grid-template-columns:1fr;
+    }
+
+    .deal-grid-2{
+        grid-template-columns:1fr;
+    }
+
+    .deal-switches{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+}
+
+/* =========================================================
+   DEAL FILTER DROPDOWNS
+========================================================= */
+
+.deal-filter-dropdown {
+    position: relative;
+    width: 180px;
+    min-width: 180px;
+}
+
+
+/* BUTTON */
+
+.deal-dropdown-btn {
+
+    width: 100%;
+    height: 36px;
+
+    border: 1px solid #e5e7eb;
+
+    background: #fff;
+
+    border-radius: 8px;
+
+    padding: 0 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 15px;
+
+    color: #6b7280;
+
+    cursor: pointer;
+}
+
+.deal-dropdown-btn:hover {
+    background: #f8f8f8;
+}
+
+.deal-dropdown-btn i {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.deal-dropdown-menu {
+
+    position: absolute;
+
+    top: calc(100% + 5px);
+
+    left: 0;
+
+    width: 270px;
+
+    background: #fff;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+
+    z-index: 9999;
+
+    display: none;
+
+    overflow: hidden;
+}
+
+.deal-dropdown-menu.show {
+    display: block;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.deal-dropdown-menu .dropdown-search {
+
+    position: relative;
+
+    padding: 8px;
+
+    border-bottom: 1px solid #eee;
+}
+
+.deal-dropdown-menu .dropdown-search input {
+
+    height: 36px;
+
+    padding-right: 35px;
+
+    background: #f5f5f5;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+}
+
+.deal-dropdown-menu .dropdown-search-clear {
+
+    position: absolute;
+
+    right: 18px;
+
+    top: 18px;
+
+    cursor: pointer;
+
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   OPTIONS
+========================================================= */
+
+.deal-dropdown-menu .dropdown-options {
+
+    max-height: 235px;
+
+    overflow-y: auto;
+}
+
+.deal-dropdown-option {
+
+    padding: 9px 14px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+.deal-dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+.deal-dropdown-menu .dropdown-clear {
+
+    height: 45px;
+
+    padding: 0 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border-top: 1px solid #eee;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    background: #fff;
+}
+
+.deal-dropdown-menu .dropdown-clear:hover {
+    background: #f5f5f5;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.deal-toolbar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: max-content;
+
+    min-width: 100%;
+
+    margin-bottom: 20px;
+
+    overflow: visible;
+
+    white-space: nowrap;
+}
+
+</style>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+<!-- Create Organization Modal -->
+<div class="modal fade"
+     id="createOrganizationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered new-org-modal">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="new-org-header">
+
+                <h4 class="new-org-title">
+                    New Organization
+                </h4>
+
+                <button type="button"
+                        class="new-org-close"
+                        data-bs-dismiss="modal">
+                    <i class="ti ti-x"></i>
+                </button>
+
+            </div>
+
+
+            <!-- Body -->
+            <div class="new-org-body">
+
+                <!-- Organization Name -->
+                <div class="new-org-field full-width">
+
+                    <label>
+                        Organization Name
+                    </label>
+
+                    <input type="text"
+                           class="new-org-input"
+                           id="newOrgName"
+                           placeholder="Organization Name">
+
+                    <div class="field-error"
+                         id="newOrgNameError">
+                        Organization name is required.
+                    </div>
+
+                </div>
+
+
+                <!-- Website + Annual Revenue -->
+                <div class="new-org-grid">
+
+                    <!-- Website -->
+                    <div class="new-org-field">
+
+                        <label>
+                            Website
+                        </label>
+
+                        <input type="url"
+                               class="new-org-input"
+                               id="newOrgWebsite"
+                               placeholder="Website">
+
+                    </div>
+
+
+                    <!-- Annual Revenue -->
+                    <div class="new-org-field">
+
+                        <label>
+                            Annual Revenue
+                        </label>
+
+                        <input type="number"
+                               class="new-org-input"
+                               id="newOrgRevenue"
+                               value="0.00"
+                               step="0.01">
+
+                    </div>
+
+                </div>
+
+
+                <!-- Territory -->
+                <div class="new-org-field full-width">
+
+                    <label>
+                        Territory
+                    </label>
+
+                    <select class="new-org-input"
+                            id="newOrgTerritory">
+
+                        <option value="">
+                            Territory
+                        </option>
+
+                        {% for territory in territories %}
+
+                            <option value="{{ territory.id }}">
+                                {{ territory.territory_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Employees + Industry -->
+                <div class="new-org-grid">
+
+                    <!-- Employees -->
+                    <div class="new-org-field">
+
+                        <label>
+                            No. of Employees
+                        </label>
+
+                        <select class="new-org-input"
+                                id="newOrgEmployees">
+
+                            <option value="">
+                                No. of Employees
+                            </option>
+
+                            {% for value, label in employee_choices %}
+
+                                <option value="{{ value }}">
+                                    {{ label }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Industry -->
+                    <div class="new-org-field">
+
+                        <label>
+                            Industry
+                        </label>
+
+                        <select class="new-org-input"
+                                id="newOrgIndustry">
+
+                            <option value="">
+                                Industry
+                            </option>
+
+                            {% for industry in industries %}
+
+                                <option value="{{ industry.id }}">
+                                    {{ industry.industry_name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Address -->
+                <div class="new-org-field full-width">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <select class="new-org-input"
+                            id="newOrgAddress">
+
+                        <option value="">
+                            Address
+                        </option>
+
+                        {% for address in addresses %}
+
+                            <option value="{{ address.id }}">
+                                {{ address.address_title }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="new-org-footer">
+
+                <button type="button"
+                        class="new-org-create-btn"
+                        id="createOrgSubmitBtn">
+                    Create
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+     CREATE INDUSTRY MODAL
+========================================== -->
+
+<div class="modal fade"
+     id="createIndustryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered new-industry-modal">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="new-industry-header">
+
+                <h4 class="new-industry-title">
+                    New Industry
+                </h4>
+
+                <button type="button"
+                        class="new-industry-close"
+                        data-bs-dismiss="modal">
+
+                    <i class="ti ti-x"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- Body -->
+            <div class="new-industry-body">
+
+                <div class="new-industry-field">
+
+                    <label>
+                        Industry
+                    </label>
+
+                    <input type="text"
+                           class="new-industry-input"
+                           id="newIndustryName"
+                           placeholder="Industry">
+
+                    <div class="new-industry-error"
+                         id="newIndustryError">
+
+                        Industry name is required.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="new-industry-footer">
+
+                <button type="button"
+                        class="new-industry-create-btn"
+                        id="createIndustrySubmitBtn">
+
+                    Create
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ==========================================
+     CREATE TERRITORY MODAL
+========================================== -->
+
+<div class="modal fade"
+     id="createTerritoryModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered new-territory-modal">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="new-territory-header">
+
+                <h4 class="new-territory-title">
+                    New Territory
+                </h4>
+
+                <button type="button"
+                        class="new-territory-close"
+                        data-bs-dismiss="modal">
+
+                    <i class="ti ti-x"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- Body -->
+            <div class="new-territory-body">
+
+                <!-- Territory Name + Manager -->
+                <div class="new-territory-grid">
+
+                    <!-- Territory Name -->
+                    <div class="new-territory-field">
+
+                        <label>
+                            Territory Name <span>*</span>
+                        </label>
+
+                        <input type="text"
+                               id="newTerritoryName"
+                               class="new-territory-input"
+                               placeholder="Territory Name">
+
+                        <div class="new-territory-error"
+                             id="newTerritoryError">
+                            Territory name is required.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Territory Manager -->
+                    <div class="new-territory-field">
+
+                        <label>
+                            Territory Manager
+                        </label>
+
+                        <select id="newTerritoryManager"
+                                class="new-territory-input">
+
+                            <option value="">
+                                Territory Manager
+                            </option>
+
+                            {% for user in users %}
+
+                                <option value="{{ user.id }}">
+                                    {{ user.full_name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Divider -->
+                <div class="new-territory-divider"></div>
+
+
+                <!-- Old Parent + Is Group -->
+                <div class="new-territory-grid">
+
+                    <!-- Old Parent -->
+                    <div class="new-territory-field">
+
+                        <label>
+                            Old Parent
+                        </label>
+
+                        <select id="newTerritoryOldParent"
+                                class="new-territory-input">
+
+                            <option value="">
+                                Old Parent
+                            </option>
+
+                            {% for territory in territories %}
+
+                                <option value="{{ territory.id }}">
+                                    {{ territory.territory_name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Is Group -->
+                    <div class="new-territory-checkbox">
+
+                        <label>
+
+                            <input type="checkbox"
+                                   id="newTerritoryIsGroup">
+
+                            <span>
+                                Is Group
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Parent CRM Territory -->
+                <div class="new-territory-field">
+
+                    <label>
+                        Parent CRM Territory
+                    </label>
+
+                    <select id="newTerritoryParent"
+                            class="new-territory-input">
+
+                        <option value="">
+                            Parent CRM Territory
+                        </option>
+
+                        {% for territory in territories %}
+
+                            <option value="{{ territory.id }}">
+                                {{ territory.territory_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="new-territory-footer">
+
+                <button type="button"
+                        id="createTerritorySubmitBtn"
+                        class="new-territory-create-btn">
+
+                    Create
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =========================================================
+       NESTED CREATE MODALS
+    ========================================================= */
+    let pendingOrgDropdown = null;
+    let pendingIndustryDropdown = null;
+    let pendingTerritoryDropdown = null;
+
+    /* =========================================================
+       DEAL FILTERS
+    ========================================================= */
+    const filterOrg = document.querySelector('[data-dropdown="dealFilterOrganizationDropdown"]')?.closest('.deal-filter-dropdown');
+    const filterStatus = document.querySelector('[data-dropdown="dealFilterStatusDropdown"]')?.closest('.deal-filter-dropdown');
+
+    function closeFilterMenus(except) {
+        document.querySelectorAll(".deal-dropdown-menu.show").forEach(menu => {
+            if (menu !== except) menu.classList.remove("show");
+        });
+    }
+
+    document.querySelectorAll(".deal-filter-dropdown").forEach(wrapper => {
+        const button = wrapper.querySelector(".deal-dropdown-btn");
+        const menu = wrapper.querySelector(".deal-dropdown-menu");
+        const text = wrapper.querySelector(".selected-text");
+        const search = wrapper.querySelector(".dropdown-search-input");
+        const clearSearch = wrapper.querySelector(".dropdown-search-clear");
+        const clear = wrapper.querySelector(".dropdown-clear");
+
+        if (!button || !menu) return;
+
+        button.addEventListener("click", function (e) {
+            e.stopPropagation();
+            closeFilterMenus(menu);
+            menu.classList.toggle("show");
+        });
+
+        wrapper.querySelectorAll(".deal-dropdown-option:not(.disabled)").forEach(option => {
+            option.addEventListener("click", function () {
+                text.textContent = this.dataset.label;
+                text.dataset.value = this.dataset.value;
+                menu.classList.remove("show");
+                applyDealFilters();
+            });
+        });
+
+        search?.addEventListener("input", function () {
+            const q = this.value.toLowerCase().trim();
+            wrapper.querySelectorAll(".deal-dropdown-option").forEach(option => {
+                option.style.display = (option.dataset.label || "").toLowerCase().includes(q) ? "" : "none";
+            });
+        });
+
+        clearSearch?.addEventListener("click", function (e) {
+            e.stopPropagation();
+            search.value = "";
+            wrapper.querySelectorAll(".deal-dropdown-option").forEach(option => option.style.display = "");
+            search.focus();
+        });
+
+        clear?.addEventListener("click", function (e) {
+            e.stopPropagation();
+            text.textContent = wrapper.dataset.type === "status" ? "Status" : "Organization";
+            text.dataset.value = "";
+            if (search) search.value = "";
+            wrapper.querySelectorAll(".deal-dropdown-option").forEach(option => option.style.display = "");
+            menu.classList.remove("show");
+            applyDealFilters();
+        });
+    });
+
+    function applyDealFilters() {
+        const orgValue = filterOrg?.querySelector(".selected-text")?.dataset.value || "";
+        const statusValue = filterStatus?.querySelector(".selected-text")?.dataset.value || "";
+        const probability = document.getElementById("probabilityFilter")?.value.trim() || "";
+        const email = document.getElementById("emailFilter")?.value.toLowerCase().trim() || "";
+
+        document.querySelectorAll(".deal-row").forEach(row => {
+            const rowOrg = row.dataset.organization || "";
+            const rowStatus = row.dataset.status || "";
+            const rowProbability = row.dataset.probability || "";
+            const rowEmail = (row.dataset.email || "").toLowerCase();
+
+            const okOrg = !orgValue || rowOrg === orgValue;
+            const okStatus = !statusValue || rowStatus === statusValue;
+            const okProbability = !probability || rowProbability === probability;
+            const okEmail = !email || rowEmail.includes(email);
+
+            row.style.display = (okOrg && okStatus && okProbability && okEmail) ? "" : "none";
+        });
+
+        const visibleRows = [...document.querySelectorAll(".deal-row")].filter(row => row.style.display !== "none");
+        const emptyRow = document.getElementById("dealFilterEmptyRow");
+        if (emptyRow) emptyRow.style.display = visibleRows.length ? "none" : "table-row";
+    }
+
+    document.getElementById("probabilityFilter")?.addEventListener("input", applyDealFilters);
+    document.getElementById("emailFilter")?.addEventListener("input", applyDealFilters);
+    document.getElementById("filterButton")?.addEventListener("click", applyDealFilters);
+
+    document.addEventListener("click", function (e) {
+        if (!e.target.closest(".deal-filter-dropdown")) {
+            closeFilterMenus();
+        }
+    });
+
+    /* =========================================================
+       SELECT ALL
+    ========================================================= */
+    document.getElementById("selectAllDeals")?.addEventListener("change", function () {
+        document.querySelectorAll(".deal-checkbox").forEach(cb => cb.checked = this.checked);
+    });
+
+    /* =========================================================
+       CREATE DEAL TOGGLE LOGIC
+
+       ON + OFF  -> Existing organization + person details
+       OFF + ON  -> Manual organization details + existing contact
+       ON + ON   -> Existing organization + existing contact
+       OFF + OFF -> Manual organization details + person details
+    ========================================================= */
+    const orgToggle = document.getElementById("chooseExistingOrganization");
+const contactToggle = document.getElementById("chooseExistingContact");
+
+const orgSection = document.getElementById("existingOrganizationSection");
+const contactSection = document.getElementById("existingContactSection");
+const manualOrgSection = document.getElementById("manualOrganizationSection");
+const personSection = document.getElementById("personDetailsSection");
+
+function setVisible(el, visible) {
+    if (el) el.style.display = visible ? "block" : "none";
+}
+
+function updateDealMode() {
+
+    const useOrg = !!orgToggle?.checked;
+    const useContact = !!contactToggle?.checked;
+
+    // Existing Organization
+    setVisible(orgSection, useOrg);
+
+    // Existing Contact
+    setVisible(contactSection, useContact);
+
+    // Manual Organization
+    setVisible(manualOrgSection, !useOrg);
+
+    // Person Details
+    setVisible(personSection, !useContact);
+}
+
+orgToggle?.addEventListener("change", updateDealMode);
+contactToggle?.addEventListener("change", updateDealMode);
+
+
+// ⭐ DEFAULT: BOTH TOGGLES OFF
+if (orgToggle) orgToggle.checked = false;
+if (contactToggle) contactToggle.checked = false;
+
+updateDealMode();
+    /* =========================================================
+       CRM CUSTOM DROPDOWNS
+    ========================================================= */
+    const crmDropdowns = document.querySelectorAll(".crm-custom-dropdown");
+
+    function closeCrmDropdowns(except) {
+        document.querySelectorAll(".crm-custom-dropdown.open").forEach(dropdown => {
+            if (dropdown !== except) {
+                dropdown.classList.remove("open", "drop-up");
+            }
+        });
+    }
+
+    function selectDropdown(dropdown, value, label) {
+        if (!dropdown) return;
+        const text = dropdown.querySelector(".crm-selected-text");
+        const hidden = dropdown.querySelector(".crm-dropdown-value");
+        if (text) text.textContent = label || "";
+        if (hidden) hidden.value = value || "";
+        dropdown.classList.remove("open");
+    }
+
+
+    /* =========================================================
+       SMART DROPDOWN POSITION
+       Opens upward when there is not enough room below.
+    ========================================================= */
+    function positionCrmDropdown(dropdown) {
+        if (!dropdown || !dropdown.classList.contains("open")) return;
+
+        dropdown.classList.remove("drop-up");
+
+        const menu = dropdown.querySelector(".crm-dropdown-menu");
+        const button = dropdown.querySelector(".crm-dropdown-button");
+        if (!menu || !button) return;
+
+        const buttonRect = button.getBoundingClientRect();
+        const menuHeight = menu.getBoundingClientRect().height;
+        const gap = 8;
+
+        const spaceBelow = window.innerHeight - buttonRect.bottom - gap;
+        const spaceAbove = buttonRect.top - gap;
+
+        if (menuHeight > spaceBelow && spaceAbove >= menuHeight) {
+            dropdown.classList.add("drop-up");
+        }
+    }
+
+    window.addEventListener("resize", function () {
+        document.querySelectorAll(".crm-custom-dropdown.open").forEach(positionCrmDropdown);
+    });
+
+    window.addEventListener("scroll", function () {
+        document.querySelectorAll(".crm-custom-dropdown.open").forEach(positionCrmDropdown);
+    }, true);
+
+    function setEmployeeValue(value) {
+        const dropdown = document.getElementById("dealEmployeesDropdown");
+        if (!dropdown) return;
+        const option = dropdown.querySelector(`.employee-dropdown-option[data-value="${CSS.escape(value)}"]`);
+        if (!option) return;
+        selectDropdown(dropdown, option.dataset.value, option.dataset.label);
+        dropdown.querySelectorAll(".employee-dropdown-option").forEach(item => item.classList.remove("selected"));
+        option.classList.add("selected");
+    }
+
+    function fillFromOrganization(option) {
+        if (!option) return;
+        const website = document.getElementById("dealWebsite");
+        const revenue = document.getElementById("dealRevenue");
+        const employees = option.dataset.employees || "";
+
+        if (website) website.value = option.dataset.website || "";
+        if (revenue) revenue.value = option.dataset.revenue || "0.00";
+        if (employees) setEmployeeValue(employees);
+
+        if (option.dataset.industry) {
+            const d = document.getElementById("dealIndustryDropdown");
+            const item = d?.querySelector(`.crm-dropdown-option[data-value="${CSS.escape(option.dataset.industry)}"]`);
+            if (item) selectDropdown(d, item.dataset.value, item.dataset.label);
+        }
+
+        if (option.dataset.territory) {
+            const d = document.getElementById("dealTerritoryDropdown");
+            const item = d?.querySelector(`.crm-dropdown-option[data-value="${CSS.escape(option.dataset.territory)}"]`);
+            if (item) selectDropdown(d, item.dataset.value, item.dataset.label);
+        }
+    }
+
+    function fillFromLead(option) {
+        if (!option) return;
+        const salutation = document.getElementById("dealSalutation");
+        const firstName = document.getElementById("dealFirstName");
+        const lastName = document.getElementById("dealLastName");
+        const email = document.getElementById("dealPrimaryEmail");
+        const mobile = document.getElementById("dealPrimaryMobile");
+        const gender = document.getElementById("dealGender");
+
+        if (salutation) salutation.value = option.dataset.salutation || "";
+        if (firstName) firstName.value = option.dataset.firstName || "";
+        if (lastName) lastName.value = option.dataset.lastName || "";
+        if (email) email.value = option.dataset.email || "";
+        if (mobile) mobile.value = option.dataset.mobile || "";
+        if (gender) gender.value = option.dataset.gender || "";
+    }
+
+    crmDropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector(".crm-dropdown-button");
+        const search = dropdown.querySelector(".crm-search-input");
+        const searchClear = dropdown.querySelector(".crm-search-clear");
+        const clear = dropdown.querySelector(".crm-clear");
+        const createNew = dropdown.querySelector(".crm-create-new");
+
+        button?.addEventListener("click", function (e) {
+            e.stopPropagation();
+
+            const wasOpen = dropdown.classList.contains("open");
+            closeCrmDropdowns(dropdown);
+            dropdown.classList.toggle("open", !wasOpen);
+            dropdown.classList.remove("drop-up");
+
+            if (dropdown.classList.contains("open")) {
+                positionCrmDropdown(dropdown);
+                search?.focus();
+            }
+        });
+
+        dropdown.querySelectorAll(".crm-dropdown-option:not(.disabled)").forEach(option => {
+            option.addEventListener("click", function (e) {
+                e.stopPropagation();
+                selectDropdown(dropdown, this.dataset.value, this.dataset.label);
+
+                if (dropdown.id === "dealOrganizationDropdown") {
+                    fillFromOrganization(this);
+                }
+
+                if (dropdown.id === "dealLeadDropdown") {
+                    fillFromLead(this);
+
+                    // If both switches are ON and the selected lead belongs to
+                    // an organization, select that organization automatically.
+                    if (orgToggle?.checked && this.dataset.organization) {
+                        const orgDropdown = document.getElementById("dealOrganizationDropdown");
+                        const orgOption = orgDropdown?.querySelector(`.crm-dropdown-option[data-value="${CSS.escape(this.dataset.organization)}"]`);
+                        if (orgOption) {
+                            selectDropdown(orgDropdown, orgOption.dataset.value, orgOption.dataset.label);
+                            fillFromOrganization(orgOption);
+                        }
+                    }
+                }
+            });
+        });
+
+        search?.addEventListener("input", function () {
+            const q = this.value.toLowerCase().trim();
+            dropdown.querySelectorAll(".crm-dropdown-option").forEach(option => {
+                option.style.display = (option.dataset.label || "").toLowerCase().includes(q) ? "" : "none";
+            });
+        });
+
+        searchClear?.addEventListener("click", function (e) {
+            e.stopPropagation();
+            if (!search) return;
+            search.value = "";
+            dropdown.querySelectorAll(".crm-dropdown-option").forEach(option => option.style.display = "");
+            search.focus();
+        });
+
+        clear?.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const text = dropdown.querySelector(".crm-selected-text");
+            const hidden = dropdown.querySelector(".crm-dropdown-value");
+            if (text) {
+                if (dropdown.id === "dealOrganizationDropdown") text.textContent = "Organization";
+                else if (dropdown.id === "dealLeadDropdown") text.textContent = "Contact";
+                else if (dropdown.id === "dealEmployeesDropdown") text.textContent = "No. of Employees";
+                else if (dropdown.id === "dealTerritoryDropdown") text.textContent = "Territory";
+                else if (dropdown.id === "dealIndustryDropdown") text.textContent = "Industry";
+            }
+            if (hidden) hidden.value = "";
+            if (search) search.value = "";
+            dropdown.querySelectorAll(".crm-dropdown-option").forEach(option => option.style.display = "");
+            dropdown.classList.remove("open");
+        });
+
+        createNew?.addEventListener("click", function (e) {
+            e.stopPropagation();
+            dropdown.classList.remove("open");
+            createNewItem(dropdown, this.dataset.type);
+        });
+    });
+
+    /* EMPLOYEES */
+    document.querySelectorAll("#dealEmployeesDropdown .employee-dropdown-option").forEach(option => {
+        option.addEventListener("click", function (e) {
+            e.stopPropagation();
+            setEmployeeValue(this.dataset.value);
+        });
+    });
+
+    /* STATUS */
+    const statusDropdown = document.getElementById("dealStatusDropdown");
+    statusDropdown?.querySelectorAll(".status-dropdown-option").forEach(option => {
+        option.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const text = statusDropdown.querySelector(".status-dropdown-text");
+            const swatch = statusDropdown.querySelector(".status-dropdown-selected .status-swatch");
+            const hidden = statusDropdown.querySelector(".crm-dropdown-value");
+            if (text) text.textContent = this.dataset.label;
+            if (swatch) swatch.dataset.status = this.dataset.value;
+            if (hidden) hidden.value = this.dataset.value;
+            statusDropdown.querySelectorAll(".status-dropdown-option").forEach(item => item.classList.remove("selected"));
+            this.classList.add("selected");
+            statusDropdown.classList.remove("open");
+        });
+    });
+
+    /* =========================================================
+       CREATE NEW — OPEN THE SAME NESTED MODALS USED IN LEADS
+    ========================================================= */
+    function addOptionToDropdown(dropdown, id, name) {
+        if (!dropdown) return;
+
+        const optionsContainer = dropdown.querySelector(".crm-dropdown-options");
+        if (!optionsContainer) return;
+
+        const option = document.createElement("div");
+        option.className = "crm-dropdown-option";
+        option.dataset.value = id;
+        option.dataset.label = name;
+        option.textContent = name;
+        optionsContainer.appendChild(option);
+
+        const selectedText = dropdown.querySelector(".crm-selected-text");
+        const hiddenInput = dropdown.querySelector(".crm-dropdown-value");
+
+        if (selectedText) selectedText.textContent = name;
+        if (hiddenInput) hiddenInput.value = id;
+        dropdown.classList.remove("open");
+
+        option.addEventListener("click", function (e) {
+            e.stopPropagation();
+            if (selectedText) selectedText.textContent = this.dataset.label;
+            if (hiddenInput) hiddenInput.value = this.dataset.value;
+            dropdown.classList.remove("open");
+        });
+    }
+
+    function showCreateModal(id) {
+        const modalElement = document.getElementById(id);
+        if (!modalElement || typeof bootstrap === "undefined") {
+            alert("Create modal is missing.");
+            return;
+        }
+        bootstrap.Modal.getOrCreateInstance(modalElement).show();
+    }
+
+    function createNewItem(parentDropdown, type) {
+        if (type === "organization") {
+            pendingOrgDropdown = parentDropdown;
+            parentDropdown.classList.remove("open");
+            showCreateModal("createOrganizationModal");
+            return;
+        }
+
+        if (type === "industry") {
+            pendingIndustryDropdown = parentDropdown;
+            parentDropdown.classList.remove("open");
+            showCreateModal("createIndustryModal");
+            return;
+        }
+
+        if (type === "territory") {
+            pendingTerritoryDropdown = parentDropdown;
+            parentDropdown.classList.remove("open");
+            showCreateModal("createTerritoryModal");
+        }
+    }
+
+    /* CREATE ORGANIZATION */
+    document.getElementById("createOrgSubmitBtn")?.addEventListener("click", function () {
+        const nameInput = document.getElementById("newOrgName");
+        const nameError = document.getElementById("newOrgNameError");
+        const name = nameInput?.value.trim() || "";
+
+        if (!name) {
+            nameInput?.classList.add("field-input-invalid");
+            nameError?.classList.add("show");
+            nameInput?.focus();
+            return;
+        }
+
+        nameInput?.classList.remove("field-input-invalid");
+        nameError?.classList.remove("show");
+
+        const csrf = document.querySelector('#createDealForm [name="csrfmiddlewaretoken"]')?.value || "";
+        const params = new URLSearchParams();
+        params.append("organization_name", name);
+        params.append("website", document.getElementById("newOrgWebsite")?.value.trim() || "");
+        params.append("no_of_employees", document.getElementById("newOrgEmployees")?.value || "");
+        params.append("territory", document.getElementById("newOrgTerritory")?.value || "");
+        params.append("annual_revenue", document.getElementById("newOrgRevenue")?.value || "0");
+        params.append("industry", document.getElementById("newOrgIndustry")?.value || "");
+        params.append("address", document.getElementById("newOrgAddress")?.value || "");
+
+        fetch("{% url 'add_organization' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": csrf
+            },
+            body: params.toString()
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP error: " + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) throw new Error(data.message || "Unable to create organization.");
+            if (pendingOrgDropdown) {
+                addOptionToDropdown(pendingOrgDropdown, data.id, data.name);
+                pendingOrgDropdown = null;
+            }
+            ["newOrgName","newOrgWebsite","newOrgEmployees","newOrgIndustry","newOrgTerritory","newOrgAddress"].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = "";
+            });
+            const revenue = document.getElementById("newOrgRevenue");
+            if (revenue) revenue.value = "0.00";
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("createOrganizationModal")).hide();
+        })
+        .catch(error => {
+            console.error(error);
+            alert(error.message || "Something went wrong while creating the organization.");
+        });
+    });
+
+    /* CREATE INDUSTRY */
+    document.getElementById("createIndustrySubmitBtn")?.addEventListener("click", function () {
+        const input = document.getElementById("newIndustryName");
+        const error = document.getElementById("newIndustryError");
+        const name = input?.value.trim() || "";
+
+        if (!name) {
+            input?.classList.add("invalid");
+            error?.classList.add("show");
+            input?.focus();
+            return;
+        }
+
+        input?.classList.remove("invalid");
+        error?.classList.remove("show");
+
+        const csrf = document.querySelector('#createDealForm [name="csrfmiddlewaretoken"]')?.value || "";
+        const params = new URLSearchParams();
+        params.append("name", name);
+
+        fetch("{% url 'add_industry' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": csrf
+            },
+            body: params.toString()
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP error: " + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) throw new Error(data.message || "Unable to create industry.");
+            if (pendingIndustryDropdown) {
+                addOptionToDropdown(pendingIndustryDropdown, data.id, data.name);
+                pendingIndustryDropdown = null;
+            }
+            if (input) input.value = "";
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("createIndustryModal")).hide();
+        })
+        .catch(error => {
+            console.error(error);
+            alert(error.message || "Something went wrong while creating the industry.");
+        });
+    });
+
+    /* CREATE TERRITORY */
+    document.getElementById("createTerritorySubmitBtn")?.addEventListener("click", function () {
+        const nameInput = document.getElementById("newTerritoryName");
+        const error = document.getElementById("newTerritoryError");
+        const name = nameInput?.value.trim() || "";
+
+        if (!name) {
+            nameInput?.classList.add("invalid");
+            error?.classList.add("show");
+            nameInput?.focus();
+            return;
+        }
+
+        nameInput?.classList.remove("invalid");
+        error?.classList.remove("show");
+
+        const csrf = document.querySelector('#createDealForm [name="csrfmiddlewaretoken"]')?.value || "";
+        const params = new URLSearchParams();
+        params.append("name", name);
+        params.append("territory_manager", document.getElementById("newTerritoryManager")?.value || "");
+        params.append("old_parent", document.getElementById("newTerritoryOldParent")?.value || "");
+        params.append("parent_crm_territory", document.getElementById("newTerritoryParent")?.value || "");
+        params.append("is_group", document.getElementById("newTerritoryIsGroup")?.checked ? "1" : "0");
+
+        fetch("{% url 'add_territory' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": csrf
+            },
+            body: params.toString()
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("HTTP error: " + response.status);
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) throw new Error(data.message || "Unable to create territory.");
+            if (pendingTerritoryDropdown) {
+                addOptionToDropdown(pendingTerritoryDropdown, data.id, data.name);
+                pendingTerritoryDropdown = null;
+            }
+            ["newTerritoryName","newTerritoryManager","newTerritoryOldParent","newTerritoryParent"].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = "";
+            });
+            const isGroup = document.getElementById("newTerritoryIsGroup");
+            if (isGroup) isGroup.checked = false;
+            bootstrap.Modal.getOrCreateInstance(document.getElementById("createTerritoryModal")).hide();
+        })
+        .catch(error => {
+            console.error(error);
+            alert(error.message || "Something went wrong while creating the territory.");
+        });
+    });
+
+    document.addEventListener("click", function () {
+        document.querySelectorAll(".crm-custom-dropdown.open").forEach(dropdown => dropdown.classList.remove("open"));
+        document.querySelectorAll(".deal-dropdown-menu.show").forEach(menu => menu.classList.remove("show"));
+    });
+
+    document.querySelectorAll(".crm-custom-dropdown, .deal-filter-dropdown").forEach(el => {
+        el.addEventListener("click", e => e.stopPropagation());
+    });
+
+    /* =========================================================
+       OWNER AVATAR
+    ========================================================= */
+    const ownerSelect = document.getElementById("dealOwnerSelect");
+    const ownerAvatar = document.getElementById("dealOwnerAvatar");
+
+    function updateOwnerAvatar() {
+        if (!ownerSelect || !ownerAvatar) return;
+        const option = ownerSelect.options[ownerSelect.selectedIndex];
+        const name = option?.textContent.trim() || "";
+        if (!ownerSelect.value || !name || name === "Deal Owner") {
+            ownerAvatar.style.display = "none";
+            return;
+        }
+        ownerAvatar.style.display = "flex";
+        ownerAvatar.textContent = name.charAt(0).toUpperCase();
+    }
+
+    ownerSelect?.addEventListener("change", updateOwnerAvatar);
+    updateOwnerAvatar();
+
+    /* =========================================================
+       RESET FORM WHEN MODAL CLOSES
+    ========================================================= */
+    document.getElementById("createDealModal")?.addEventListener("hidden.bs.modal", function () {
+        const form = document.getElementById("createDealForm");
+        form?.reset();
+        if (orgToggle) orgToggle.checked = false;
+        if (contactToggle) contactToggle.checked = false;
+        document.querySelectorAll("#createDealModal .crm-custom-dropdown").forEach(dropdown => {
+            dropdown.classList.remove("open");
+            const hidden = dropdown.querySelector(".crm-dropdown-value");
+            if (hidden && dropdown.id !== "dealStatusDropdown") hidden.value = "";
+        });
+        const orgText = document.querySelector("#dealOrganizationDropdown .crm-selected-text");
+        if (orgText) orgText.textContent = "Organization";
+        const leadText = document.querySelector("#dealLeadDropdown .crm-selected-text");
+        if (leadText) leadText.textContent = "Contact";
+        const employeeText = document.querySelector("#dealEmployeesDropdown .crm-selected-text");
+        if (employeeText) employeeText.textContent = "No. of Employees";
+        const territoryText = document.querySelector("#dealTerritoryDropdown .crm-selected-text");
+        if (territoryText) territoryText.textContent = "Territory";
+        const industryText = document.querySelector("#dealIndustryDropdown .crm-selected-text");
+        if (industryText) industryText.textContent = "Industry";
+        updateDealMode();
+    });
+});
+</script>
+
+
+<style>
+.deal-single-field { max-width: 440px; }
+#manualOrganizationSection { width: 100%; }
+#existingContactSection { width: 100%; }
+@media (max-width: 768px) { .deal-single-field { max-width: 100%; } }
+</style>
+
+
+<style>
+/* =========================================================
+   SMART CREATE-DEAL DROPDOWNS
+   Open upward automatically when there is not enough room below.
+========================================================= */
+#createDealModal .modal-dialog,
+#createDealModal .modal-content,
+#createDealModal .modal-body {
+    overflow: visible !important;
+}
+
+#createDealModal .crm-custom-dropdown {
+    position: relative;
+}
+
+#createDealModal .crm-dropdown-menu {
+    top: calc(100% + 6px);
+    bottom: auto;
+    max-height: none;
+    z-index: 10050;
+}
+
+#createDealModal .crm-custom-dropdown.drop-up .crm-dropdown-menu {
+    top: auto;
+    bottom: calc(100% + 6px);
+}
+
+/* Keep the option list scrollable. */
+#createDealModal .crm-dropdown-options,
+#createDealModal .status-dropdown-options,
+#createDealModal .employee-dropdown-options {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+/* Status dropdown matches the reference design. */
+#createDealModal .status-dropdown-menu {
+    width: 100%;
+    padding: 6px;
+}
+
+#createDealModal .status-dropdown-options {
+    max-height: 280px;
+    overflow-y: auto;
+}
+</style>
+
+
+<style>
+/* ==========================================
+   NEW TERRITORY MODAL
+========================================== */
+
+.new-territory-modal {
+    max-width: 720px;
+    width: 100%;
+}
+
+
+.new-territory-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.new-territory-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 30px 17px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.new-territory-title {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+.new-territory-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff1f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ef4444;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+/* ==========================================
+   BODY
+========================================== */
+
+.new-territory-body {
+    padding: 20px 30px 5px;
+}
+
+
+/* ==========================================
+   GRID
+========================================== */
+
+.new-territory-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* ==========================================
+   FIELD
+========================================== */
+
+.new-territory-field {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 18px;
+}
+
+
+.new-territory-field label {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: #64748b;
+}
+
+
+.new-territory-field label span {
+    color: #ef4444;
+}
+
+
+/* ==========================================
+   INPUT / SELECT
+========================================== */
+
+.new-territory-input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 11px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: #f1f1f2;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.new-territory-input::placeholder {
+    color: #9ca3af;
+}
+
+
+.new-territory-input:focus {
+    background: #fff;
+    border-color: #d1d5db;
+}
+
+
+/* ==========================================
+   DIVIDER
+========================================== */
+
+.new-territory-divider {
+    height: 1px;
+
+    background: #eeeeee;
+
+    margin: 0 0 20px;
+}
+
+
+/* ==========================================
+   IS GROUP
+========================================== */
+
+.new-territory-checkbox {
+    display: flex;
+    align-items: flex-start;
+
+    padding-top: 29px;
+}
+
+
+.new-territory-checkbox label {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.new-territory-checkbox input {
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   PARENT TERRITORY
+========================================== */
+
+.new-territory-body > .new-territory-field {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.new-territory-footer {
+    padding: 15px 30px 25px;
+}
+
+
+.new-territory-create-btn {
+    width: 100%;
+
+    height: 38px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #171717;
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.new-territory-create-btn:hover {
+    background: #000;
+}
+
+
+/* ==========================================
+   ERROR
+========================================== */
+
+.new-territory-error {
+    display: none;
+
+    margin-top: 4px;
+
+    color: #ef4444;
+
+    font-size: 11px;
+}
+
+
+.new-territory-error.show {
+    display: block;
+}
+
+
+.new-territory-input.invalid {
+    border-color: #ef4444 !important;
+
+    background: #fff5f5 !important;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .new-territory-modal {
+        max-width: calc(100% - 20px);
+    }
+
+
+    .new-territory-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+
+    .new-territory-checkbox {
+        padding-top: 0;
+        margin-bottom: 18px;
+    }
+
+
+    .new-territory-header {
+        padding: 17px 20px 15px;
+    }
+
+
+    .new-territory-body {
+        padding: 17px 20px 5px;
+    }
+
+
+    .new-territory-footer {
+        padding: 12px 20px 20px;
+    }
+
+}
+
+/* ==========================================
+   NEW INDUSTRY MODAL
+========================================== */
+
+.new-industry-modal {
+    max-width: 500px;
+    width: 100%;
+}
+
+
+/* Modal */
+.new-industry-modal .modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+
+/* Header */
+.new-industry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 30px 17px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.new-industry-title {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    color: #111827;
+}
+
+
+.new-industry-close {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff1f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ef4444;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+.new-industry-close:hover {
+    background: #ffe5e5;
+}
+
+
+/* Body */
+.new-industry-body {
+    padding: 20px 30px 5px;
+}
+
+
+/* Field */
+.new-industry-field {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.new-industry-field label {
+    margin-bottom: 7px;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    color: #6b7280;
+}
+
+
+/* Input */
+.new-industry-input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 12px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: #f1f1f2;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.new-industry-input::placeholder {
+    color: #9ca3af;
+}
+
+
+.new-industry-input:focus {
+    background: #fff;
+
+    border-color: #d1d5db;
+}
+
+
+/* Footer */
+.new-industry-footer {
+    padding: 15px 30px 25px;
+}
+
+
+.new-industry-create-btn {
+    width: 100%;
+
+    height: 38px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #171717;
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+.new-industry-create-btn:hover {
+    background: #000;
+}
+
+
+/* Error */
+.new-industry-input.invalid {
+    border-color: #ef4444 !important;
+    background: #fff5f5 !important;
+}
+
+
+.new-industry-error {
+    display: none;
+
+    margin-top: 5px;
+
+    color: #ef4444;
+
+    font-size: 11px;
+}
+
+
+.new-industry-error.show {
+    display: block;
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .new-industry-modal {
+        max-width: calc(100% - 20px);
+    }
+
+    .new-industry-header {
+        padding: 17px 20px 15px;
+    }
+
+    .new-industry-body {
+        padding: 17px 20px 5px;
+    }
+
+    .new-industry-footer {
+        padding: 12px 20px 20px;
+    }
+
+}
+
+/* ==========================================
+   NEW ORGANIZATION MODAL
+========================================== */
+
+/* ==========================================
+   SMALL CREATE ORGANIZATION MODAL
+========================================== */
+
+.new-org-modal {
+    max-width: 620px;
+    width: 100%;
+}
+
+
+/* Modal */
+.new-org-modal .modal-content {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+
+/* Header */
+.new-org-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px 22px 15px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.new-org-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.new-org-close {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: #fff1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+
+/* Body */
+.new-org-body {
+    padding: 17px 22px 2px;
+}
+
+
+/* Fields */
+.new-org-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.new-org-field label {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5b6472;
+}
+
+
+/* Inputs */
+.new-org-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 11px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: #f3f3f4;
+    color: #111827;
+    font-size: 13px;
+    outline: none;
+}
+
+.new-org-input::placeholder {
+    color: #9ca3af;
+}
+
+.new-org-input:focus {
+    background: #fff;
+    border-color: #d1d5db;
+}
+
+
+/* Two columns */
+.new-org-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 13px;
+}
+
+
+/* Full width */
+.new-org-field.full-width {
+    margin-bottom: 13px;
+}
+
+
+/* Footer */
+.new-org-footer {
+    padding: 12px 22px 18px;
+}
+
+
+/* Create button */
+.new-org-create-btn {
+    width: 100%;
+    height: 38px;
+    border: none;
+    border-radius: 7px;
+    background: #171717;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.new-org-create-btn:hover {
+    background: #000;
+}
+
+
+/* Error */
+.new-org-input.field-input-invalid {
+    border-color: #ef4444 !important;
+    background: #fff5f5 !important;
+}
+
+.field-error {
+    display: none;
+    margin-top: 4px;
+    color: #ef4444;
+    font-size: 11px;
+}
+
+.field-error.show {
+    display: block;
+}
+
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .new-org-modal {
+        max-width: calc(100% - 20px);
+    }
+
+    .new-org-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .new-org-header {
+        padding: 15px 18px;
+    }
+
+    .new-org-body {
+        padding: 15px 18px 2px;
+    }
+
+    .new-org-footer {
+        padding: 10px 18px 15px;
+    }
+}
+
+/* =========================================================
+   NESTED CREATE MODAL STACKING
+========================================================= */
+#createDealModal { z-index: 1055; }
+.modal-backdrop.show { z-index: 1050; }
+#createOrganizationModal,
+#createIndustryModal,
+#createTerritoryModal { z-index: 1065; }
+#createOrganizationModal + .modal-backdrop,
+#createIndustryModal + .modal-backdrop,
+#createTerritoryModal + .modal-backdrop { z-index: 1060; }
+
+</style>
+
+{% endblock %}
+```
